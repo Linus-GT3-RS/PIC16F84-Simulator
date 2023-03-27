@@ -8,4 +8,8 @@ public class Converter {
     public static String binaryToHex(int[] binary) {
         return null;
     }
+    
+    public static int hexToDec(String hex) {
+        return 0;
+    }
 }
