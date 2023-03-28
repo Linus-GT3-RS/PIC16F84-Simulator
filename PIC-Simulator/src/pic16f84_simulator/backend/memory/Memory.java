@@ -6,4 +6,12 @@ public abstract class Memory {
     Memory(int sizeOfMemory,int numberOfBits){
         this.memory = new int[sizeOfMemory][numberOfBits];
     }
+    
+    int[] getMemory(int index) {
+        return this.memory[index];
+    }
+    
+    void setMemory(int index,int[] memory) {
+        this.memory[index] = memory;
+    }
 }
