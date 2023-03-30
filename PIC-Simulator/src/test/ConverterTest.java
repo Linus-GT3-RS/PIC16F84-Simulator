@@ -1,8 +1,11 @@
-package pic16f84_simulator.backend;
+// Linus
+package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+
+import pic16f84_simulator.backend.Converter;
 
 class ConverterTest {
 
