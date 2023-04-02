@@ -1,71 +1,51 @@
 // Linus
 package pic16f84_simulator.backend;
 
+import java.util.Arrays;
+
 public class Converter {
-    public static int[] hexToBinary(char hex){
-        int[] binarycode = new int[] {0,0,0,0};
-        switch (hex) {
-        case '0' -> {}
-        case '1' -> {binarycode[3] = 1;}
-        case '2' -> {binarycode[2] = 1;}
-        case '3' -> {binarycode[3] = 1;
-                     binarycode[2] = 1;}
-        case '4' -> {binarycode[1] = 1;}
-        case '5' -> {binarycode[3] = 1;
-                     binarycode[1] = 1;}
-        case '6' -> {binarycode[2] = 1;
-                     binarycode[1] = 1;}
-        case '7' -> {binarycode[3] = 1;
-                     binarycode[2] = 1;
-                     binarycode[1] = 1;}
-        case '8' -> {binarycode[0] = 1;}
-        case '9' -> {binarycode[3] = 1;
-                     binarycode[0] = 1;}
-        case 'A' -> {binarycode[2] = 1;
-                     binarycode[0] = 1;}
-        case 'B' -> {binarycode[3] = 1;
-                     binarycode[2] = 1;
-                     binarycode[0] = 1;}
-        case 'C' -> {binarycode[1] = 1;
-                     binarycode[0] = 1;}
-        case 'D' -> {binarycode[3] = 1;
-                     binarycode[1] = 1;
-                     binarycode[0] = 1;}
-        case 'E' -> {binarycode[2] = 1;
-                     binarycode[1] = 1;
-                     binarycode[0] = 1;}
-        case 'F' -> {binarycode[3] = 1;
-                     binarycode[2] = 1;
-                     binarycode[1] = 1;
-                     binarycode[0] = 1;}
+
+    // 'F' zu --> 15
+    public static int hexToDec(char hex) {        
+        return Integer.parseInt(Character.toString(hex), 16);
+    }
+
+    
+    // 'F' zu --> [1,1,1,1]
+    public static int[] hexToBinary(char hex, int numberOfBinaryDigits){
+        int[] result = new int[numberOfBinaryDigits];
+
+        String hexAsBinary = Integer.toBinaryString(Integer.parseInt(Character.toString(hex), 16));
+        char[] binaryAsCharArray = hexAsBinary.toCharArray();
+        int lastIndexOfBinary = binaryAsCharArray.length - 1;
+
+        if(binaryAsCharArray.length > result.length) {
+            throw new BinaryArrayIsToSmall("The *requested* BinaryArray-size does not match the *actual* BinaryArray-size");
         }
-        return binarycode;
+
+        for(int i = (numberOfBinaryDigits - 1); i >=0; i--) {
+
+            if(lastIndexOfBinary >= 0) {
+                result[i] = Character.getNumericValue(binaryAsCharArray[lastIndexOfBinary]);
+                lastIndexOfBinary--;
+            }
+            else break;
+        }
+        return result;        
+    }
+
+
+    // [1,1,1,1] zu --> (0x)"F"
+    public static String binaryToHex(int[] binaryWord) {        
+        String binaryString = "";
+        for(int x : binaryWord) {
+            binaryString += x;
+        }        
+        int binaryToDec = Integer.parseInt(binaryString, 2);
+        
+        return Integer.toString(binaryToDec, 16);
     }
     
-    public static String binaryToHex(int[] binary) {
-        return null;
-    }
     
-    public static int hexToDec(char hex) {
-        int value = 0;
-        switch (hex) {
-        case '0' -> {value = 0;}
-        case '1' -> {value = 1;}
-        case '2' -> {value = 2;}
-        case '3' -> {value = 3;}
-        case '4' -> {value = 4;}
-        case '5' -> {value = 5;}
-        case '6' -> {value = 6;}
-        case '7' -> {value = 7;}
-        case '8' -> {value = 8;}
-        case '9' -> {value = 9;}
-        case 'A' -> {value = 10;}
-        case 'B' -> {value = 11;}
-        case 'C' -> {value = 12;}
-        case 'D' -> {value = 13;}
-        case 'E' -> {value = 14;}
-        case 'F' -> {value = 15;}
-        }
-        return value;
-    }
+
 }
