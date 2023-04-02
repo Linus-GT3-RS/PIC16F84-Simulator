@@ -1,3 +1,4 @@
+// Eduard
 package pic16f84_simulator.backend.memory;
 
 public abstract class Memory {
@@ -7,7 +8,7 @@ public abstract class Memory {
         this.memory = new int[sizeOfMemory][numberOfBits];
     }
     
-    int[] getMemory(int index) {
+    public int[] getMemory(int index) {
         return this.memory[index];
     }
     

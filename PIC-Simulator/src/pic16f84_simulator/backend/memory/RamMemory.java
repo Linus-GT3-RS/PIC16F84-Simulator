@@ -32,7 +32,7 @@ public class RamMemory {
 
         public static void main(String[] args) {
 
-            System.out.println(SFRRegisters.TMRO.indexInSFR());
+            System.out.println(SFRRegisters.TMR0.indexInSFR());
 
 
             writeRAM(SFRRegisters.PCL.indexInSFR(), new int[2]);

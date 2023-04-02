@@ -1,19 +1,20 @@
-package pic16f84_simulator.backend.memory;
+package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
+import pic16f84_simulator.backend.memory.ProgramMemory;
 
 class ProgramMemoryTest {
 
     @Test
     void testReadTestPrograme() {
         ProgramMemory pm = new ProgramMemory();
-        List<String> data = pm.readTestProgram( // how input relative path?
-                "C:\\Users\\eduar\\Documents\\Informatik\\Rechnerarchitekturen\\pic-simulator\\Files\\TPicSim1.LST"
+        pm.readTestProgram( 
+                "Files\\TPicSim1.LST"
                 );
         assertArrayEquals(pm.getMemory(0),new int[] {0,0,1,1,0,0,0,0,0,0,0,1,0,0,0,1} );
      }
