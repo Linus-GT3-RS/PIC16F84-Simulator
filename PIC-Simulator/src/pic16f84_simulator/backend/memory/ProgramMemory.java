@@ -11,7 +11,7 @@ import java.util.List;
 public class ProgramMemory extends Memory {
     //private int[][] memory;
     
-    ProgramMemory(){
+    public ProgramMemory(){
         super(1024,16);
     }
     //int[] getMemory(int i) {

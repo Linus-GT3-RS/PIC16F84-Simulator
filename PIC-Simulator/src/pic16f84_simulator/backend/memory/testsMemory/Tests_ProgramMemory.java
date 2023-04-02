@@ -1,4 +1,4 @@
-package pic16f84_simulator.backend.memory;
+package pic16f84_simulator.backend.memory.testsMemory;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -7,7 +7,9 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-class ProgramMemoryTest {
+import pic16f84_simulator.backend.memory.ProgramMemory;
+
+class Tests_ProgramMemory {
 
     @Test
     void testReadTestPrograme() {
