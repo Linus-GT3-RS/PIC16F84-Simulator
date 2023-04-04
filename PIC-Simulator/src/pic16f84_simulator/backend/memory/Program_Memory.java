@@ -1,7 +1,4 @@
-// Eduard
 package pic16f84_simulator.backend.memory;
-import pic16f84_simulator.backend.Converter;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -9,15 +6,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProgramMemory extends Memory {
-    //private int[][] memory;
+import pic16f84_simulator.backend.tools.Converter;
+
+public class Program_Memory extends Template_Memory {// Eduard
     
-    public ProgramMemory(){
+    public Program_Memory(){
         super(1024,16);
     }
-    //int[] getMemory(int i) {
-    //    return this.memory[i];
-    //}
     
     public List<String> readTestProgram(String path) {
         // Initialize global variable
@@ -58,6 +53,8 @@ public class ProgramMemory extends Memory {
         }
         return data;
     }
+    
+    
     public void Store(String data) {
         // Decode String-List
         int counter = 0;
@@ -81,7 +78,7 @@ public class ProgramMemory extends Memory {
         for(int l = 0; l<memoryIndex.length;l++) {
             index = index + memoryIndex[memoryIndex.length-1-l]*((int)Math.pow(10,l)); 
         }
-        super.setMemory(index,binaryCode);
+        super.writeDataCell(index,binaryCode);
     }
 
 }
