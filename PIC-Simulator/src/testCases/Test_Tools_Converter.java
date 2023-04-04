@@ -1,13 +1,26 @@
-package pic16f84_simulator.backend.testsBackend;
+package testCases;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import pic16f84_simulator.backend.tools.Converter;
 
-import pic16f84_simulator.backend.BinaryArrayIsToSmall;
-import pic16f84_simulator.backend.Converter;
-
-class Tests_Converter {
+class Test_Tools_Converter {
+    
+    @Test
+    void testEnlargeArray() {
+        assertThrows(NegativeArraySizeException.class, () -> { Converter.enlargeArray(new int[1], 0); });
+        assertThrows(NegativeArraySizeException.class, () -> { Converter.enlargeArray(new int[] {1,0}, 1); });
+        
+        assertArrayEquals(new int[] {1}, Converter.enlargeArray(new int[] {1}, 1));
+        
+        assertArrayEquals(new int[] {0,1}, Converter.enlargeArray(new int[] {1}, 2));
+        assertArrayEquals(new int[] {0,0,1}, Converter.enlargeArray(new int[] {1}, 3));
+        
+        assertArrayEquals(new int[] {0,1,0}, Converter.enlargeArray(new int[] {1,0}, 3));
+    }
+    
+    
 
     @Test
     void testHexToDec() {
@@ -24,20 +37,16 @@ class Tests_Converter {
     }
     
     @Test
-    void testHexToBinary() {
-        assertThrows(BinaryArrayIsToSmall.class, () -> { Converter.hexToBinary('F', 2); } );
+    void testHexToBinary() {        
+        assertArrayEquals(new int[] {1,0,1,0}, Converter.hexToBinary('A'));
+        assertArrayEquals(new int[] {1,0,1,0}, Converter.hexToBinary('a'));
         
-        assertArrayEquals(new int[] {1,0,1,0}, Converter.hexToBinary('A', 4));
-        assertArrayEquals(new int[] {0,0,0,0,0,0, 1,0,1,0}, Converter.hexToBinary('A', 10));
-        assertArrayEquals(new int[] {0,0,0,0,0,0, 1,0,1,0}, Converter.hexToBinary('a', 10));
+        assertArrayEquals(new int[] {0,0,0,0}, Converter.hexToBinary('0'));
         
-        assertArrayEquals(new int[] {0,0,0,0,0,0, 0,0,0,0}, Converter.hexToBinary('0', 10));
-        assertArrayEquals(new int[] {0,0,0,0}, Converter.hexToBinary('0', 4));
+        assertArrayEquals(new int[] {1,0,0,1}, Converter.hexToBinary('9'));
         
-        assertArrayEquals(new int[] {1,0,0,1}, Converter.hexToBinary('9', 4));
-        assertArrayEquals(new int[] {0,0,0,0, 1,0,0,1}, Converter.hexToBinary('9', 8));
-        
-        assertArrayEquals(new int[] {0,0, 1,1,1,1}, Converter.hexToBinary('F', 6));
+        assertArrayEquals(new int[] {1,1,1,1}, Converter.hexToBinary('F'));
+        assertArrayEquals(new int[] {1,1,1,1}, Converter.hexToBinary('f'));
         
     }
     
