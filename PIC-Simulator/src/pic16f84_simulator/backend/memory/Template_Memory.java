@@ -1,7 +1,8 @@
-// Eduard
 package pic16f84_simulator.backend.memory;
 
-public abstract class Template_Memory {
+import exception.UnknownLocationException;
+
+public abstract class Template_Memory { // Eduard + Linus
     
     private int[][] memory;
     
@@ -11,24 +12,39 @@ public abstract class Template_Memory {
     
     /*
      * Safety HAS to be checked in the calling method, NOT in here !!!
-     */
+     */ 
         
-    public int[] readDataCell(int index) {
-        return this.memory[index];
+    public int[] readDataCell(int indexCell) {
+        checkMemoryLocation(indexCell);
+        return this.memory[indexCell];
     }
     
-    public int readSpecificBit(int indexData, int indexBit) {
-        return this.memory[indexData][indexBit];
+    public int readSpecificBit(int indexCell, int indexBit) {
+        checkBit(indexCell,indexBit);
+        return this.memory[indexCell][indexBit];
     }
     
-    public void writeDataCell(int index, int[] data) {
-        this.memory[index] = data;
+    public void writeDataCell(int indexCell, int[] data) {
+        checkMemoryLocation(indexCell);
+        this.memory[indexCell] = data;
     }
     
     public void writeSpecificBit(int indexCell, int indexBit, int bit) {
+        checkBit(indexCell,indexBit);
         this.memory[indexCell][indexBit] = bit;
     }
     
+    public void checkMemoryLocation(int indexCell) {
+        if(indexCell < 0 || indexCell >= this.memory.length) {
+            throw new UnknownLocationException("Ungültiger Speicherzugriff - Speicheradresse nicht gültig");
+        }
+    }
     
+    public void checkBit(int indexCell, int indexBit) {
+        checkMemoryLocation(indexCell);
+        if(indexBit < 0 || indexCell >= this.memory[indexCell].length) {
+            throw new UnknownLocationException("Zugriff auf Bit nicht möglich");
+        }
+    }
     
 }

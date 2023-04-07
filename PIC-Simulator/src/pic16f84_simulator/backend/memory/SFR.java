@@ -8,8 +8,8 @@ public enum SFR {
 
     public int asIndex() {
         switch(this) {
-            // Bank0
-            case INDF -> {return 0;}
+            // Bank0 
+            case INDF -> {return 0;} 
             case TMR0 -> {return 1;} // Timer counter
             case PCL -> {return 2;} // Little Endian Program counter
             case STATUS -> {return 3;} // Flag of calculation result

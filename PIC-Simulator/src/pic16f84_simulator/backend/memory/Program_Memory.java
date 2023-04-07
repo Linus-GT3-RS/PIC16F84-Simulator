@@ -14,7 +14,7 @@ public class Program_Memory extends Template_Memory {// Eduard
         super(1024,16);
     }
     
-    public List<String> readTestProgram(String path) {
+    public void readTestProgram(String path) {
         // Initialize global variable
         List<String> data = new ArrayList<String>();
         // Read File
@@ -39,7 +39,7 @@ public class Program_Memory extends Template_Memory {// Eduard
                     }
                 }
                 if(contain) {
-                    Store(result);//<- Store
+                    store(result);//<- Store
                 }
             }
         } catch (IOException e) {
@@ -51,11 +51,10 @@ public class Program_Memory extends Template_Memory {// Eduard
                 } catch (IOException e) {
                 }
         }
-        return data;
     }
     
     
-    public void Store(String data) {
+    public void store(String data) {
         // Decode String-List
         int counter = 0;
         int index = 0;
