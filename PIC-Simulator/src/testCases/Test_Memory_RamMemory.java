@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import pic16f84_simulator.backend.UnknownLocationException;
+import exception.UnknownLocationException;
 import pic16f84_simulator.backend.memory.RAM_Memory;
 import pic16f84_simulator.backend.memory.SFR;
 
@@ -15,7 +15,7 @@ class Test_Memory_RamMemory {
         RAM_Memory ram = new RAM_Memory();
         
         // Bank0
-        ram.setSFRBit(SFR.STATUS, 7, 1);
+        ram.setSFRBit(SFR.STATUS, 7, 1); 
         assertArrayEquals(new int[] {0,0,0,0,0,0,0,1}, ram.readDataCell(3));
         assertArrayEquals(new int[] {0,0,0,0,0,0,0,1}, ram.readDataCell(131));
         

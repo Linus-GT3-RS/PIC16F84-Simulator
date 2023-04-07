@@ -15,8 +15,6 @@ public class Program_Memory extends Template_Memory {// Eduard
     }
     
     public void readTestProgram(String path) {
-        // Initialize global variable
-        List<String> data = new ArrayList<String>();
         // Read File
         File file = new File(path);
         
@@ -55,7 +53,6 @@ public class Program_Memory extends Template_Memory {// Eduard
     
     
     public void store(String data) {
-        // Decode String-List
         int counter = 0;
         int index = 0;
         int[] memoryIndex = new int[4]; // always size 4
