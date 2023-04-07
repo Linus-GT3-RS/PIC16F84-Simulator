@@ -7,6 +7,18 @@ import pic16f84_simulator.backend.tools.Converter;
 
 class Test_Tools_Converter {
     
+    
+    @Test
+    void testCutArray() {
+        int[] test = new int[] {0,1,1,0,1,0,0,1};
+        
+        assertEquals("0110", Converter.cutArray(test, 0, 3));
+        assertEquals("110", Converter.cutArray(test, 1, 3));
+        assertEquals("0", Converter.cutArray(test, 3, 3));
+        assertEquals("00", Converter.cutArray(test, 5, 6));        
+    }
+        
+    
     @Test
     void testEnlargeArray() {
         assertThrows(NegativeArraySizeException.class, () -> { Converter.enlargeArray(new int[1], 0); });
@@ -21,7 +33,6 @@ class Test_Tools_Converter {
     }
     
     
-
     @Test
     void testHexToDec() {
         assertEquals(0, Converter.hexToDec('0'));
@@ -35,6 +46,7 @@ class Test_Tools_Converter {
         assertEquals(14, Converter.hexToDec('e'));
         assertEquals(15, Converter.hexToDec('F'));
     }
+    
     
     @Test
     void testHexToBinary() {        

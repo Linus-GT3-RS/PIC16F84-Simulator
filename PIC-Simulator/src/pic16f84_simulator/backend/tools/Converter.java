@@ -66,4 +66,15 @@ public class Converter {
     }
     
     
+    
+    public static String cutArray(int[] arr, int inclStart, int inclEnd) {        
+        String result = "";
+        
+        for(int i=inclStart; i <= inclEnd; i++) {
+            result += arr[i];
+        }
+        return result.strip();
+    }
+    
+    
 }
