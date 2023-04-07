@@ -42,7 +42,7 @@ public abstract class Template_Memory { // Eduard + Linus
     
     public void checkBit(int indexCell, int indexBit) {
         checkMemoryLocation(indexCell);
-        if(indexBit < 0 || indexCell >= this.memory[indexCell].length) {
+        if((indexBit < 0) || (indexBit >= this.memory[indexCell].length)) {
             throw new UnknownLocationException("Zugriff auf Bit nicht möglich");
         }
     }

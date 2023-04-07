@@ -11,7 +11,7 @@ import pic16f84_simulator.backend.tools.Converter;
 public class Program_Memory extends Template_Memory {// Eduard
     
     public Program_Memory(){
-        super(1024,16);
+        super(1024,14);
     }
     
     public void readTestProgram(String path) {
@@ -56,17 +56,18 @@ public class Program_Memory extends Template_Memory {// Eduard
         int counter = 0;
         int index = 0;
         int[] memoryIndex = new int[4]; // always size 4
-        int[] binaryCode = new int[16]; // we use only 14 bit, but hexa is 4,8,12,16 possible -> first two bits unnecessary
+        int[] element = new int[16];
+        int[] binaryCode = new int[14];
         // Decode String
         for(int j = 0; j <data.length();j++) {
             char hex = data.charAt(j); //Cast char to String 
             if(j<4) { //Case: Memory-Index
                 int number = Converter.hexToDec(hex); //Convert to dec
                 memoryIndex[j]=number;
-            } else { // Case: Memory content
+            } else if(j>= 4){ // Case: Data and Opcode
                 int[] binary = Converter.hexToBinary(hex);
                 for(int k = 0; k<binary.length;k++) {
-                    binaryCode[counter]=binary[k];
+                    element[counter]=binary[k];
                     counter++;
                 }
             }
@@ -74,6 +75,7 @@ public class Program_Memory extends Template_Memory {// Eduard
         for(int l = 0; l<memoryIndex.length;l++) {
             index = index + memoryIndex[memoryIndex.length-1-l]*((int)Math.pow(10,l)); 
         }
+       System.arraycopy(element, 2, binaryCode,0,14);
         super.writeDataCell(index,binaryCode);
     }
 

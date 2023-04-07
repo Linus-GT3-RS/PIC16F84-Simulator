@@ -15,14 +15,14 @@ class Test_Memory_ProgramMemory { // Eduard
     void testReadTestPrograme() {
         Program_Memory pm = new Program_Memory();
         pm.readTestProgram(TP.s1);
-        assertArrayEquals(pm.readDataCell(0),new int[] {0,0,1,1,0,0,0,0,0,0,0,1,0,0,0,1} );
+        assertArrayEquals(pm.readDataCell(0),new int[] {1,1,0,0,0,0,0,0,0,1,0,0,0,1} );
      }
 
     @Test
     void testStore() {
         Program_Memory pm = new Program_Memory();
         pm.store("00003011");
-        assertArrayEquals(pm.readDataCell(0),new int[] {0,0,1,1,0,0,0,0,0,0,0,1,0,0,0,1} );
+        assertArrayEquals(pm.readDataCell(0),new int[] {1,1,0,0,0,0,0,0,0,1,0,0,0,1} );
     }
     
     @Test

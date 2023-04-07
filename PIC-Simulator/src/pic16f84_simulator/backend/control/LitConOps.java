@@ -4,8 +4,7 @@ public enum LitConOps implements Instruction { // Linus
 
     ADDLW, ANDLW, CALL, CLRWDT, GOTO, IORLW, MOVLW, RETFIE, RETLW, RETURN, 
     SLEEP, SUBLW, XORLW;
-    
-    int opCStart = 0;    
+        
     public int opCEnd() {
         if(this == CALL || this == GOTO) {
             return 2;
