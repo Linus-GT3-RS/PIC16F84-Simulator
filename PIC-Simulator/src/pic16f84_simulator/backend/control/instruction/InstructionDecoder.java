@@ -1,4 +1,4 @@
-package pic16f84_simulator.backend.control;
+package pic16f84_simulator.backend.control.instruction;
 
 import pic16f84_simulator.MicroController;
 import pic16f84_simulator.backend.UnknownOpCodeException;
@@ -7,7 +7,10 @@ import pic16f84_simulator.backend.tools.Converter;
 public class InstructionDecoder {
 
     public Instruction extractOpC(int[] instr) {
-        Instruction result = null;
+        if(instr.length != 14) {
+            throw new IllegalArgumentException("Illegal size of instruction");
+        }
+        Instruction result;
 
         switch(Converter.cutArray(instr, 0, 1)) { // first 2 Bits of instr
         case "00" -> { result = specialCase(Converter.cutArray(instr, 0, 5));}

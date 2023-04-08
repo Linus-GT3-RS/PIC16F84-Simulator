@@ -11,13 +11,11 @@ public class MicroController {
     private Program_Memory pm;
     private RAM_Memory ram;
     
-    public static Register instrReg;
+    public static Register instrReg = new Register(14);
     
-    MicroController() {
+    public MicroController() {
         this.pm = new Program_Memory();
         this.ram = new RAM_Memory();
-        
-        MicroController.instrReg = new Register(14);
     }
     
     

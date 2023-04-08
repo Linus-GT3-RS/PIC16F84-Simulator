@@ -1,4 +1,4 @@
-package pic16f84_simulator.backend.control;
+package pic16f84_simulator.backend.control.instruction;
 
 public enum LitConOps implements Instruction { // Linus
 

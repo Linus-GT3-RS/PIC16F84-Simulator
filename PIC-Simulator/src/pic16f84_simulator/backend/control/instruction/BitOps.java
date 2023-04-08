@@ -1,7 +1,8 @@
-package pic16f84_simulator.backend.control;
+package pic16f84_simulator.backend.control.instruction;
 
 public enum BitOps implements Instruction { // Eduard
-    BCF,BSF,BTFSC,BTFSS;
+    
+    BCF, BSF, BTFSC, BTFSS;
     
     int opCEnd = 3;
     
