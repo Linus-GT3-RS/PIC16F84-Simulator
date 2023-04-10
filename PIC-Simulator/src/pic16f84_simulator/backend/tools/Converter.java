@@ -35,15 +35,18 @@ public class Converter {
 
     // [1,1,1,1] zu --> (0x)"F"
     public static String binaryToHex(int[] binaryWord) {        
+        return Integer.toString(binaryToDec(binaryWord), 16);
+    }
+    
+    // [1,1,1,1] zu --> 15
+    public static int binaryToDec(int[] binaryWord) {
         String binaryString = "";
         for(int x : binaryWord) {
             binaryString += x;
         }        
-        int binaryToDec = Integer.parseInt(binaryString, 2);
+        return Integer.parseInt(binaryString, 2);
         
-        return Integer.toString(binaryToDec, 16);
     }
-    
     
     
     // changes binaryWord [x,y,y] of length ... to one of size ...

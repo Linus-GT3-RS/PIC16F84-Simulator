@@ -1,6 +1,6 @@
 package pic16f84_simulator.backend.control;
 
-import pic16f84_simulator.backend.UnknownOpCodeException;
+import exception.UnknownOpCodeException;
 
 public class InstructionDecoder {
     

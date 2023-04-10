@@ -77,5 +77,10 @@ class Test_Tools_Converter {
         assertEquals("6e", Converter.binaryToHex(new int[] {1,1,0,1,1,1,0}));
     }
     
+    @Test
+    void testBinaryToDec() {
+        assertEquals(15, Converter.binaryToDec(new int[] {1,1,1,1}));
+    }
+    
 
 }
