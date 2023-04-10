@@ -4,7 +4,7 @@ public enum BitOps implements Instruction { // Eduard
     
     BCF, BSF, BTFSC, BTFSS;
     
-    int opCEnd = 3;
+    //int opCEnd = 3;
     
     int bBitStart = 4;
     int bBitEnd = 6;

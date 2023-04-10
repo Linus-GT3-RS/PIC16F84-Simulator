@@ -17,17 +17,7 @@ public class MicroController {
 
     
     
-    public static void exe(ByteOps instruct) {
-        if(instruct == ByteOps.ADDWF) {
-            if(instrReg.readBit(instruct.dBit) == 1) {
-                int[] indexRAM_Binary = Arrays.copyOfRange(instrReg.readReg(), instruct.fileStart, instruct.fileEnd+1);
-                int indexRAM = Utils.binaryToDec(indexRAM_Binary);
-                for(int i = 0; i<8;i++) {
-                    int result = ram.readSpecificBit(indexRAM, i) + wReg[i];
-                    ram.writeSpecificBit(indexRAM, i, result);
-                }
-            }
-        }
+   
     
 
 
@@ -43,4 +33,4 @@ public class MicroController {
     
     
 
-    }}
+}
