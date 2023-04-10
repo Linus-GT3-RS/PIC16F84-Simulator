@@ -3,7 +3,7 @@ package pic16f84_simulator.backend.tools;
 
 import java.util.Arrays;
 
-public class Converter {
+public class Utils {
 
     // 'F' zu --> 15
     public static int hexToDec(char hex) {        

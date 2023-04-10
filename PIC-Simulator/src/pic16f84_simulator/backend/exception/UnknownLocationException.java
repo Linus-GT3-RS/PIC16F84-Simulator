@@ -1,4 +1,4 @@
-package exception;
+package pic16f84_simulator.backend.exception;
 
 public class UnknownLocationException extends RuntimeException {
     

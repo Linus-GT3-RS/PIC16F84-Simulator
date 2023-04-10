@@ -1,6 +1,6 @@
 package pic16f84_simulator.backend.memory;
 
-import exception.UnknownLocationException;
+import pic16f84_simulator.backend.exception.UnknownLocationException;
 
 public abstract class Template_Memory { // Eduard + Linus
     
