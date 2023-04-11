@@ -14,6 +14,13 @@ public class ControlUnit {
 
     public static void exe(Instruction instruct) {
         
+//        instruct.exe(); // wir machen ja eh if-elseIf-else für die 3 OpsArten => instruct dann einfach casten
+        
+       
+        
+        
+        
+        
 //        if(instruct == ByteOps.ADDWF) {
 //            if(instrReg.readBit(instruct.dBit) == 1) {
 //                int[] indexRAM_Binary = Arrays.copyOfRange(instrReg.readReg(), instruct.fileStart, instruct.fileEnd+1);
