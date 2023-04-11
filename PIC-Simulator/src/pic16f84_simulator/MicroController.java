@@ -3,7 +3,6 @@ package pic16f84_simulator;
 import pic16f84_simulator.backend.UnknownLocationException;
 import pic16f84_simulator.backend.memory.Program_Memory;
 import pic16f84_simulator.backend.memory.RAM_Memory;
-import pic16f84_simulator.backend.memory.Reg;
 import pic16f84_simulator.backend.memory.Register;
 
 public class MicroController {
