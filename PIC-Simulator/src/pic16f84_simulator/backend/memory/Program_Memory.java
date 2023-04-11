@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import pic16f84_simulator.backend.tools.Converter;
+import pic16f84_simulator.backend.tools.Utils;
 
 public class Program_Memory extends Template_Memory {// Eduard
     
@@ -62,10 +62,10 @@ public class Program_Memory extends Template_Memory {// Eduard
         for(int j = 0; j <data.length();j++) {
             char hex = data.charAt(j); //Cast char to String 
             if(j<4) { //Case: Memory-Index
-                int number = Converter.hexToDec(hex); //Convert to dec
+                int number = Utils.hexToDec(hex); //Convert to dec
                 memoryIndex[j]=number;
             } else if(j>= 4){ // Case: Data and Opcode
-                int[] binary = Converter.hexToBinary(hex);
+                int[] binary = Utils.hexToBinary(hex);
                 for(int k = 0; k<binary.length;k++) {
                     element[counter]=binary[k];
                     counter++;

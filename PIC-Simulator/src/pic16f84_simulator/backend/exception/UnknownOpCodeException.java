@@ -1,4 +1,4 @@
-package pic16f84_simulator.backend;
+package pic16f84_simulator.backend.exception;
 
 public class UnknownOpCodeException extends RuntimeException {
     

@@ -1,8 +1,8 @@
 package pic16f84_simulator.backend.control.instruction;
 
 import pic16f84_simulator.MicroController;
-import pic16f84_simulator.backend.UnknownOpCodeException;
-import pic16f84_simulator.backend.tools.Converter;
+import pic16f84_simulator.backend.exception.UnknownOpCodeException;
+import pic16f84_simulator.backend.tools.Utils;
 
 public class InstructionDecoder {
 
@@ -12,11 +12,11 @@ public class InstructionDecoder {
         }
         Instruction result;
 
-        switch(Converter.cutArray(instr, 0, 1)) { // first 2 Bits of instr
-        case "00" -> { result = specialCase(Converter.cutArray(instr, 0, 5));}
-        case "01" -> { result = giveBitOpC(Converter.cutArray(instr, 0, 3));}
-        case "10" -> { result = giveLitConOpC(Converter.cutArray(instr, 0, 2));}
-        case "11" -> { result = giveLitConOpC(Converter.cutArray(instr, 0, 5));}
+        switch(Utils.cutArray(instr, 0, 1)) { // first 2 Bits of instr
+        case "00" -> { result = specialCase(Utils.cutArray(instr, 0, 5));}
+        case "01" -> { result = giveBitOpC(Utils.cutArray(instr, 0, 3));}
+        case "10" -> { result = giveLitConOpC(Utils.cutArray(instr, 0, 2));}
+        case "11" -> { result = giveLitConOpC(Utils.cutArray(instr, 0, 5));}
         default -> { throw new UnknownOpCodeException("Instruction word unknown: this OpC does not exist in this CPU");}
         }
         return result;
@@ -48,7 +48,7 @@ public class InstructionDecoder {
         // Sonderfall_3 bis Sonderfall_8 --> ersten 6Bits sind alle 0
         else {             
             int[] valInstrReg = MicroController.instrReg.readReg();
-            String fullOpC = Converter.cutArray(valInstrReg, 0, valInstrReg.length-1);
+            String fullOpC = Utils.cutArray(valInstrReg, 0, valInstrReg.length-1);
             
             if(valInstrReg[6] == 1) { // Sonderfall_3 aus ByteOps
                 result = ByteOps.MOVWF;

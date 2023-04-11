@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import exception.UnknownLocationException;
+import pic16f84_simulator.backend.exception.UnknownLocationException;
 import pic16f84_simulator.backend.memory.Program_Memory;
 import pic16f84_simulator.backend.tools.TP;
 
@@ -31,11 +31,11 @@ class Test_Memory_ProgramMemory { // Eduard
         assertThrows(UnknownLocationException .class, () -> {pm.readDataCell(-1);});
         assertThrows(UnknownLocationException .class, () -> {pm.readDataCell(1024);});
         assertThrows(UnknownLocationException .class, () -> {pm.readSpecificBit(0, -1);});
-        assertThrows(UnknownLocationException .class, () -> {pm.readSpecificBit(0, 16);});
+        assertThrows(UnknownLocationException .class, () -> {pm.readSpecificBit(0, 14);});
         assertThrows(UnknownLocationException .class, () -> {pm.writeDataCell(-1, new int[] {0});});
         assertThrows(UnknownLocationException .class, () -> {pm.writeDataCell(1024, new int[] {0});});
         assertThrows(UnknownLocationException .class, () -> {pm.writeSpecificBit(0, -1, 0);});
-        assertThrows(UnknownLocationException .class, () -> {pm.writeSpecificBit(0, 16, 0);});
+        assertThrows(UnknownLocationException .class, () -> {pm.writeSpecificBit(0, 14, 0);});
     }
     
     

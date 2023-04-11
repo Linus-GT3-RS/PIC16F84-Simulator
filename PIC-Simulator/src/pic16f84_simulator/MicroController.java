@@ -1,22 +1,20 @@
 package pic16f84_simulator;
 
-import pic16f84_simulator.backend.UnknownLocationException;
+import java.util.Arrays;
+import pic16f84_simulator.backend.control.ControlUnit;
+import pic16f84_simulator.backend.control.instruction.ByteOps;
 import pic16f84_simulator.backend.memory.Program_Memory;
 import pic16f84_simulator.backend.memory.RAM_Memory;
+import pic16f84_simulator.backend.tools.Utils;
 import pic16f84_simulator.backend.memory.Register;
 
 public class MicroController {
-    
-    private Program_Memory pm;
-    private RAM_Memory ram;
-    
+    public static ControlUnit cu = new ControlUnit();
+    public static Program_Memory pm = new Program_Memory();
+    public static RAM_Memory ram = new RAM_Memory();
     public static Register instrReg = new Register(14);
-    
-    public MicroController() {
-        this.pm = new Program_Memory();
-        this.ram = new RAM_Memory();
-    }
-    
+    public static int[] wReg = new int[8];
+
     
     
     // unnötig falls Register static
@@ -28,4 +26,5 @@ public class MicroController {
 //    }
     
     
+
 }
