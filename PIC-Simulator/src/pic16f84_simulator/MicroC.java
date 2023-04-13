@@ -8,7 +8,7 @@ import pic16f84_simulator.backend.memory.RAM_Memory;
 import pic16f84_simulator.backend.tools.Utils;
 import pic16f84_simulator.backend.memory.Register;
 
-public class MicroController {
+public class MicroC {
     public static ControlUnit cu = new ControlUnit();
     public static Program_Memory pm = new Program_Memory();
     public static RAM_Memory ram = new RAM_Memory();    

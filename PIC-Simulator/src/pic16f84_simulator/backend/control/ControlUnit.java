@@ -2,7 +2,7 @@ package pic16f84_simulator.backend.control;
 
 import java.util.Arrays;
 
-import pic16f84_simulator.MicroController;
+import pic16f84_simulator.MicroC;
 import pic16f84_simulator.backend.control.instruction.BitOps;
 import pic16f84_simulator.backend.control.instruction.ByteOps;
 import pic16f84_simulator.backend.control.instruction.Instruction;

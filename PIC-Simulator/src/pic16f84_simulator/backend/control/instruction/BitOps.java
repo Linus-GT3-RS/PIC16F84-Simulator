@@ -1,20 +1,31 @@
 package pic16f84_simulator.backend.control.instruction;
 
+import pic16f84_simulator.MicroC;
+
 public enum BitOps implements Instruction { // Eduard
     
     BCF { // Eduard
         @Override
         public void exe(int indexBit, int indexFile) {
+            MicroC.pm.writeSpecificBit(indexFile, indexBit, 0);
+            MicroC.cu.pc++;
         }
-    }, BSF { // Linus
+    }, 
+    BSF { // Linus
         @Override
         public void exe(int indexBit, int indexFile) {
         }
-    }, BTFSC { // Eduard
+    }, 
+    BTFSC { // Eduard
         @Override
         public void exe(int indexBit, int indexFile) {
+            MicroC.cu.pc++;
+            if(MicroC.pm.readSpecificBit(indexFile, indexBit) == 0) {
+                MicroC.cu.exe(ByteOps.NOP);
+            }
         }
-    }, BTFSS { // Linus
+    }, 
+    BTFSS { // Linus
         @Override
         public void exe(int indexBit, int indexFile) {
         }
