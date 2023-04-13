@@ -1,6 +1,7 @@
 package pic16f84_simulator.backend.control.instruction;
 
 import pic16f84_simulator.MicroController;
+import pic16f84_simulator.backend.control.ControlUnit;
 import pic16f84_simulator.backend.exception.UnknownOpCodeException;
 import pic16f84_simulator.backend.tools.Utils;
 
@@ -39,7 +40,7 @@ public class InstructionDecoder {
         
         // Sonderfall_1 u. Sonderfall_2  aus ByteOp
         if(opC.equals("000001")) {             
-            if(MicroController.instrReg.readBit(6) == 1) {
+            if(ControlUnit.instrReg.readBit(6) == 1) {
                 result = ByteOps.CLRF;
             }
             else result = ByteOps.CLRW;            
@@ -47,7 +48,7 @@ public class InstructionDecoder {
         
         // Sonderfall_3 bis Sonderfall_8 --> ersten 6Bits sind alle 0
         else {             
-            int[] valInstrReg = MicroController.instrReg.readReg();
+            int[] valInstrReg = ControlUnit.instrReg.readReg();
             String fullOpC = Utils.cutArray(valInstrReg, 0, valInstrReg.length-1);
             
             if(valInstrReg[6] == 1) { // Sonderfall_3 aus ByteOps

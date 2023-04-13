@@ -11,8 +11,8 @@ import pic16f84_simulator.backend.memory.Register;
 public class MicroController {
     public static ControlUnit cu = new ControlUnit();
     public static Program_Memory pm = new Program_Memory();
-    public static RAM_Memory ram = new RAM_Memory();
-    public static Register instrReg = new Register(14);
+    public static RAM_Memory ram = new RAM_Memory();    
+    
     public static int[] wReg = new int[8];
 
     

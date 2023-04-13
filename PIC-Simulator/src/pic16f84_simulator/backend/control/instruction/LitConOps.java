@@ -71,7 +71,7 @@ public enum LitConOps implements Instruction { // Linus
         }
         else return 6;
     }    
-    int kEnd = 13;
+//    public int kEnd = 13;
     
     
     public abstract void exe(Object k); // keine Ahnung was k für einen Datentyp haben soll --> rausfinden
