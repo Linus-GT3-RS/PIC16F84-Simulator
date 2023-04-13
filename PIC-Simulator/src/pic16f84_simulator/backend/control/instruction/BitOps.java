@@ -13,7 +13,8 @@ public enum BitOps implements Instruction { // Eduard
     BSF { // Linus
         @Override
         public void exe(int indexBit, int indexFile) {            
-            MicroC.ram.writeSpecificBit(indexFile, indexBit, 1);            
+            MicroC.ram.writeSpecificBit(indexFile, indexBit, 1);  
+            ControlUnit.pc++;
         }
     }, 
     BTFSC { // Eduard

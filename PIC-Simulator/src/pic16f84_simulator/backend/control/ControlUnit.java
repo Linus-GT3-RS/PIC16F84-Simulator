@@ -34,6 +34,5 @@ public class ControlUnit {
             String k = Utils.cutArray(instrReg, instr.kStart(), instrReg.length-1);
             instr.exe(k);
         }
-        ControlUnit.pc++;
     }
 }
