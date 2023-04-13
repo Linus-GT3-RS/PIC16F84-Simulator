@@ -56,23 +56,13 @@ public enum LitConOps implements Instruction { // Linus
         public void exe(Object k) {
         }
     };
-        
-//    public int opCEnd() {
-//        if(this == CALL || this == GOTO) {
-//            return 2;
-//        }
-//        else return 5;
-//    }    
-    
-    
+         
     public int kStart() {
         if(this == CALL || this == GOTO) {
             return 3;
         }
         else return 6;
     }    
-//    public int kEnd = 13;
-    
     
     public abstract void exe(Object k); // keine Ahnung was k für einen Datentyp haben soll --> rausfinden
     

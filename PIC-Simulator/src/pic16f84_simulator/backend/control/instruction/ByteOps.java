@@ -88,14 +88,9 @@ public enum ByteOps implements Instruction { // Linus
         }
     };
     
-    //public int opCEnd = 5;
-    
-    public int indexDbit = 6;
-    
+    public int indexDbit = 6;    
     public int fileStart = 7;
-//    public int fileEnd = 13;
-    
-    
+        
     public abstract void exe(int d, int indexFile);
 
 

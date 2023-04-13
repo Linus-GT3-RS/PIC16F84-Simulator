@@ -20,15 +20,10 @@ public enum BitOps implements Instruction { // Eduard
         }
     };
     
-    //int opCEnd = 3;
-    
     public int dBitStart = 4;
     public int dBitEnd = 6;
     
     public int fileStart = 7;
-//    public int fileEnd = 13;
-    
-    
     
     public abstract void exe(int indexBit, int indexFile);
     
