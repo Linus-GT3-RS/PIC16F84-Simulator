@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import pic16f84_simulator.MicroController;
+import pic16f84_simulator.MicroC;
 import pic16f84_simulator.backend.control.ControlUnit;
 import pic16f84_simulator.backend.control.instruction.BitOps;
 import pic16f84_simulator.backend.control.instruction.ByteOps;

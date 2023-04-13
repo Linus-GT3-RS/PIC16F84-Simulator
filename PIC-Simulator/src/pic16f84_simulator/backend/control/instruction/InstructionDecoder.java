@@ -1,6 +1,6 @@
 package pic16f84_simulator.backend.control.instruction;
 
-import pic16f84_simulator.MicroController;
+import pic16f84_simulator.MicroC;
 import pic16f84_simulator.backend.control.ControlUnit;
 import pic16f84_simulator.backend.exception.UnknownOpCodeException;
 import pic16f84_simulator.backend.tools.Utils;
