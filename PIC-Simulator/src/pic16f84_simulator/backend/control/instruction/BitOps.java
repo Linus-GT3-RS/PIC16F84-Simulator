@@ -1,10 +1,7 @@
 package pic16f84_simulator.backend.control.instruction;
 
 import pic16f84_simulator.MicroC;
-<<<<<<< HEAD
-=======
 import pic16f84_simulator.backend.control.ControlUnit;
->>>>>>> branch 'main' of https://edugit.hs-offenburg.de/lbruestl1/pic-simulator.git
 
 public enum BitOps implements Instruction { // Eduard
     
@@ -16,21 +13,13 @@ public enum BitOps implements Instruction { // Eduard
         }
     }, 
     BSF { // Linus
-<<<<<<< HEAD
-=======
+
         @Override
         public void exe(int indexBit, int indexFile) {            
             MicroC.ram.writeSpecificBit(indexFile, indexBit, 1);  
             ControlUnit.pc++;
         }
-    }, 
-    BTFSC { // Eduard
->>>>>>> branch 'main' of https://edugit.hs-offenburg.de/lbruestl1/pic-simulator.git
-        @Override
-        public void exe(int indexBit, int indexFile) {
-        }
-    }, 
-<<<<<<< HEAD
+    },
     BTFSC { // Eduard
         @Override
         public void exe(int indexBit, int indexFile) {
@@ -40,8 +29,6 @@ public enum BitOps implements Instruction { // Eduard
             }
         }
     }, 
-=======
->>>>>>> branch 'main' of https://edugit.hs-offenburg.de/lbruestl1/pic-simulator.git
     BTFSS { // Linus
         @Override
         public void exe(int indexBit, int indexFile) {
