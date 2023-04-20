@@ -12,8 +12,16 @@ import pic16f84_simulator.backend.tools.Utils;
 
 public class ControlUnit {
     
+    private static boolean creationAllowed = true; // secures the creation of ONLY ONE instance of this class
+    public ControlUnit() {
+        if(ControlUnit.creationAllowed == false) {
+            throw new IllegalArgumentException("Theres already an instance of this class!"); 
+        }
+        ControlUnit.creationAllowed = false;      
+    }
+    
     public static Register instrReg = new Register(14);
-    public static int pc;
+    public static int pc = 0;
 
 
     public static void exe(Instruction instruct) {        

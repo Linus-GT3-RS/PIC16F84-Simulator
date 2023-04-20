@@ -4,9 +4,14 @@ package pic16f84_simulator.backend.memory;
  * "index" should be: MemoryLocation (Adresse der Speicherzelle)
  */
 public class RAM_Memory extends Template_Memory { // Linus
-
+    
+    private static boolean creationAllowed = true; // secures the creation of ONLY ONE instance of this class
     public RAM_Memory() {
         super(208, 8); // "second unimplemented block" (address d0 - ff) is for obvious reasons not implemented
+        if(RAM_Memory.creationAllowed == false) {
+            throw new IllegalArgumentException("Theres already an instance of this class: ProgramMemory !"); 
+        }
+        RAM_Memory.creationAllowed = false;
     }   
      
     
