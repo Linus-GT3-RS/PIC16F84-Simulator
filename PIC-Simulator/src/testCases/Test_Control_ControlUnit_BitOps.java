@@ -43,7 +43,6 @@ class Test_Control_ControlUnit_BitOps {
         MicroC.cu.loadInstrReg(7);
         MicroC.cu.exe();
         assertEquals(MicroC.cu.pc,9);
-        
     }
 
 }
