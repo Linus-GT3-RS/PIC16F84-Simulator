@@ -26,7 +26,7 @@ public enum BitOps implements Instruction { // Eduard
         public void exe(int indexBit, int indexFile) {
             MicroC.cu.pc++;
             if(MicroC.pm.readSpecificBit(indexFile, indexBit) == 0) {
-                MicroC.cu.exe(ByteOps.NOP);
+               ByteOps.NOP.exe(0, 0);
             }
         }
     }, 
@@ -36,7 +36,7 @@ public enum BitOps implements Instruction { // Eduard
             ControlUnit.pc++;
             int valOfb = MicroC.ram.readSpecificBit(indexCell, indexBit);
             if(valOfb == 1) {
-                ControlUnit.exe(ByteOps.NOP);
+                ByteOps.NOP.exe(0, 0);
             }
         }
     };
