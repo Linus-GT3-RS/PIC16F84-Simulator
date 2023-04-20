@@ -1,5 +1,7 @@
 package pic16f84_simulator.backend.control.instruction;
 
+import pic16f84_simulator.backend.control.ControlUnit;
+
 public enum ByteOps implements Instruction { // Linus
 
     ADDWF {
@@ -62,9 +64,11 @@ public enum ByteOps implements Instruction { // Linus
         @Override
         public void exe(int d, int indexFile) {
         }
-    }, NOP {
+    }, 
+    NOP {
         @Override
         public void exe(int d, int indexFile) {
+            ControlUnit.pc++;
         }
     }, RLF {
         @Override
