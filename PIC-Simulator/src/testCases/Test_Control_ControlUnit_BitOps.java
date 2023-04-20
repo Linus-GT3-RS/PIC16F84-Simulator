@@ -39,6 +39,8 @@ class Test_Control_ControlUnit_BitOps {
     void testBTFSC() {
         MicroC mc = new MicroC();
         MicroC.pm.readTestProgram(TP.s5);
+        
+        //Fall 1: 
         MicroC.cu.pc = 7;
         MicroC.cu.loadInstrReg(7);
         MicroC.cu.exe();
