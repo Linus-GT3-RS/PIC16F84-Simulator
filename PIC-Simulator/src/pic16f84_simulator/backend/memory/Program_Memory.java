@@ -9,19 +9,24 @@ import java.util.List;
 import pic16f84_simulator.backend.tools.Utils;
 
 public class Program_Memory extends Template_Memory {// Eduard
-    
+
+    private static boolean creationAllowed = true; // secures the creation of ONLY ONE instance of this class
     public Program_Memory(){
         super(1024,14);
+        if(Program_Memory.creationAllowed == false) {
+            throw new IllegalArgumentException("Theres already an instance of this class: ProgramMemory !"); 
+        }
+        Program_Memory.creationAllowed = false; 
     }
-    
+
     public void readTestProgram(String path) {
         // Read File
         File file = new File(path);
-        
+
         //If it has problems this code will be executed
         if (!file.canRead() || !file.isFile())
             System.exit(0);
-            BufferedReader in = null;
+        BufferedReader in = null;
         try {
             in = new BufferedReader(new FileReader(path));
             String zeile = null;
@@ -50,8 +55,8 @@ public class Program_Memory extends Template_Memory {// Eduard
                 }
         }
     }
-    
-    
+
+
     public void store(String data) {
         int counter = 0;
         int index = 0;
@@ -75,10 +80,10 @@ public class Program_Memory extends Template_Memory {// Eduard
         for(int l = 0; l<memoryIndex.length;l++) {
             index = index + memoryIndex[memoryIndex.length-1-l]*((int)Math.pow(10,l)); 
         }
-       System.arraycopy(element, 2, binaryCode,0,14);
+        System.arraycopy(element, 2, binaryCode,0,14);
         super.writeDataCell(index,binaryCode);
     }
 
 }
-    
-    
+
+

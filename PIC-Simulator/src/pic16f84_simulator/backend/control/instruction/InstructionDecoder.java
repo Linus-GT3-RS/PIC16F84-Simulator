@@ -6,6 +6,14 @@ import pic16f84_simulator.backend.exception.UnknownOpCodeException;
 import pic16f84_simulator.backend.tools.Utils;
 
 public class InstructionDecoder {
+    
+    private static boolean creationAllowed = true; // secures the creation of ONLY ONE instance of this class
+    public InstructionDecoder() {
+        if(InstructionDecoder.creationAllowed == false) {
+            throw new IllegalArgumentException("Theres already an instance of this class!"); 
+        }
+        InstructionDecoder.creationAllowed = false;      
+    }
 
     public Instruction extractOpC(int[] instr) {
         if(instr.length != 14) {

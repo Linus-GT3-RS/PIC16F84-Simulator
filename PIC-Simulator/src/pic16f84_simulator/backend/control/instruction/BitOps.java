@@ -1,5 +1,7 @@
 package pic16f84_simulator.backend.control.instruction;
 
+import java.util.Arrays;
+
 import pic16f84_simulator.MicroC;
 import pic16f84_simulator.backend.control.ControlUnit;
 
@@ -30,11 +32,11 @@ public enum BitOps implements Instruction { // Eduard
     }, 
     BTFSS { // Linus
         @Override
-        public void exe(int indexBit, int indexFile) {            
+        public void exe(int indexBit, int indexCell) {            
             ControlUnit.pc++;
-            int b = MicroC.ram.readSpecificBit(indexFile, indexBit);
-            if(b == 1) {
-                ControlUnit.exe(ByteOps.NOP);
+            int valOfb = MicroC.ram.readSpecificBit(indexCell, indexBit);
+            if(valOfb == 1) {
+                ByteOps.NOP.exe(0, 0);
             }
         }
     };
