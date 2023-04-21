@@ -13,13 +13,11 @@ import pic16f84_simulator.backend.tools.Utils;
 class Test_Control_ControlUnit_BitOps {
 
     @Test
-    void testBCF() {
-        MicroC mc = new MicroC();
+    void testBCF() { // Eduard
         MicroC.pm.readTestProgram(TP.s5);
-        MicroC.cu.loadInstrReg(5);
-        assertArrayEquals(mc.pm.readDataCell(5), mc.cu.instrReg.readReg()); // 01 0010 0000 1100 -> 01 00bb bfff ffff
-        MicroC.cu.exe();
-        mc.ram.checkBit(Utils.binaryToDec(new int[] {0,0,0,1,1,0,0}),0);
+        MicroC.control.pc = 5; // 01 0010 0000 1100 -> 01 00bb bfff ffff 
+        MicroC.control.exe();
+        MicroC.ram.checkBit(Utils.binaryToDec(new int[] {0,0,0,1,1,0,0}),0);
     }
     
     @Test
@@ -47,15 +45,22 @@ class Test_Control_ControlUnit_BitOps {
     }
     
     @Test
-    void testBTFSC() {
-        MicroC mc = new MicroC();
+    void testBTFSC() { // Eduard
         MicroC.pm.readTestProgram(TP.s5);
         
-        //Fall 1: 
-        MicroC.cu.pc = 7;
-        MicroC.cu.loadInstrReg(7);
-        MicroC.cu.exe();
-        assertEquals(MicroC.cu.pc,9);
+        //Fall 1: bit ist 0
+        MicroC.control.pc = 7; // 01 1000 0000 1100
+        MicroC.control.exe();
+        assertEquals(MicroC.control.pc,9);
+        
+        //Fall 2: bit ist 1
+        MicroC.control.pc = 4; // 01 0101 1000 1100 -> BSF on 1100
+        MicroC.control.exe();
+        MicroC.control.pc = 10; // 01 1001 1000 1100
+        MicroC.control.exe();
+        assertEquals(MicroC.control.pc,11);
+        
+        
     }
 
 }

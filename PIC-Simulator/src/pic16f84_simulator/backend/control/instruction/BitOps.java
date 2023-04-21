@@ -10,8 +10,8 @@ public enum BitOps implements Instruction { // Eduard
     BCF { // Eduard
         @Override
         public void exe(int indexBit, int indexFile) {
-            MicroC.pm.writeSpecificBit(indexFile, indexBit, 0);
-            MicroC.cu.pc++;
+            MicroC.ram.writeSpecificBit(indexFile, indexBit, 0);
+            MicroC.control.pc++;
         }
     }, 
     BSF { // Linus
@@ -24,8 +24,8 @@ public enum BitOps implements Instruction { // Eduard
     BTFSC { // Eduard
         @Override
         public void exe(int indexBit, int indexFile) {
-            MicroC.cu.pc++;
-            if(MicroC.pm.readSpecificBit(indexFile, indexBit) == 0) {
+            MicroC.control.pc++;
+            if(MicroC.ram.readSpecificBit(indexFile, indexBit) == 0) {
                ByteOps.NOP.exe(0, 0);
             }
         }

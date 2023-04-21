@@ -11,7 +11,7 @@ class Test_MicroController_ControllUnit {
     @Test
     void testInstructionADDWF() {
         MicroC mc = new  MicroC();
-        MicroC.wReg = new int[] {0,0,1,1,0,0,1,1};
+        MicroC.calc.wReg = new int[] {0,0,1,1,0,0,1,1};
         MicroC.ram.writeDataCell(17, new int[] {1,1,0,0,1,1,0,0});
         ControlUnit.instrReg.writeReg(new int[] {0,0,0,1,1,1,1,0,0,1,0,0,0,1});
 //        MicroController.exe(ByteOps.ADDWF);
