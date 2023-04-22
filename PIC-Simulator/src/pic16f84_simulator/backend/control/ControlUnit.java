@@ -21,19 +21,20 @@ public class ControlUnit {
         ControlUnit.creationAllowed = false;      
     }
 
-    public static Register instrReg = new Register(14);
-    public static int pc = 0;
-    public static InstructionDecoder instrDecoder = new InstructionDecoder();
+    public Register instrReg = new Register(14);
+    public int pc = 0;
+    public InstructionDecoder instrDecoder = new InstructionDecoder();
 
     
-    public static void exe() { 
-        // load instrReg
+    public void exe() { 
+        
+        // load instReg
         instrReg.writeReg(MicroC.pm.readDataCell(pc));
         
         // load OpCode
         Instruction instruct = instrDecoder.extractOpC(instrReg.readReg());
 
-        // execute OpCode
+        // execute OpCode 
         if(instruct instanceof ByteOps instr) {            
             int dBit = instrReg.readBit(instr.indexDbit)  ;
             int indexFile = Utils.binaryToDec(Arrays.copyOfRange(instrReg.readReg(), instr.fileStart, instrReg.readReg().length));          
@@ -50,4 +51,5 @@ public class ControlUnit {
             instr.exe(k);
         }
     }
+    
 }

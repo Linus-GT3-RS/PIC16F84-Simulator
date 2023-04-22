@@ -11,7 +11,6 @@ import pic16f84_simulator.backend.tools.TP;
 import pic16f84_simulator.backend.tools.Utils;
 
 class Test_Control_ControlUnit_BitOps {
-
     @Test
     void testBCF() { // Eduard
         MicroC.pm.readTestProgram(TP.s5);
@@ -22,8 +21,12 @@ class Test_Control_ControlUnit_BitOps {
     
     @Test
     void testBSF() { // Linus
-        ControlUnit.instrReg.writeReg(new int[] {0,0,0,0, 0,0,1, 0,1,0,0,0,0,0});
-        ControlUnit.exe();
+        System.out.println(MicroC.control.pc); 
+        // write pm int[] an Index 500
+        // pc = 500
+        // exe 
+        MicroC.control.instrReg.writeReg(new int[] {0,0,0,0, 0,0,1, 0,1,0,0,0,0,0});
+        MicroC.control.exe();
         assertArrayEquals(new int[] {0,1,0,0,0,0,0,0}, MicroC.ram.readDataCell(32));
     }
     
