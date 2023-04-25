@@ -26,27 +26,21 @@ public class ControlUnit {
     public InstructionDecoder instrDecoder = new InstructionDecoder();
 
     
-    public void exe() { 
-        
-        // load instReg
-        instrReg.writeReg(MicroC.pm.readDataCell(pc));
-        
-        // load OpCode
-        Instruction instruct = instrDecoder.extractOpC(instrReg.readReg());
+    public void exe() {        
+        instrReg.writeReg(MicroC.pm.readDataCell(pc)); // load instReg
+        Instruction instruct = instrDecoder.extractOpC(instrReg.readReg()); // load OpCode
 
-        // execute OpCode 
         if(instruct instanceof ByteOps instr) {            
             int dBit = instrReg.readBit(instr.indexDbit)  ;
             int indexFile = Utils.binaryToDec(Arrays.copyOfRange(instrReg.readReg(), instr.fileStart, instrReg.readReg().length));          
             instr.exe(dBit, indexFile);
-
         }
-        else if(instruct instanceof BitOps instr) {            
+        if(instruct instanceof BitOps instr) {            
             int indexBit = Utils.binaryToDec(Arrays.copyOfRange(instrReg.readReg(), instr.dBitStart, instr.dBitEnd+1));
             int indexFile = Utils.binaryToDec(Arrays.copyOfRange(instrReg.readReg(), instr.fileStart, instrReg.readReg().length));
             instr.exe(indexBit, indexFile);            
         }
-        else if(instruct  instanceof LitConOps instr){
+        if(instruct instanceof LitConOps instr){
             String k = Utils.cutArray(instrReg.readReg(), instr.kStart(), instrReg.readReg().length-1);
             instr.exe(k);
         }

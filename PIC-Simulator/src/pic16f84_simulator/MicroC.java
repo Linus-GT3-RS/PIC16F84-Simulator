@@ -16,9 +16,10 @@ public class MicroC {
     }
     
     public static ControlUnit control = new ControlUnit();
+    public static CalcUnit calc = new CalcUnit();
+    
     public static Program_Memory pm = new Program_Memory();
     public static RAM_Memory ram = new RAM_Memory();
-    public static CalcUnit calc = new CalcUnit();
     
     
 

@@ -1,5 +1,6 @@
 package pic16f84_simulator.backend.control.instruction;
 
+import pic16f84_simulator.MicroC;
 import pic16f84_simulator.backend.control.ControlUnit;
 
 public enum ByteOps implements Instruction { // Linus
@@ -68,7 +69,7 @@ public enum ByteOps implements Instruction { // Linus
     NOP {
         @Override
         public void exe(int d, int indexFile) {
-            ControlUnit.pc++;
+            MicroC.control.pc++;
         }
     }, RLF {
         @Override

@@ -19,9 +19,8 @@ public class Program_Memory extends Template_Memory {// Eduard
         Program_Memory.creationAllowed = false; 
     }
 
-    public void readTestProgram(String path) {
-        // Read File
-        File file = new File(path);
+    public void readTestProgram(String path) {        
+        File file = new File(path); // Read File
 
         //If it has problems this code will be executed
         if (!file.canRead() || !file.isFile())
@@ -35,24 +34,26 @@ public class Program_Memory extends Template_Memory {// Eduard
                 boolean contain = false;
                 String substring = zeile.substring(0, 9);
                 String result = "";
-                for(int i = 0;i <substring.length();i++) {
+
+                for(int i = 0; i <substring.length(); i++) {
                     if(substring.charAt(i) != ' ') {
                         result=result+substring.charAt(i);
                         contain = true;
                     }
                 }
                 if(contain) {
-                    store(result);//<- Store
+                    store(result);
                 }
             }
-        } catch (IOException e) {
+        } 
+        catch (IOException e) {
             e.printStackTrace();
-        } finally {
+        } 
+        finally {
             if (in != null)
                 try {
                     in.close();
-                } catch (IOException e) {
-                }
+                } catch (IOException e) {}
         }
     }
 
@@ -63,13 +64,16 @@ public class Program_Memory extends Template_Memory {// Eduard
         int[] memoryIndex = new int[4]; // always size 4
         int[] element = new int[16];
         int[] binaryCode = new int[14];
+
         // Decode String
         for(int j = 0; j <data.length();j++) {
-            char hex = data.charAt(j); //Cast char to String 
+            char hex = data.charAt(j); //Cast char to String
+
             if(j<4) { //Case: Memory-Index
                 int number = Utils.hexToDec(hex); //Convert to dec
                 memoryIndex[j]=number;
-            } else if(j>= 4){ // Case: Data and Opcode
+            } 
+            else if(j>= 4){ // Case: Data and Opcode
                 int[] binary = Utils.hexToBinary(hex);
                 for(int k = 0; k<binary.length;k++) {
                     element[counter]=binary[k];

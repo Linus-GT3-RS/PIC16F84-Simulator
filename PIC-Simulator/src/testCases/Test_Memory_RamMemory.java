@@ -4,26 +4,33 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import pic16f84_simulator.backend.exception.UnknownLocationException;
+import pic16f84_simulator.MicroC;
 import pic16f84_simulator.backend.memory.RAM_Memory;
 import pic16f84_simulator.backend.memory.SFR;
+import pic16f84_simulator.backend.tools.UnknownLocationException;
 
 class Test_Memory_RamMemory {
 
     @Test
     void testSetSFRBit() {
-        RAM_Memory ram = new RAM_Memory();
+        RAM_Memory ram = MicroC.ram;        
         
         // Bank0
+        ram.writeDataCell(SFR.STATUS.asIndex(), new int[8]);
+        ram.writeDataCell(131, new int[8]);
         ram.setSFRBit(SFR.STATUS, 7, 1); 
         assertArrayEquals(new int[] {0,0,0,0,0,0,0,1}, ram.readDataCell(3));
         assertArrayEquals(new int[] {0,0,0,0,0,0,0,1}, ram.readDataCell(131));
         
+        ram.writeDataCell(9, new int[8]);
+        ram.writeDataCell(137, new int[8]);
         ram.setSFRBit(SFR.EEADR, 0, 1);
         assertArrayEquals(new int[] {1,0,0,0,0,0,0,0}, ram.readDataCell(9));
         assertArrayEquals(new int[] {0,0,0,0,0,0,0,0}, ram.readDataCell(137));
         
         // Bank1
+        ram.writeDataCell(133, new int[8]);
+        ram.writeDataCell(5, new int[8]);
         ram.setSFRBit(SFR.TRISA, 1, 1);
         assertArrayEquals(new int[] {0,1,0,0,0,0,0,0}, ram.readDataCell(133));
         assertArrayEquals(new int[] {0,0,0,0,0,0,0,0}, ram.readDataCell(5));        
@@ -32,52 +39,52 @@ class Test_Memory_RamMemory {
     
     @Test
     void testWriteRam() {
-        RAM_Memory ram = new RAM_Memory();
+        RAM_Memory ram = MicroC.ram;
         
         // SFR
-        ram.writeRAM(0, new int[] {0,1,1,0,1,0,1,1});
+        ram.writeDataCell(0, new int[] {0,1,1,0,1,0,1,1});
         assertArrayEquals(new int[] {0,1,1,0,1,0,1,1}, ram.readDataCell(0));
         assertArrayEquals(new int[] {0,1,1,0,1,0,1,1}, ram.readDataCell(128));
         
-        ram.writeRAM(SFR.INDF.asIndex(), new int[] {0,0,0,0,0,0,1,1});
+        ram.writeDataCell(SFR.INDF.asIndex(), new int[] {0,0,0,0,0,0,1,1});
         assertArrayEquals(new int[] {0,0,0,0,0,0,1,1}, ram.readDataCell(0));
         assertArrayEquals(new int[] {0,0,0,0,0,0,1,1}, ram.readDataCell(128));
         
-        ram.writeRAM(1, new int[] {1,1,1,1,1,0,1,1});
+        ram.writeDataCell(1, new int[] {1,1,1,1,1,0,1,1});
         assertArrayEquals(new int[] {1,1,1,1,1,0,1,1}, ram.readDataCell(1));
         assertArrayEquals(new int[] {0,0,0,0,0,0,0,0}, ram.readDataCell(129));
         
-        ram.writeRAM(SFR.STATUS.asIndex(), new int[] {0,1,1,0,1,0,1,1});
+        ram.writeDataCell(SFR.STATUS.asIndex(), new int[] {0,1,1,0,1,0,1,1});
         assertArrayEquals(new int[] {0,1,1,0,1,0,1,1}, ram.readDataCell(SFR.STATUS.asIndex()));
         assertArrayEquals(new int[] {0,1,1,0,1,0,1,1}, ram.readDataCell(131));
 
-        ram.writeRAM(SFR.TRISB.asIndex(), new int[] {0,1,1,0,0,0,0,0});
+        ram.writeDataCell(SFR.TRISB.asIndex(), new int[] {0,1,1,0,0,0,0,0});
         assertArrayEquals(new int[] {0,1,1,0,0,0,0,0}, ram.readDataCell(SFR.TRISB.asIndex()));
         assertArrayEquals(new int[] {0,0,0,0,0,0,0,0}, ram.readDataCell(6));
 
-        ram.writeRAM(129, new int[] {0,0,0,0,0,0,1,1});
+        ram.writeDataCell(129, new int[] {0,0,0,0,0,0,1,1});
         assertArrayEquals(new int[] {0,0,0,0,0,0,1,1}, ram.readDataCell(129));
         assertArrayEquals(new int[] {1,1,1,1,1,0,1,1}, ram.readDataCell(1));
         
-        ram.writeRAM(128, new int[] {1,1,0,0,0,0,1,1});
+        ram.writeDataCell(128, new int[] {1,1,0,0,0,0,1,1});
         assertArrayEquals(new int[] {1,1,0,0,0,0,1,1}, ram.readDataCell(128));
         assertArrayEquals(new int[] {1,1,0,0,0,0,1,1}, ram.readDataCell(0));
 
         
         // GPR
-        ram.writeRAM(12, new int[] {1,0,0,0,0,0,0,1});
+        ram.writeDataCell(12, new int[] {1,0,0,0,0,0,0,1});
         assertArrayEquals(new int[] {1,0,0,0,0,0,0,1}, ram.readDataCell(12));
         assertArrayEquals(new int[] {1,0,0,0,0,0,0,1}, ram.readDataCell(140));
 
-        ram.writeRAM(14, new int[] {0,0,0,0,0,1,0,1});
+        ram.writeDataCell(14, new int[] {0,0,0,0,0,1,0,1});
         assertArrayEquals(new int[] {0,0,0,0,0,1,0,1}, ram.readDataCell(14));
         assertArrayEquals(new int[] {0,0,0,0,0,1,0,1}, ram.readDataCell(142));
 
-        ram.writeRAM(79, new int[] {0,0,0,0,0,0,1,1});
+        ram.writeDataCell(79, new int[] {0,0,0,0,0,0,1,1});
         assertArrayEquals(new int[] {0,0,0,0,0,0,1,1}, ram.readDataCell(79));
         assertArrayEquals(new int[] {0,0,0,0,0,0,1,1}, ram.readDataCell(207));
         
-        ram.writeRAM(140, new int[] {1,0,1,0,1,0,0,0}); 
+        ram.writeDataCell(140, new int[] {1,0,1,0,1,0,0,0}); 
         assertArrayEquals(new int[] {1,0,1,0,1,0,0,0}, ram.readDataCell(140));
         assertArrayEquals(new int[] {1,0,1,0,1,0,0,0}, ram.readDataCell(12));
         
@@ -87,8 +94,7 @@ class Test_Memory_RamMemory {
     
     @Test
     void testCheckMemoryLocation() {
-        RAM_Memory ram = new RAM_Memory();
-        
+        RAM_Memory ram = MicroC.ram;        
         assertThrows(NegativeArraySizeException .class, () -> {ram.checkMemoryLocation(7);});
         assertThrows(NegativeArraySizeException .class, () -> {ram.checkMemoryLocation(135);});
         assertThrows(NegativeArraySizeException .class, () -> {ram.checkMemoryLocation(80);});
@@ -99,8 +105,7 @@ class Test_Memory_RamMemory {
     
     @Test
     void testtryToMirrorBank() {
-        RAM_Memory ram = new RAM_Memory();
-        
+        RAM_Memory ram = MicroC.ram;        
         // SFR
         assertEquals(1, ram.mirrorBank(1));
         assertEquals(129, ram.mirrorBank(129));//

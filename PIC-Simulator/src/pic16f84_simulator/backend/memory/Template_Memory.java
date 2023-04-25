@@ -1,6 +1,5 @@
 package pic16f84_simulator.backend.memory;
-
-import pic16f84_simulator.backend.exception.UnknownLocationException;
+import pic16f84_simulator.backend.tools.UnknownLocationException;
 
 public abstract class Template_Memory { // Eduard + Linus
     
@@ -24,6 +23,7 @@ public abstract class Template_Memory { // Eduard + Linus
         return this.memory[indexCell][indexBit];
     }
     
+    
     public void writeDataCell(int indexCell, int[] data) {
         checkMemoryLocation(indexCell);
         this.memory[indexCell] = data;
@@ -33,6 +33,7 @@ public abstract class Template_Memory { // Eduard + Linus
         checkBit(indexCell,indexBit);
         this.memory[indexCell][indexBit] = bit;
     }
+    
     
     public void checkMemoryLocation(int indexCell) {
         if(indexCell < 0 || indexCell >= this.memory.length) {

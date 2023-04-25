@@ -2,7 +2,7 @@ package pic16f84_simulator.backend.control.instruction;
 
 import pic16f84_simulator.MicroC;
 import pic16f84_simulator.backend.control.ControlUnit;
-import pic16f84_simulator.backend.exception.UnknownOpCodeException;
+import pic16f84_simulator.backend.tools.UnknownOpCodeException;
 import pic16f84_simulator.backend.tools.Utils;
 
 public class InstructionDecoder {
@@ -32,10 +32,8 @@ public class InstructionDecoder {
     }
     
     
-    
-    
     // Hilfsmethode für extractOpC()
-    Instruction specialCase (String opC) {
+    private Instruction specialCase (String opC) {
         if(opC.substring(0, 5).equals("00000")) { // Einer der 8 Sonderfälle --> ersten 5 Bits = 0
             return getSonderfallOpC(opC);
         }
@@ -43,27 +41,26 @@ public class InstructionDecoder {
     }
     
     // Hilfsmethode für specialCase()
-    Instruction getSonderfallOpC (String opC) {
+    private Instruction getSonderfallOpC (String opC) {
         Instruction result;
         
         // Sonderfall_1 u. Sonderfall_2  aus ByteOp
         if(opC.equals("000001")) {             
-            if(ControlUnit.instrReg.readBit(6) == 1) {
+//            if(ControlUnit.instrReg.readBit(6) == 1) {
+            if(MicroC.control.instrReg.readBit(6) == 1) {
                 result = ByteOps.CLRF;
             }
             else result = ByteOps.CLRW;            
-        }
-        
+        }        
         // Sonderfall_3 bis Sonderfall_8 --> ersten 6Bits sind alle 0
         else {             
-            int[] valInstrReg = ControlUnit.instrReg.readReg();
+            int[] valInstrReg = MicroC.control.instrReg.readReg();
             String fullOpC = Utils.cutArray(valInstrReg, 0, valInstrReg.length-1);
             
             if(valInstrReg[6] == 1) { // Sonderfall_3 aus ByteOps
                 result = ByteOps.MOVWF;
             }
-            else { // Sonderfall_4 bis Sonderfall_8
-                
+            else { // Sonderfall_4 bis Sonderfall_8                
                 switch(fullOpC) {
                 case "00000000000000" -> { result = ByteOps.NOP;} // Sonderfall_4 aus ByteOps
                 
@@ -81,7 +78,7 @@ public class InstructionDecoder {
     
     
     // Hilfsmethode für specialCase()
-    ByteOps getByteOpC (String opC) {        
+    private ByteOps getByteOpC (String opC) {        
         ByteOps result;
         
         switch(opC) {
@@ -104,12 +101,9 @@ public class InstructionDecoder {
         return result;
     }
     
-        
-    
-    
     
     // Hilfsmethode für extractOpC()
-    BitOps giveBitOpC (String opC) {
+    private BitOps giveBitOpC (String opC) {
         BitOps result;
 
         switch(opC) {
@@ -124,7 +118,7 @@ public class InstructionDecoder {
 
 
     // Hilfsmethode für extractOpC()
-    LitConOps giveLitConOpC (String opC) {
+    private LitConOps giveLitConOpC (String opC) {
         LitConOps result;
 
         switch(opC) {

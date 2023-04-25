@@ -11,6 +11,7 @@ import pic16f84_simulator.backend.tools.TP;
 import pic16f84_simulator.backend.tools.Utils;
 
 class Test_Control_ControlUnit_BitOps {
+    
     @Test
     void testBCF() { // Eduard
         MicroC.pm.readTestProgram(TP.s5);
@@ -21,30 +22,28 @@ class Test_Control_ControlUnit_BitOps {
     
     @Test
     void testBSF() { // Linus
-        System.out.println(MicroC.control.pc); 
-        // write pm int[] an Index 500
-        // pc = 500
-        // exe 
-        MicroC.control.instrReg.writeReg(new int[] {0,0,0,0, 0,0,1, 0,1,0,0,0,0,0});
-        MicroC.control.exe();
-        assertArrayEquals(new int[] {0,1,0,0,0,0,0,0}, MicroC.ram.readDataCell(32));
+        MicroC.pm.readTestProgram(TP.s5);
+        MicroC.control.pc = 3; // bsf: wert1,7
+        MicroC.control.exe(); 
+        assertArrayEquals(new int[] {0,0,0,0,0,0,0, 1}, MicroC.ram.readDataCell(140));
     }
     
     @Test
     void testBTFSS() { // Linus
-     // Fall 1: bBit=0 --> next instruction gets (just as normal) executed
-        int pcBeforeExe = ControlUnit.pc;
-        MicroC.ram.writeSpecificBit(14, 1, 0); 
-        ControlUnit.instrReg.writeReg(new int[] {0,1,1,1, 0,0,1, 0,0,0,1,1,1,0});
-        ControlUnit.exe();
-        assertEquals((pcBeforeExe + 1), ControlUnit.pc);
-     
-     // Fall 2: bBit=1 --> next instruction gets skipped 
-        pcBeforeExe = ControlUnit.pc;
-        MicroC.ram.writeSpecificBit(14, 1, 1); 
-        ControlUnit.instrReg.writeReg(new int[] {0,1,1,1, 0,0,1, 0,0,0,1,1,1,0});
-        ControlUnit.exe();
-        assertEquals((pcBeforeExe + 2), ControlUnit.pc);
+        MicroC.pm.readTestProgram(TP.s5);
+        ControlUnit cu = MicroC.control;
+        
+     // Fall 1: bBit=0 --> next instruction gets executed (no change in programm sequence) -> pc+1
+        cu.pc = 13; // btfss wert1,2
+        MicroC.ram.writeDataCell(12, new int[] {0,0,1,0,0, 0 ,0,1});
+        cu.exe();
+        assertEquals(14, cu.pc);
+        
+     // Fall 2: bBit=1 --> next instruction gets skipped -> pc+2
+        cu.pc = 16; // btfss wert1,7
+        MicroC.ram.writeDataCell(140, new int[] {0,0,0,0,0,0,0, 1});
+        cu.exe();
+        assertEquals(18, cu.pc);
     }
     
     @Test
