@@ -25,5 +25,16 @@ class Test_Control_ControlUnit_ByteOps {
         MicroC.control.exe();
         assertArrayEquals(MicroC.calc.wReg,new int[] {0,0,0,0,0,0,1,0});
     }
+    
+    @Test
+    void testCLRF() {
+        MicroC.pm.readTestProgram(TP.s3);
+        
+        MicroC.ram.writeDataCell(12, new int[] {1,1,1,1,1,1,1,1});
+        assertArrayEquals(MicroC.ram.readDataCell(12),new int[] {1,1,1,1,1,1,1,1});
+        MicroC.control.pc=7; // 00 0001 1000 1100
+        MicroC.control.exe();
+        assertArrayEquals(MicroC.ram.readDataCell(12),new int[] {0,0,0,0,0,0,0,0});
+    }
 
 }

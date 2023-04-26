@@ -22,6 +22,7 @@ public enum ByteOps implements Instruction { // Linus
     }, CLRF { // Eduard
         @Override
         public void exe(int d, int indexFile) {
+            MicroC.ram.writeDataCell(indexFile, new int[] {0,0,0,0,0,0,0,0});
         }
     }, CLRW { // Linus
         @Override
