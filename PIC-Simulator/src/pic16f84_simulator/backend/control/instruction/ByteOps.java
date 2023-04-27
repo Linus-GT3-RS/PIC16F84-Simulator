@@ -5,89 +5,83 @@ import pic16f84_simulator.backend.control.ControlUnit;
 
 public enum ByteOps implements Instruction { // Linus
 
-    ADDWF {
+    ADDWF { // Eduard
         @Override
         public void exe(int d, int indexFile) {
-//            if(instruct == ByteOps.ADDWF) {
-//              if(instrReg.readBit(instruct.dBit) == 1) {
-//                  int[] indexRAM_Binary = Arrays.copyOfRange(instrReg.readReg(), instruct.fileStart, instruct.fileEnd+1);
-//                  int indexRAM = Utils.binaryToDec(indexRAM_Binary);
-//                  for(int i = 0; i<8;i++) {
-//                      int result = ram.readSpecificBit(indexRAM, i) + wReg[i];
-//                      ram.writeSpecificBit(indexRAM, i, result);
-//                  }
-//              }
-//          }
-            
+            int[] result = MicroC.calc.AdditionWF(indexFile);
+            if(d==1) { // store in RAM
+                MicroC.ram.writeDataCell(indexFile, result);
+            }else { // store in W-Reg
+                MicroC.calc.wReg = result;
+            }
         }
-    }, ANDWF {
+    }, ANDWF { // Linus
         @Override
         public void exe(int d, int indexFile) {
         }
-    }, CLRF {
+    }, CLRF { // Eduard
+        @Override
+        public void exe(int d, int indexFile) {
+            MicroC.ram.writeDataCell(indexFile, new int[] {0,0,0,0,0,0,0,0});
+        }
+    }, CLRW { // Linus
         @Override
         public void exe(int d, int indexFile) {
         }
-    }, CLRW {
+    }, COMF { // Eduard
         @Override
         public void exe(int d, int indexFile) {
         }
-    }, COMF {
+    }, DECF { // Linus
         @Override
         public void exe(int d, int indexFile) {
         }
-    }, DECF {
+    }, DECFSZ { // Eduard
         @Override
         public void exe(int d, int indexFile) {
         }
-    }, DECFSZ {
+    }, INCF { // Linus
         @Override
         public void exe(int d, int indexFile) {
         }
-    }, INCF {
+    }, INCFSZ { // Eduard
         @Override
         public void exe(int d, int indexFile) {
         }
-    }, INCFSZ {
+    }, IORWF { // Linus
         @Override
         public void exe(int d, int indexFile) {
         }
-    }, IORWF {
+    }, MOVF { // Eduard
         @Override
         public void exe(int d, int indexFile) {
         }
-    }, MOVF {
+    }, MOVWF { // Linus
         @Override
         public void exe(int d, int indexFile) {
         }
-    }, 
-    MOVWF {
-        @Override
-        public void exe(int d, int indexFile) {
-        }
-    }, 
-    NOP {
+    }, NOP { // Eduard
         @Override
         public void exe(int d, int indexFile) {
             MicroC.control.pc++;
         }
-    }, RLF {
+    }, RLF { // Linus
         @Override
         public void exe(int d, int indexFile) {
         }
-    }, RRF {
+    }, RRF { // Eduard
         @Override
         public void exe(int d, int indexFile) {
         }
-    }, SUBWF {
+    }, SUBWF { // Linus
         @Override
         public void exe(int d, int indexFile) {
         }
-    }, SWAPF {
+    }, SWAPF { // Eduard
         @Override
         public void exe(int d, int indexFile) {
         }
-    }, XORWF {
+    }, XORWF { // Linus
         @Override
         public void exe(int d, int indexFile) {
         }

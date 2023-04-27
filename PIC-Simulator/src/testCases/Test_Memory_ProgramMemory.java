@@ -23,9 +23,15 @@ class Test_Memory_ProgramMemory { // Eduard
          * überprüf du folgenden Test au nochmal, aber sollte stimmen
          */
         pm.readTestProgram(TP.s5);
-        assertArrayEquals(pm.readDataCell(13), new int[] {0,1,1,1 ,0,1,0, 0,0,0,1,1,0,0});
-        
+        assertArrayEquals(pm.readDataCell(13), new int[] {0,1, 1,1,0,1, 0,0,0,0, 1,1,0,0}); //01 1101 0000 1100
      }
+    
+    @Test
+    void testSpecialCase() {
+        Program_Memory pm = MicroC.pm;
+        pm.store("000D1D0C");
+        assertArrayEquals(pm.readDataCell(13), new int[] {0,1, 1,1,0,1, 0,0,0,0, 1,1,0,0});
+    }
 
     @Test
     void testStore() {
