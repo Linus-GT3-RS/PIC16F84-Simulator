@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import pic16f84_simulator.backend.tools.Utils;
@@ -25,15 +24,12 @@ public class Program_Memory extends Template_Memory {// Eduard
 
         //If it has problems this code will be executed
         if (!file.canRead() || !file.isFile())
-        {
             System.exit(0);
-        }
         BufferedReader in = null;
         try {
             in = new BufferedReader(new FileReader(path));
             String zeile = null;
             while ((zeile = in.readLine()) != null) {
-                
                 // Logic Part
                 boolean contain = false;
                 String substring = zeile.substring(0, 9);
@@ -62,34 +58,34 @@ public class Program_Memory extends Template_Memory {// Eduard
     }
 
 
-    /*
-     * @author 
-     * @param data get hexdecimal number
-     */
     public void store(String data) {
-        // Get index of Datacell
-        int pmDataCell = Integer.parseInt(data.substring(0,4),16);
-        
-        // result declaration
-        int[] result = new int[14];
-        int indexResult = 0;
-        
-        // go through data for extracting them
-        for(int i = 4; i<data.length();i++) {
-            int[] binaryCode = Utils.hexToBinary(data.charAt(i));
-            if(i==4) {
-                for(int j=2;j<binaryCode.length;j++) {
-                    result[indexResult] =binaryCode[j];
-                    indexResult++;
-                }
-            }else {
-                for(int binary : binaryCode) {
-                    result[indexResult] = binary;
-                    indexResult++;
+        int counter = 0;
+        int index = 0;
+        int[] memoryIndex = new int[4]; // always size 4
+        int[] element = new int[16];
+        int[] binaryCode = new int[14];
+
+        // Decode String
+        for(int j = 0; j <data.length();j++) {
+            char hex = data.charAt(j); //Cast char to String
+
+            if(j<4) { //Case: Memory-Index
+                int number = Utils.hexToDec(hex); //Convert to dec
+                memoryIndex[j]=number;
+            } 
+            else if(j>= 4){ // Case: Data and Opcode
+                int[] binary = Utils.hexToBinary(hex);
+                for(int k = 0; k<binary.length;k++) {
+                    element[counter]=binary[k];
+                    counter++;
                 }
             }
         }
-        super.writeDataCell(pmDataCell, result);
+        for(int l = 0; l<memoryIndex.length;l++) {
+            index = index + memoryIndex[memoryIndex.length-1-l]*((int)Math.pow(10,l)); 
+        }
+        System.arraycopy(element, 2, binaryCode,0,14);
+        super.writeDataCell(index,binaryCode);
     }
 
 }
