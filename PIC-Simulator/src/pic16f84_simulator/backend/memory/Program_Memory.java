@@ -23,7 +23,7 @@ public class Program_Memory extends Template_Memory {// Eduard
         File file = new File(path); // Read File
 
         //If it has problems this code will be executed
-        if (!file.canRead() || !file.isFile())
+        if (!file.canRead() || !file.isFile()) // Klammern fehlen
             System.exit(0);
         BufferedReader in = null;
         try {
@@ -35,9 +35,9 @@ public class Program_Memory extends Template_Memory {// Eduard
                 String substring = zeile.substring(0, 9);
                 String result = "";
 
-                for(int i = 0; i <substring.length(); i++) {
+                for(int i = 0; i < substring.length(); i++) {
                     if(substring.charAt(i) != ' ') {
-                        result=result+substring.charAt(i);
+                        result = result + substring.charAt(i);
                         contain = true;
                     }
                 }
@@ -50,7 +50,7 @@ public class Program_Memory extends Template_Memory {// Eduard
             e.printStackTrace();
         } 
         finally {
-            if (in != null)
+            if (in != null) // Klammern fehlen
                 try {
                     in.close();
                 } catch (IOException e) {}
@@ -66,23 +66,23 @@ public class Program_Memory extends Template_Memory {// Eduard
         int[] binaryCode = new int[14];
 
         // Decode String
-        for(int j = 0; j <data.length();j++) {
-            char hex = data.charAt(j); //Cast char to String
+        for(int j = 0; j < data.length(); j++) {
+            char hex = data.charAt(j); // Cast char to String
 
-            if(j<4) { //Case: Memory-Index
+            if (j < 4) { // Case: Memory-Index
                 int number = Utils.hexToDec(hex); //Convert to dec
-                memoryIndex[j]=number;
+                memoryIndex[j] = number;
             } 
-            else if(j>= 4){ // Case: Data and Opcode
+            else if (j >= 4){ // Case: Data and Opcode
                 int[] binary = Utils.hexToBinary(hex);
-                for(int k = 0; k<binary.length;k++) {
-                    element[counter]=binary[k];
+                for(int k = 0; k < binary.length; k++) {
+                    element[counter] = binary[k];
                     counter++;
                 }
             }
         }
-        for(int l = 0; l<memoryIndex.length;l++) {
-            index = index + memoryIndex[memoryIndex.length-1-l]*((int)Math.pow(10,l)); 
+        for(int l = 0; l < memoryIndex.length; l++) {
+            index = index + memoryIndex[memoryIndex.length-1-l] * ((int)Math.pow(10,l)); 
         }
         System.arraycopy(element, 2, binaryCode,0,14);
         super.writeDataCell(index,binaryCode);
