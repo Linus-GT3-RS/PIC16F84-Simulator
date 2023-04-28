@@ -49,11 +49,14 @@ public class Utils {
     }
     
     // 15 zu --> [1,1,1,1]
-    public static int[] decToBinary(int dec) {
+    public static int[] decToBinary(int dec,int size) {
         String binary = Integer.toBinaryString(dec);
-        int[] result = new int[binary.length()];
-        for(int i = 0;i<result.length;i++) {
-            if(binary.charAt(0)=='0') {
+        if(binary.length()>size) {
+            size = binary.length();
+        }
+        int[] result = new int[size];
+        for(int i = size-binary.length();i<result.length;i++) {
+            if(binary.charAt(0+(i-(size-binary.length())))=='0') {
                 result[i] = 0;
             }else {
                 result[i] = 1;

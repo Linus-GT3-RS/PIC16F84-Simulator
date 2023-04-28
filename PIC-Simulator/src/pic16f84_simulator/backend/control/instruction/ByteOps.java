@@ -2,6 +2,7 @@ package pic16f84_simulator.backend.control.instruction;
 
 import pic16f84_simulator.MicroC;
 import pic16f84_simulator.backend.control.ControlUnit;
+import pic16f84_simulator.backend.tools.Utils;
 
 public enum ByteOps implements Instruction { // Linus
 
@@ -14,6 +15,7 @@ public enum ByteOps implements Instruction { // Linus
             }else { // store in W-Reg
                 MicroC.calc.wReg = result;
             }
+            MicroC.control.pc++;
         }
     }, ANDWF { // Linus
         @Override
@@ -44,6 +46,7 @@ public enum ByteOps implements Instruction { // Linus
             }else { // stored in W-Reg
                 MicroC.calc.wReg = result;
             }
+            MicroC.control.pc++;
         }
     }, DECF { // Linus
         @Override
@@ -52,6 +55,17 @@ public enum ByteOps implements Instruction { // Linus
     }, DECFSZ { // Eduard
         @Override
         public void exe(int d, int indexFile) {
+            int result = Utils.binaryToDec(MicroC.ram.readDataCell(indexFile));
+            result--;
+            if(d==1) {// stored in RAM
+                MicroC.ram.writeDataCell(indexFile, Utils.decToBinary(result,8));
+            }else { // stored in W-Reg
+                MicroC.calc.wReg = Utils.decToBinary(result,8);
+            }
+            if(result == 0) {
+                ByteOps.NOP.exe(0,0);
+            }
+            MicroC.control.pc++;
         }
     }, INCF { // Linus
         @Override

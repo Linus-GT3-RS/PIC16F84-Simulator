@@ -96,7 +96,7 @@ class Test_Tools_Utils {
     
     @Test
     void testDecToBinary() {
-        assertArrayEquals(new int[] {1,1,1,1},Utils.decToBinary(15));
+        assertArrayEquals(new int[] {1,1,1,1},Utils.decToBinary(15,4));
     }
     
 }
