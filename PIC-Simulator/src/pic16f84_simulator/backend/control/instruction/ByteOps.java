@@ -31,6 +31,19 @@ public enum ByteOps implements Instruction { // Linus
     }, COMF { // Eduard
         @Override
         public void exe(int d, int indexFile) {
+            int[] result = MicroC.ram.readDataCell(indexFile);
+            for(int i = 0;i<result.length;i++) {
+                if(result[i]==0) {
+                    result[i]=1;
+                }else {
+                    result[i]=0;
+                }
+            }
+            if(d==1) {// stored in RAM
+                MicroC.ram.writeDataCell(indexFile, result);
+            }else { // stored in W-Reg
+                MicroC.calc.wReg = result;
+            }
         }
     }, DECF { // Linus
         @Override
