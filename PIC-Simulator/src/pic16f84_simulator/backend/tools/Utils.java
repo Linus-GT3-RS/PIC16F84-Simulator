@@ -49,9 +49,14 @@ public class Utils {
     }
     
     // 15 zu --> [1,1,1,1]
+    /* @param size ->   if you want store 15 in 8 bit Word,
+     *                  then size is 8 and undefined indexes will be filled with 0 -> [0,0,0,0,1,1,1,1]
+    */
     public static int[] decToBinary(int dec,int size) {
         String binary = Integer.toBinaryString(dec);
-        if(binary.length()>size) {
+        
+        // Sanity Check
+        if(binary.length()>size) { 
             size = binary.length();
         }
         int[] result = new int[size];
