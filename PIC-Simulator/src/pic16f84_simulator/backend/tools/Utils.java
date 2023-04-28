@@ -48,6 +48,20 @@ public class Utils {
         
     }
     
+    // 15 zu --> [1,1,1,1]
+    public static int[] decToBinary(int dec) {
+        String binary = Integer.toBinaryString(dec);
+        int[] result = new int[binary.length()];
+        for(int i = 0;i<result.length;i++) {
+            if(binary.charAt(0)=='0') {
+                result[i] = 0;
+            }else {
+                result[i] = 1;
+            }
+        }
+        return result;
+    }
+    
     
     // changes binaryWord [x,y,y] of length ... to one of size ...
     public static int[] enlargeArray (int[] old, int newSize) {
