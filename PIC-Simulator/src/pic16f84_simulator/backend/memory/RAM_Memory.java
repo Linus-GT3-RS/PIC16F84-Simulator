@@ -31,17 +31,30 @@ public class RAM_Memory extends Template_Memory { // Linus
      */
     @Override
     public void writeDataCell(int indexCell, int[] data) {
+        checkMemoryLocation(indexCell); // checks if unimplemented
         if(data.length != 8) {
             throw new NegativeArraySizeException ("The bit-word has the wrong size");
         }                
-        checkMemoryLocation(indexCell); // checks if unimplemented
-
         super.writeDataCell(indexCell, data);
 
         int indexMirrored = mirrorBank(indexCell);
         if(indexMirrored != indexCell) {
             super.writeDataCell(indexMirrored, data);
         }
+    }
+
+    @Override
+    public void writeSpecificBit(int indexCell, int indexBit, int bit) {
+        checkMemoryLocation(indexCell);
+        if(bit != 0 && bit != 1) {
+            throw new IllegalArgumentException("Thats not a bit: " + bit);
+        }
+        super.writeSpecificBit(indexCell, indexBit, bit);
+        
+        int indxMirrored = mirrorBank(indexCell);
+        if(indxMirrored != indexCell) {
+            super.writeSpecificBit(indxMirrored, indexBit, bit);
+        }        
     }
 
 
@@ -56,7 +69,7 @@ public class RAM_Memory extends Template_Memory { // Linus
     // Hilfsmethode
     public int mirrorBank(int indexCell) {        
         int result = 0;
-
+        
         switch(indexCell) {
         case 1: // fall-through is correct
         case 5: // fall-through is correct
@@ -72,10 +85,10 @@ public class RAM_Memory extends Template_Memory { // Linus
         default: result = (indexCell + 128); // mirror to Bank1
         break;
         }
-
-        if(result >= 256) { // dann hätten wir Bank1 auf "Bank2" gemirrored -> geht net
-            result -= 256; // mirror to Bank0
-        }        
+        // eventl. mirror from Bank1 to Bank0: sonst würden wir Bank1 auf "Bank2" mirroren -> geht net
+        if(result >= 256) { 
+            result -= 256;
+        }      
         return result;
     }
 
