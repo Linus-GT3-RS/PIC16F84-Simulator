@@ -93,6 +93,12 @@ public enum ByteOps implements Instruction { // Linus
     }, MOVF { // Eduard
         @Override
         public void exe(int d, int indexFile) {
+            if(d==0) { // move to instr-Reg
+                MicroC.calc.wReg = MicroC.ram.readDataCell(indexFile);
+            }else { // move to f-Reg itself
+                MicroC.ram.writeDataCell(indexFile, MicroC.ram.readDataCell(indexFile));
+            }
+            MicroC.control.pc++;
         }
     }, MOVWF { // Linus
         @Override

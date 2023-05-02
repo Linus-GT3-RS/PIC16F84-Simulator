@@ -75,4 +75,14 @@ class Test_Control_ControlUnit_ByteOps {
         assertArrayEquals(new int[] {0,0,0,0,0,1,0,0},MicroC.ram.readDataCell(12));
         assertEquals(MicroC.control.pc,27);
     }
+    
+    @Test // Eduard
+    void testMOVF() {
+        MicroC.pm.readTestProgram(TP.s6);
+        
+        MicroC.ram.writeDataCell(12, new int[] {0,1,1,0,1,0,1,0});
+        MicroC.control.pc=5;// 00 1000 0000 1100
+        MicroC.control.exe();
+        assertArrayEquals(new int[] {0,1,1,0,1,0,1,0},MicroC.calc.wReg);
+    }
 }
