@@ -9,8 +9,8 @@ import pic16f84_simulator.backend.tools.TP;
 
 class Test_Control_ControlUnit_ByteOps {
 
-    @Test
-    void testADDWF() {
+    @Test // Eduard
+    void testADDWF() { 
         MicroC.pm.readTestProgram(TP.s3);
         
         //Case 1: Store in w-Reg #w = 0; #f = 0
@@ -27,7 +27,7 @@ class Test_Control_ControlUnit_ByteOps {
         assertArrayEquals(MicroC.calc.wReg,new int[] {0,0,0,0,0,0,1,0});
     }
     
-    @Test
+    @Test // Eduard
     void testCLRF() {
         MicroC.pm.readTestProgram(TP.s3);
         MicroC.ram.writeDataCell(12, new int[] {1,1,1,1,1,1,1,1});
@@ -37,7 +37,7 @@ class Test_Control_ControlUnit_ByteOps {
         assertArrayEquals(MicroC.ram.readDataCell(12),new int[] {0,0,0,0,0,0,0,0});
     }
 
-    @Test
+    @Test // Eduard
     void testCOMF() {
         MicroC.pm.readTestProgram(TP.s3);
         MicroC.ram.writeDataCell(13, new int[] {0,1,1,1,0,0,1,0});
@@ -46,7 +46,7 @@ class Test_Control_ControlUnit_ByteOps {
         assertArrayEquals(new int[] {1,0,0,0,1,1,0,1},MicroC.calc.wReg);
     }
     
-    @Test
+    @Test  // Eduard
     void testDECFSZ() {
         MicroC.pm.readTestProgram(TP.s4);
         
@@ -62,5 +62,17 @@ class Test_Control_ControlUnit_ByteOps {
         MicroC.control.exe();
         assertArrayEquals(new int[] {0,0,0,0,0,0,0,0},MicroC.ram.readDataCell(12));
         assertEquals(MicroC.control.pc,20);
+    }
+    
+    @Test  // Eduard
+    void testINCFSZ() {
+        MicroC.pm.readTestProgram(TP.s4);
+        
+        // Case result is not 0
+        MicroC.ram.writeDataCell(12, new int[] {0,0,0,0,0,0,1,1});
+        MicroC.control.pc=26;// 00 1111 1000 1100
+        MicroC.control.exe();
+        assertArrayEquals(new int[] {0,0,0,0,0,1,0,0},MicroC.ram.readDataCell(12));
+        assertEquals(MicroC.control.pc,27);
     }
 }

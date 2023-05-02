@@ -74,6 +74,17 @@ public enum ByteOps implements Instruction { // Linus
     }, INCFSZ { // Eduard
         @Override
         public void exe(int d, int indexFile) {
+            int result = Utils.binaryToDec(MicroC.ram.readDataCell(indexFile));
+            result++;
+            if(d==1) {// stored in RAM
+                MicroC.ram.writeDataCell(indexFile, Utils.decToBinary(result,8));
+            }else { // stored in W-Reg
+                MicroC.calc.wReg = Utils.decToBinary(result,8);
+            }
+            if(result == 0) {
+                ByteOps.NOP.exe(0,0);
+            }
+            MicroC.control.pc++;
         }
     }, IORWF { // Linus
         @Override
