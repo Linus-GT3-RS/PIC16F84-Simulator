@@ -31,12 +31,8 @@ public enum ByteOps implements Instruction { // Linus
             if(d == 0) {
                MC.alu.wReg = wAndF; 
             } 
-            else MC.ram.writeDataCell(indexFile, wAndF);
-            
-            if(Arrays.equals(wAndF, new int[8])) {
-                MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 5, 1);
-            }
-            else MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 5, 0);            
+            else MC.ram.writeDataCell(indexFile, wAndF);            
+            SFR.status_setZ(wAndF);   
         }
     }, 
     CLRF { // Eduard
@@ -49,7 +45,7 @@ public enum ByteOps implements Instruction { // Linus
         @Override
         public void exe(int d, int indexFile) {
            MC.alu.wReg = new int[] {0,0,0,0,0,0,0,0};
-           MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 5, 1);
+           SFR.status_setZ(new int[8]);
         }
     }, 
     COMF { // Eduard
