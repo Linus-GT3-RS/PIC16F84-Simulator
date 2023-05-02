@@ -14,14 +14,10 @@ class Test_Memory_ProgramMemory { // Eduard
 
     @Test
     void testReadTestProgramm() {
-        Program_Memory pm = MicroC.pm;
-        
+        Program_Memory pm = MicroC.pm;        
         pm.readTestProgram(TP.s1);
         assertArrayEquals(pm.readDataCell(0), new int[] {1,1,0,0,0,0,0,0,0,1,0,0,0,1} );
         
-        /*
-         * überprüf du folgenden Test au nochmal, aber sollte stimmen
-         */
         pm.readTestProgram(TP.s5);
         assertArrayEquals(pm.readDataCell(13), new int[] {0,1, 1,1,0,1, 0,0,0,0, 1,1,0,0}); //01 1101 0000 1100
      }

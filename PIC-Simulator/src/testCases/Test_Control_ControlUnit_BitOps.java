@@ -23,8 +23,9 @@ class Test_Control_ControlUnit_BitOps {
     @Test
     void testBSF() { // Linus
         MicroC.pm.readTestProgram(TP.s5);
-        MicroC.control.pc = 3; // bsf: wert1,7
+        MicroC.control.pc = 3; // 0101 111 0001100
         MicroC.control.exe(); 
+        assertArrayEquals(new int[] {0,0,0,0,0,0,0, 1}, MicroC.ram.readDataCell(12));
         assertArrayEquals(new int[] {0,0,0,0,0,0,0, 1}, MicroC.ram.readDataCell(140));
     }
     
@@ -34,13 +35,13 @@ class Test_Control_ControlUnit_BitOps {
         ControlUnit cu = MicroC.control;
         
      // Fall 1: bBit=0 --> next instruction gets executed (no change in programm sequence) -> pc+1
-        cu.pc = 13; // btfss wert1,2
-        MicroC.ram.writeDataCell(12, new int[] {0,0,1,0,0, 0 ,0,1});
+        cu.pc = 13; // 0111 010 0001100
+        MicroC.ram.writeDataCell(12, new int[] {0,0, 0 ,0,0,0,0,1});
         cu.exe();
         assertEquals(14, cu.pc);
         
      // Fall 2: bBit=1 --> next instruction gets skipped -> pc+2
-        cu.pc = 16; // btfss wert1,7
+        cu.pc = 16; // 0111 111 0001100
         MicroC.ram.writeDataCell(140, new int[] {0,0,0,0,0,0,0, 1});
         cu.exe();
         assertEquals(18, cu.pc);
