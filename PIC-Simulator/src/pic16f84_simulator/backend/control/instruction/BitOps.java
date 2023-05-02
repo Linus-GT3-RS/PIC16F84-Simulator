@@ -1,31 +1,27 @@
 package pic16f84_simulator.backend.control.instruction;
-
-import java.util.Arrays;
-
-import pic16f84_simulator.MicroC;
-import pic16f84_simulator.backend.control.ControlUnit;
+import pic16f84_simulator.MC;
 
 public enum BitOps implements Instruction { // Eduard
     
     BCF { // Eduard
         @Override
         public void exe(int indexBit, int indexFile) {
-            MicroC.ram.writeSpecificBit(indexFile, indexBit, 0);
-            MicroC.control.pc++;
+            MC.ram.writeSpecificBit(indexFile, indexBit, 0);
+            MC.control.pc++;
         }
     }, 
     BSF { // Linus
         @Override
         public void exe(int indexBit, int indexFile) {            
-            MicroC.ram.writeSpecificBit(indexFile, indexBit, 1);
-            MicroC.control.pc++;
+            MC.ram.writeSpecificBit(indexFile, indexBit, 1);
+            MC.control.pc++;
         }
     },
     BTFSC { // Eduard
         @Override
         public void exe(int indexBit, int indexFile) {
-            MicroC.control.pc++;
-            if(MicroC.ram.readSpecificBit(indexFile, indexBit) == 0) {
+            MC.control.pc++;
+            if(MC.ram.readSpecificBit(indexFile, indexBit) == 0) {
                ByteOps.NOP.exe(0, 0);
             }
         }
@@ -33,8 +29,8 @@ public enum BitOps implements Instruction { // Eduard
     BTFSS { // Linus
         @Override
         public void exe(int indexBit, int indexCell) {            
-            MicroC.control.pc++;
-            int valOfb = MicroC.ram.readSpecificBit(indexCell, indexBit);
+            MC.control.pc++;
+            int valOfb = MC.ram.readSpecificBit(indexCell, indexBit);
             if(valOfb == 1) {
                 ByteOps.NOP.exe(0, 0);
             }

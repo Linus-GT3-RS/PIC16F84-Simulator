@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import pic16f84_simulator.MicroC;
+import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.control.ControlUnit;
 import pic16f84_simulator.backend.control.instruction.BitOps;
 import pic16f84_simulator.backend.control.instruction.ByteOps;
@@ -16,7 +16,7 @@ class Test_Control_InstructionDecoder {
 
     @Test
     void test_ExtractOpC_SpecialCases() { // 8 Sonderfälle
-        ControlUnit cUnit = MicroC.control;
+        ControlUnit cUnit = MC.control;
         InstructionDecoder decoder =  cUnit.instrDecoder;
         
         cUnit.instrReg.writeReg(new int[] {0,0,0,0,0,1 ,1 ,0,0,0,0,0,1,0});
@@ -50,7 +50,7 @@ class Test_Control_InstructionDecoder {
     
     @Test
     void test_ExtractOpC_NormalCases() {
-        InstructionDecoder decoder = MicroC.control.instrDecoder;        
+        InstructionDecoder decoder = MC.control.instrDecoder;        
         assertThrows(IllegalArgumentException.class, () -> 
                         { decoder.extractOpC(new int[] {1,1,0}); });
                 

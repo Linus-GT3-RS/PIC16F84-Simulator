@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import pic16f84_simulator.MicroC;
+import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.Program_Memory;
 import pic16f84_simulator.backend.tools.TP;
 import pic16f84_simulator.backend.tools.UnknownLocationException;
@@ -14,7 +14,7 @@ class Test_Memory_ProgramMemory { // Eduard
 
     @Test
     void testReadTestProgramm() {
-        Program_Memory pm = MicroC.pm;        
+        Program_Memory pm = MC.pm;        
         pm.readTestProgram(TP.s1);
         assertArrayEquals(pm.readDataCell(0), new int[] {1,1,0,0,0,0,0,0,0,1,0,0,0,1} );
         
@@ -24,21 +24,21 @@ class Test_Memory_ProgramMemory { // Eduard
     
     @Test
     void testSpecialCase() {
-        Program_Memory pm = MicroC.pm;
+        Program_Memory pm = MC.pm;
         pm.store("000D1D0C");
         assertArrayEquals(pm.readDataCell(13), new int[] {0,1, 1,1,0,1, 0,0,0,0, 1,1,0,0});
     }
 
     @Test
     void testStore() {
-        Program_Memory pm = MicroC.pm;
+        Program_Memory pm = MC.pm;
         pm.store("00003011");
         assertArrayEquals(pm.readDataCell(0),new int[] {1,1,0,0,0,0,0,0,0,1,0,0,0,1} );
     }
     
     @Test
     void testExceptionHandling() {
-        Program_Memory pm = MicroC.pm;
+        Program_Memory pm = MC.pm;
         assertThrows(UnknownLocationException.class, () -> {pm.readDataCell(-1);});
         assertThrows(UnknownLocationException.class, () -> {pm.readDataCell(1024);});
         assertThrows(UnknownLocationException.class, () -> {pm.readSpecificBit(0, -1);});

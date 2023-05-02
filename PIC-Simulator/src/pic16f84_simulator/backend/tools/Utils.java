@@ -1,15 +1,11 @@
-// Linus
 package pic16f84_simulator.backend.tools;
 
-import java.util.Arrays;
-
 public class Utils {
-
+    
     // 'F' zu --> 15
     public static int hexToDec(char hex) {        
         return Integer.parseInt(Character.toString(hex), 16);
     }
-
     
     // 'F' zu --> [1,1,1,1]
     public static int[] hexToBinary(char hex){
@@ -52,7 +48,7 @@ public class Utils {
     /* @param size ->   if you want store 15 in 8 bit Word,
      *                  then size is 8 and undefined indexes will be filled with 0 -> [0,0,0,0,1,1,1,1]
     */
-    public static int[] decToBinary(int dec,int size) {
+    public static int[] decToBinary(int dec, int size) {
         String binary = Integer.toBinaryString(dec);
         
         // Sanity Check

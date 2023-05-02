@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import pic16f84_simulator.MicroC;
+import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.RAM_Memory;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.UnknownLocationException;
@@ -13,7 +13,7 @@ class Test_Memory_RamMemory {
 
     @Test
     void testSetSFRBit() {
-        RAM_Memory ram = MicroC.ram;        
+        RAM_Memory ram = MC.ram;        
         
         // Bank0
         ram.writeDataCell(SFR.STATUS.asIndex(), new int[8]);
@@ -39,7 +39,7 @@ class Test_Memory_RamMemory {
     
     @Test
     void testWriteRam() {
-        RAM_Memory ram = MicroC.ram;
+        RAM_Memory ram = MC.ram;
         
         // SFR
         ram.writeDataCell(0, new int[] {0,1,1,0,1,0,1,1});
@@ -94,7 +94,7 @@ class Test_Memory_RamMemory {
     
     @Test
     void testCheckMemoryLocation() {
-        RAM_Memory ram = MicroC.ram;        
+        RAM_Memory ram = MC.ram;        
         assertThrows(NegativeArraySizeException .class, () -> {ram.checkMemoryLocation(7);});
         assertThrows(NegativeArraySizeException .class, () -> {ram.checkMemoryLocation(135);});
         assertThrows(NegativeArraySizeException .class, () -> {ram.checkMemoryLocation(80);});
@@ -105,7 +105,7 @@ class Test_Memory_RamMemory {
     
     @Test
     void testtryToMirrorBank() {
-        RAM_Memory ram = MicroC.ram;        
+        RAM_Memory ram = MC.ram;        
         // SFR
         assertEquals(1, ram.mirrorBank(1));
         assertEquals(129, ram.mirrorBank(129));//
