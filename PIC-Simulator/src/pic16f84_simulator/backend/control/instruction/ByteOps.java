@@ -1,6 +1,6 @@
 package pic16f84_simulator.backend.control.instruction;
 
-import pic16f84_simulator.MicroC;
+import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.control.ControlUnit;
 import pic16f84_simulator.backend.tools.Utils;
 
@@ -9,22 +9,31 @@ public enum ByteOps implements Instruction { // Linus
     ADDWF { // Eduard
         @Override
         public void exe(int d, int indexFile) {
-            int[] result = MicroC.calc.AdditionWF(indexFile);
+            int[] result = MC.alu.AdditionWF(indexFile);
             if(d==1) { // store in RAM
-                MicroC.ram.writeDataCell(indexFile, result);
+                MC.ram.writeDataCell(indexFile, result);
             }else { // store in W-Reg
-                MicroC.calc.wReg = result;
+                MC.alu.wReg = result;
             }
-            MicroC.control.pc++;
+            MC.control.pc++;
         }
-    }, ANDWF { // Linus
+    }, 
+    ANDWF { // Linus
         @Override
         public void exe(int d, int indexFile) {
+            int wAsDec = Utils.binaryToDec(MC.alu.wReg);
+            int fAsDec = Utils.binaryToDec(MC.ram.readDataCell(indexFile));
+            int[] wAndF = Utils.decToBinary(wAsDec & fAsDec, 8);
+            
+            if(d == 0) {
+               MC.alu.wReg = wAndF; 
+            }
+            else MC.ram.writeDataCell(indexFile, wAndF);
         }
     }, CLRF { // Eduard
         @Override
         public void exe(int d, int indexFile) {
-            MicroC.ram.writeDataCell(indexFile, new int[] {0,0,0,0,0,0,0,0});
+            MC.ram.writeDataCell(indexFile, new int[] {0,0,0,0,0,0,0,0});
         }
     }, CLRW { // Linus
         @Override
@@ -33,7 +42,7 @@ public enum ByteOps implements Instruction { // Linus
     }, COMF { // Eduard
         @Override
         public void exe(int d, int indexFile) {
-            int[] result = MicroC.ram.readDataCell(indexFile);
+            int[] result = MC.ram.readDataCell(indexFile);
             for(int i = 0;i<result.length;i++) {
                 if(result[i]==0) {
                     result[i]=1;
@@ -42,11 +51,11 @@ public enum ByteOps implements Instruction { // Linus
                 }
             }
             if(d==1) {// stored in RAM
-                MicroC.ram.writeDataCell(indexFile, result);
+                MC.ram.writeDataCell(indexFile, result);
             }else { // stored in W-Reg
-                MicroC.calc.wReg = result;
+                MC.alu.wReg = result;
             }
-            MicroC.control.pc++;
+            MC.control.pc++;
         }
     }, DECF { // Linus
         @Override
@@ -55,17 +64,17 @@ public enum ByteOps implements Instruction { // Linus
     }, DECFSZ { // Eduard
         @Override
         public void exe(int d, int indexFile) {
-            int result = Utils.binaryToDec(MicroC.ram.readDataCell(indexFile));
+            int result = Utils.binaryToDec(MC.ram.readDataCell(indexFile));
             result--;
             if(d==1) {// stored in RAM
-                MicroC.ram.writeDataCell(indexFile, Utils.decToBinary(result,8));
+                MC.ram.writeDataCell(indexFile, Utils.decToBinary(result,8));
             }else { // stored in W-Reg
-                MicroC.calc.wReg = Utils.decToBinary(result,8);
+                MC.alu.wReg = Utils.decToBinary(result,8);
             }
             if(result == 0) {
                 ByteOps.NOP.exe(0,0);
             }
-            MicroC.control.pc++;
+            MC.control.pc++;
         }
     }, INCF { // Linus
         @Override
@@ -74,17 +83,17 @@ public enum ByteOps implements Instruction { // Linus
     }, INCFSZ { // Eduard
         @Override
         public void exe(int d, int indexFile) {
-            int result = Utils.binaryToDec(MicroC.ram.readDataCell(indexFile));
+            int result = Utils.binaryToDec(MC.ram.readDataCell(indexFile));
             result++;
             if(d==1) {// stored in RAM
-                MicroC.ram.writeDataCell(indexFile, Utils.decToBinary(result,8));
+                MC.ram.writeDataCell(indexFile, Utils.decToBinary(result,8));
             }else { // stored in W-Reg
-                MicroC.calc.wReg = Utils.decToBinary(result,8);
+                MC.alu.wReg = Utils.decToBinary(result,8);
             }
             if(result == 0) {
                 ByteOps.NOP.exe(0,0);
             }
-            MicroC.control.pc++;
+            MC.control.pc++;
         }
     }, IORWF { // Linus
         @Override
@@ -94,11 +103,11 @@ public enum ByteOps implements Instruction { // Linus
         @Override
         public void exe(int d, int indexFile) {
             if(d==0) { // move to instr-Reg
-                MicroC.calc.wReg = MicroC.ram.readDataCell(indexFile);
+                MC.alu.wReg = MC.ram.readDataCell(indexFile);
             }else { // move to f-Reg itself
-                MicroC.ram.writeDataCell(indexFile, MicroC.ram.readDataCell(indexFile));
+                MC.ram.writeDataCell(indexFile, MC.ram.readDataCell(indexFile));
             }
-            MicroC.control.pc++;
+            MC.control.pc++;
         }
     }, MOVWF { // Linus
         @Override
@@ -107,7 +116,7 @@ public enum ByteOps implements Instruction { // Linus
     }, NOP { // Eduard
         @Override
         public void exe(int d, int indexFile) {
-            MicroC.control.pc++;
+            MC.control.pc++;
         }
     }, RLF { // Linus
         @Override
@@ -130,12 +139,11 @@ public enum ByteOps implements Instruction { // Linus
         public void exe(int d, int indexFile) {
         }
     };
-    
+
     public int indexDbit = 6;    
     public int fileStart = 7;
-        
+
     public abstract void exe(int d, int indexFile);
 
 
 }
- 

@@ -4,85 +4,104 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import pic16f84_simulator.MicroC;
+import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.tools.TP;
 
 class Test_Control_ControlUnit_ByteOps {
 
     @Test // Eduard
     void testADDWF() { 
-        MicroC.pm.readTestProgram(TP.s3);
+        MC.pm.readTestProgram(TP.s3);
         
         //Case 1: Store in w-Reg #w = 0; #f = 0
-        MicroC.control.pc=3; // 00 0111 0000 1100 d=0 -> Store in w-Reg
-        MicroC.control.exe();
-        assertArrayEquals(MicroC.calc.wReg,new int[] {0,0,0,0,0,0,0,0});
+        MC.control.pc=3; // 00 0111 0000 1100 d=0 -> Store in w-Reg
+        MC.control.exe();
+        assertArrayEquals(MC.alu.wReg,new int[] {0,0,0,0,0,0,0,0});
         
         //Case 2: Store in f-Reg #w = 1; #f = 1
         // pc -> 00 0111 1000 1100
-        MicroC.control.pc=3;
-        MicroC.ram.writeDataCell(12, new int[] {0,0,0,0,0,0,0,1});
-        MicroC.calc.wReg = new int[] {0,0,0,0,0,0,0,1};
-        MicroC.control.exe();
-        assertArrayEquals(MicroC.calc.wReg,new int[] {0,0,0,0,0,0,1,0});
+        MC.control.pc=3;
+        MC.ram.writeDataCell(12, new int[] {0,0,0,0,0,0,0,1});
+        MC.alu.wReg = new int[] {0,0,0,0,0,0,0,1};
+        MC.control.exe();
+        assertArrayEquals(MC.alu.wReg,new int[] {0,0,0,0,0,0,1,0});
+    }
+    
+    @Test
+    void testANDWF() {
+        MC.pm.readTestProgram(TP.s3);
+        
+        // Case1: dBit=0
+        MC.control.pc = 5; // 000101 0 0001100
+        MC.alu.wReg = new int[] {1,0,1,0,1,0,1,0};
+        MC.ram.writeDataCell(12, new int[] {0,0,1,0,1,0,1,0});
+        MC.control.exe();
+        assertArrayEquals(MC.alu.wReg, new int[] {0,0,1,0,1,0,1,0});
+        
+        // Case2: dBit=1
+        MC.pm.writeDataCell(5, new int[] {0,0,0,1,0,1, 1 ,0,0,0,1,1,0,0}); // overrides current instruction in pm cause there is no other testCase
+        MC.control.pc = 5;
+        MC.ram.writeDataCell(12, new int[] {0,1,0,0,1,0,0,1}); // wReg from previous op remains
+        MC.control.exe();
+        assertArrayEquals(MC.ram.readDataCell(12), new int[] {0,0,0,0,1,0,0,0});        
     }
     
     @Test // Eduard
     void testCLRF() {
-        MicroC.pm.readTestProgram(TP.s3);
-        MicroC.ram.writeDataCell(12, new int[] {1,1,1,1,1,1,1,1});
-        assertArrayEquals(MicroC.ram.readDataCell(12),new int[] {1,1,1,1,1,1,1,1});
-        MicroC.control.pc=7; // 00 0001 1000 1100
-        MicroC.control.exe();
-        assertArrayEquals(MicroC.ram.readDataCell(12),new int[] {0,0,0,0,0,0,0,0});
+        MC.pm.readTestProgram(TP.s3);
+        MC.ram.writeDataCell(12, new int[] {1,1,1,1,1,1,1,1});
+        assertArrayEquals(MC.ram.readDataCell(12),new int[] {1,1,1,1,1,1,1,1});
+        MC.control.pc=7; // 00 0001 1000 1100
+        MC.control.exe();
+        assertArrayEquals(MC.ram.readDataCell(12),new int[] {0,0,0,0,0,0,0,0});
     }
 
     @Test // Eduard
     void testCOMF() {
-        MicroC.pm.readTestProgram(TP.s3);
-        MicroC.ram.writeDataCell(13, new int[] {0,1,1,1,0,0,1,0});
-        MicroC.control.pc=8; // 00 1001 0000 1101 -> d=0 f=13
-        MicroC.control.exe();
-        assertArrayEquals(new int[] {1,0,0,0,1,1,0,1},MicroC.calc.wReg);
+        MC.pm.readTestProgram(TP.s3);
+        MC.ram.writeDataCell(13, new int[] {0,1,1,1,0,0,1,0});
+        MC.control.pc=8; // 00 1001 0000 1101 -> d=0 f=13
+        MC.control.exe();
+        assertArrayEquals(new int[] {1,0,0,0,1,1,0,1},MC.alu.wReg);
     }
     
     @Test  // Eduard
     void testDECFSZ() {
-        MicroC.pm.readTestProgram(TP.s4);
+        MC.pm.readTestProgram(TP.s4);
         
         // Case result is not 0
-        MicroC.ram.writeDataCell(12,new int[] {0,0,0,0,0,0,1,0});
-        MicroC.control.pc=18;// 00 1011 1000 1100 -> d=1 f=12
-        MicroC.control.exe();
-        assertArrayEquals(new int[] {0,0,0,0,0,0,0,1},MicroC.ram.readDataCell(12));
-        assertEquals(MicroC.control.pc,19);
+        MC.ram.writeDataCell(12,new int[] {0,0,0,0,0,0,1,0});
+        MC.control.pc=18;// 00 1011 1000 1100 -> d=1 f=12
+        MC.control.exe();
+        assertArrayEquals(new int[] {0,0,0,0,0,0,0,1},MC.ram.readDataCell(12));
+        assertEquals(MC.control.pc,19);
         
         // Case result is 0
-        MicroC.control.pc=18;
-        MicroC.control.exe();
-        assertArrayEquals(new int[] {0,0,0,0,0,0,0,0},MicroC.ram.readDataCell(12));
-        assertEquals(MicroC.control.pc,20);
+        MC.control.pc=18;
+        MC.control.exe();
+        assertArrayEquals(new int[] {0,0,0,0,0,0,0,0},MC.ram.readDataCell(12));
+        assertEquals(MC.control.pc,20);
     }
     
     @Test  // Eduard
     void testINCFSZ() {
-        MicroC.pm.readTestProgram(TP.s4);
+        MC.pm.readTestProgram(TP.s4);
         
         // Case result is not 0
-        MicroC.ram.writeDataCell(12, new int[] {0,0,0,0,0,0,1,1});
-        MicroC.control.pc=26;// 00 1111 1000 1100
-        MicroC.control.exe();
-        assertArrayEquals(new int[] {0,0,0,0,0,1,0,0},MicroC.ram.readDataCell(12));
-        assertEquals(MicroC.control.pc,27);
+        MC.ram.writeDataCell(12, new int[] {0,0,0,0,0,0,1,1});
+        MC.control.pc=26;// 00 1111 1000 1100
+        MC.control.exe();
+        assertArrayEquals(new int[] {0,0,0,0,0,1,0,0},MC.ram.readDataCell(12));
+        assertEquals(MC.control.pc,27);
     }
     
     @Test // Eduard
     void testMOVF() {
-        MicroC.pm.readTestProgram(TP.s6);
+        MC.pm.readTestProgram(TP.s6);
         
-        MicroC.ram.writeDataCell(12, new int[] {0,1,1,0,1,0,1,0});
-        MicroC.control.pc=5;// 00 1000 0000 1100
-        MicroC.control.exe();
-        assertArrayEquals(new int[] {0,1,1,0,1,0,1,0},MicroC.calc.wReg);
+        MC.ram.writeDataCell(12, new int[] {0,1,1,0,1,0,1,0});
+        MC.control.pc=5;// 00 1000 0000 1100
+        MC.control.exe();
+        assertArrayEquals(new int[] {0,1,1,0,1,0,1,0},MC.alu.wReg);
     }
 }
