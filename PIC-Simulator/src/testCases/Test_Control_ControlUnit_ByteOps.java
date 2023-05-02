@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import pic16f84_simulator.MC;
+import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.TP;
 
 class Test_Control_ControlUnit_ByteOps {
@@ -28,7 +29,7 @@ class Test_Control_ControlUnit_ByteOps {
     }
     
     @Test
-    void testANDWF() {
+    void testANDWF() { // Linus
         MC.pm.readTestProgram(TP.s3);
         
         // Case1: dBit=0
@@ -54,6 +55,18 @@ class Test_Control_ControlUnit_ByteOps {
         MC.control.pc=7; // 00 0001 1000 1100
         MC.control.exe();
         assertArrayEquals(MC.ram.readDataCell(12),new int[] {0,0,0,0,0,0,0,0});
+    }
+    
+    @Test // Linus
+    void testCLRW() {
+        MC.pm.readTestProgram(TP.s3);        
+        MC.control.pc = 16;        
+        MC.alu.wReg = new int[] {1,0,1,0,0,1,1,0}; // random val
+        MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 5, 0);
+        MC.control.exe();
+        
+        assertArrayEquals(MC.alu.wReg, new int[8]);
+        assertEquals(MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5), 1);
     }
 
     @Test // Eduard

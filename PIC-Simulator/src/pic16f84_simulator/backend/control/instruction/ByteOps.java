@@ -2,6 +2,7 @@ package pic16f84_simulator.backend.control.instruction;
 
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.control.ControlUnit;
+import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.Utils;
 
 public enum ByteOps implements Instruction { // Linus
@@ -30,16 +31,21 @@ public enum ByteOps implements Instruction { // Linus
             }
             else MC.ram.writeDataCell(indexFile, wAndF);
         }
-    }, CLRF { // Eduard
+    }, 
+    CLRF { // Eduard
         @Override
         public void exe(int d, int indexFile) {
             MC.ram.writeDataCell(indexFile, new int[] {0,0,0,0,0,0,0,0});
         }
-    }, CLRW { // Linus
+    }, 
+    CLRW { // Linus
         @Override
         public void exe(int d, int indexFile) {
+           MC.alu.wReg = new int[] {0,0,0,0,0,0,0,0};
+           MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 5, 1);
         }
-    }, COMF { // Eduard
+    }, 
+    COMF { // Eduard
         @Override
         public void exe(int d, int indexFile) {
             int[] result = MC.ram.readDataCell(indexFile);
