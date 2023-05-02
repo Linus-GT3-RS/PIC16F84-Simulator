@@ -1,5 +1,7 @@
 package pic16f84_simulator.backend.control.instruction;
 
+import java.util.Arrays;
+
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.control.ControlUnit;
 import pic16f84_simulator.backend.memory.SFR;
@@ -28,8 +30,13 @@ public enum ByteOps implements Instruction { // Linus
             
             if(d == 0) {
                MC.alu.wReg = wAndF; 
-            }
+            } 
             else MC.ram.writeDataCell(indexFile, wAndF);
+            
+            if(Arrays.equals(wAndF, new int[8])) {
+                MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 5, 1);
+            }
+            else MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 5, 0);            
         }
     }, 
     CLRF { // Eduard
