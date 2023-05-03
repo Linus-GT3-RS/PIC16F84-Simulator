@@ -28,8 +28,8 @@ class Test_Control_ControlUnit_ByteOps {
         assertArrayEquals(MC.alu.wReg,new int[] {0,0,0,0,0,0,1,0});
     }
 
-    @Test
-    void testANDWF() { // Linus
+    @Test // Linus
+    void testANDWF() { 
         MC.pm.readTestProgram(TP.s3);
 
         // Case1: dBit=0
@@ -127,5 +127,23 @@ class Test_Control_ControlUnit_ByteOps {
         MC.control.pc=5;// 00 1000 0000 1100
         MC.control.exe();
         assertArrayEquals(new int[] {0,1,1,0,1,0,1,0},MC.alu.wReg);
+    }
+    
+    @Test // Eduard
+    void testRRF() {
+        MC.pm.readTestProgram(TP.s6);
+        
+        // Case 1: Cary is 1
+        MC.ram.writeDataCell(0, new int[] {0,0,0,0,1,1,1,1});
+        MC.ram.setSFRBit(SFR.STATUS, 0, 1);
+        MC.control.pc=22;// 00 1100 1000 0000
+        MC.control.exe();
+        assertArrayEquals(new int[] {1,0,0,0,0,1,1,1},MC.ram.readDataCell(0));
+        
+        // Case 2: Carry is 0
+        MC.ram.setSFRBit(SFR.STATUS, 0, 0);
+        MC.control.pc=22;
+        MC.control.exe();
+        assertArrayEquals(new int[] {0,1,0,0,0,0,1,1},MC.ram.readDataCell(0));
     }
 }

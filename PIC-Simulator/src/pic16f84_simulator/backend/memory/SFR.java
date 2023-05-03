@@ -38,11 +38,14 @@ public enum SFR {
         }
     }
     
+    public static int status_getC() {
+        return MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 0);
+    }
+    
     public static void status_setZ(int[] result) {
         if(Arrays.equals(result, new int[8])) {
             MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 5, 1);
         }
         else MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 5, 0);
     }
-
 }

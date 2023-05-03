@@ -134,6 +134,19 @@ public enum ByteOps implements Instruction { // Linus
     }, RRF { // Eduard
         @Override
         public void exe(int d, int indexFile) {
+            int[] result = new int[8];
+            System.arraycopy(MC.ram.readDataCell(indexFile),0,result,1,7);
+            if(SFR.status_getC() == 0) {
+                result[0] = 0;
+            }else {
+                result[0] = 1;
+            }
+            if(d==1) { // store in RAM
+                MC.ram.writeDataCell(indexFile, result);
+            }else { // store in W-Reg
+                MC.alu.wReg = result;
+            }
+            MC.control.pc++;
         }
     }, SUBWF { // Linus
         @Override
