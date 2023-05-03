@@ -146,4 +146,14 @@ class Test_Control_ControlUnit_ByteOps {
         MC.control.exe();
         assertArrayEquals(new int[] {0,1,0,0,0,0,1,1},MC.ram.readDataCell(0));
     }
+    
+    @Test // Eduard
+    void testSWAPF() {
+        MC.pm.readTestProgram(TP.s6);
+        
+        MC.ram.writeDataCell(0, new int[] {1,1,0,0,0,0,1,1});
+        MC.control.pc=30;// 00 1110 1000 0000
+        MC.control.exe();
+        assertArrayEquals(new int[] {0,0,1,1,1,1,0,0},MC.ram.readDataCell(0));
+    }
 }

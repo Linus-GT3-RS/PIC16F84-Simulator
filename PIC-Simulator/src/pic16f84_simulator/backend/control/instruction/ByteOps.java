@@ -155,6 +155,15 @@ public enum ByteOps implements Instruction { // Linus
     }, SWAPF { // Eduard
         @Override
         public void exe(int d, int indexFile) {
+            int[] result = new int[8];
+            System.arraycopy(MC.ram.readDataCell(indexFile), 4, result, 0, 4);
+            System.arraycopy(MC.ram.readDataCell(indexFile), 0, result, 4, 4);
+            if(d==1) { // store in RAM
+                MC.ram.writeDataCell(indexFile, result);
+            }else { // store in W-Reg
+                MC.alu.wReg = result;
+            }
+            MC.control.pc++;
         }
     }, XORWF { // Linus
         @Override
