@@ -17,7 +17,7 @@ class Test_Control_ControlUnit_BitOps {
         MC.pm.readTestProgram(TP.s5);
         MC.control.pc = 5; // 01 0010 0000 1100 -> 01 00bb bfff ffff 
         MC.control.exe();
-        MC.ram.checkBit(Utils.binaryToDec(new int[] {0,0,0,1,1,0,0}),0);
+        assertEquals(MC.ram.readSpecificBit(Utils.binaryToDec(new int[] {0,0,0,1,1,0,0}),7),0);
     }
     
     @Test
