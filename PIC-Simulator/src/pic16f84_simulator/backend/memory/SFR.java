@@ -42,6 +42,10 @@ public enum SFR {
         return MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 0);
     }
     
+    public static void status_setC(int bit) {
+        MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 0, bit);
+    }
+    
     public static void status_setZ(int[] result) {
         if(Arrays.equals(result, new int[8])) {
             MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 5, 1);

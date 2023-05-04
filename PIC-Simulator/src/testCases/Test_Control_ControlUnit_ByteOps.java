@@ -135,13 +135,14 @@ class Test_Control_ControlUnit_ByteOps {
         
         // Case 1: Cary is 1
         MC.ram.writeDataCell(0, new int[] {0,0,0,0,1,1,1,1});
-        MC.ram.setSFRBit(SFR.STATUS, 0, 1);
+        MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 0, 1);
         MC.control.pc=22;// 00 1100 1000 0000
         MC.control.exe();
         assertArrayEquals(new int[] {1,0,0,0,0,1,1,1},MC.ram.readDataCell(0));
+        assertEquals(SFR.status_getC(),1);
         
         // Case 2: Carry is 0
-        MC.ram.setSFRBit(SFR.STATUS, 0, 0);
+        MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 0, 0);
         MC.control.pc=22;
         MC.control.exe();
         assertArrayEquals(new int[] {0,1,0,0,0,0,1,1},MC.ram.readDataCell(0));

@@ -141,6 +141,7 @@ public enum ByteOps implements Instruction { // Linus
             }else {
                 result[0] = 1;
             }
+            SFR.status_setC(MC.ram.readSpecificBit(indexFile, 7));
             if(d==1) { // store in RAM
                 MC.ram.writeDataCell(indexFile, result);
             }else { // store in W-Reg

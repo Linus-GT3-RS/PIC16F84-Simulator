@@ -10,31 +10,6 @@ import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.UnknownLocationException;
 
 class Test_Memory_RamMemory {
-
-    @Test
-    void testSetSFRBit() {
-        RAM_Memory ram = MC.ram;        
-        
-        // Bank0
-        ram.writeDataCell(SFR.STATUS.asIndex(), new int[8]);
-        ram.writeDataCell(131, new int[8]);
-        ram.setSFRBit(SFR.STATUS, 7, 1); 
-        assertArrayEquals(new int[] {0,0,0,0,0,0,0,1}, ram.readDataCell(3));
-        assertArrayEquals(new int[] {0,0,0,0,0,0,0,1}, ram.readDataCell(131));
-        
-        ram.writeDataCell(9, new int[8]);
-        ram.writeDataCell(137, new int[8]);
-        ram.setSFRBit(SFR.EEADR, 0, 1);
-        assertArrayEquals(new int[] {1,0,0,0,0,0,0,0}, ram.readDataCell(9));
-        assertArrayEquals(new int[] {0,0,0,0,0,0,0,0}, ram.readDataCell(137));
-        
-        // Bank1
-        ram.writeDataCell(133, new int[8]);
-        ram.writeDataCell(5, new int[8]);
-        ram.setSFRBit(SFR.TRISA, 1, 1);
-        assertArrayEquals(new int[] {0,1,0,0,0,0,0,0}, ram.readDataCell(133));
-        assertArrayEquals(new int[] {0,0,0,0,0,0,0,0}, ram.readDataCell(5));        
-    }
     
     
     @Test

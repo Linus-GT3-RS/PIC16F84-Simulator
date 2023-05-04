@@ -15,17 +15,6 @@ public class RAM_Memory extends Template_Memory { // Linus
     }   
 
 
-    // changes one specificBit of one SFR-Register (in both Banks if possible)
-    public void setSFRBit (SFR sfr, int indexBit, int bit) {
-        super.writeSpecificBit(sfr.asIndex(), indexBit, bit); // writes Bank0
-
-        int mirroredIndex = mirrorBank(sfr.asIndex());
-        if(mirroredIndex != sfr.asIndex()) {
-            super.writeSpecificBit(mirroredIndex, indexBit, bit); // writes Bank1
-        }
-    }
-
-
     /*
      * writes to specific RamAdress --> gets mirrored automatically
      */
