@@ -1,5 +1,7 @@
 package pic16f84_simulator.backend.control.instruction;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.Arrays;
 
 import pic16f84_simulator.MC;
@@ -18,6 +20,7 @@ public enum ByteOps implements Instruction { // Linus
             }else { // store in W-Reg
                 MC.alu.wReg = result;
             }
+            SFR.status_setZ(result);
             MC.control.pc++;
         }
     }, 
@@ -39,6 +42,8 @@ public enum ByteOps implements Instruction { // Linus
         @Override
         public void exe(int d, int indexFile) {
             MC.ram.writeDataCell(indexFile, new int[] {0,0,0,0,0,0,0,0});
+            SFR.status_setZ(new int[8]);
+            MC.control.pc++;
         }
     }, 
     CLRW { // Linus
@@ -64,6 +69,7 @@ public enum ByteOps implements Instruction { // Linus
             }else { // stored in W-Reg
                 MC.alu.wReg = result;
             }
+            SFR.status_setZ(result);
             MC.control.pc++;
         }
     }, DECF { // Linus
@@ -111,11 +117,13 @@ public enum ByteOps implements Instruction { // Linus
     }, MOVF { // Eduard
         @Override
         public void exe(int d, int indexFile) {
+            int[] result = MC.ram.readDataCell(indexFile);
             if(d==0) { // move to instr-Reg
-                MC.alu.wReg = MC.ram.readDataCell(indexFile);
+                MC.alu.wReg = result;
             }else { // move to f-Reg itself
-                MC.ram.writeDataCell(indexFile, MC.ram.readDataCell(indexFile));
+                MC.ram.writeDataCell(indexFile, result);
             }
+            SFR.status_setZ(result);
             MC.control.pc++;
         }
     }, MOVWF { // Linus
