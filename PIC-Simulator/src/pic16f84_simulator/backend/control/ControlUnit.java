@@ -1,5 +1,6 @@
 package pic16f84_simulator.backend.control;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 import pic16f84_simulator.MC;
@@ -41,7 +42,8 @@ public class ControlUnit {
             instr.exe(indexBit, indexFile);            
         }
         if(instruct instanceof LitConOps instr){
-            String k = Utils.cutArray(instrReg.readReg(), instr.kStart(), instrReg.readReg().length-1);
+            int[] k = new int[14-instr.kStart()];
+            System.arraycopy(instrReg.readReg(),instr.kStart(),  k, 0, (14-instr.kStart()));
             instr.exe(k);
         }
     }
