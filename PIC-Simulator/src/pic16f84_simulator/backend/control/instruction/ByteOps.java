@@ -14,7 +14,8 @@ public enum ByteOps implements Instruction { // Linus
     ADDWF { // Eduard
         @Override
         public void exe(int d, int indexFile) {
-            int[] result = MC.alu.AdditionWF(indexFile);
+            int[] operand = MC.ram.readDataCell(indexFile);
+            int[] result = MC.alu.AdditionWF(operand);
             if(d==1) { // store in RAM
                 MC.ram.writeDataCell(indexFile, result);
             }else { // store in W-Reg
@@ -81,6 +82,9 @@ public enum ByteOps implements Instruction { // Linus
         public void exe(int d, int indexFile) {
             int result = Utils.binaryToDec(MC.ram.readDataCell(indexFile));
             result--;
+            if(result < 0) {
+                result = result+256;
+            }
             if(d==1) {// stored in RAM
                 MC.ram.writeDataCell(indexFile, Utils.decToBinary(result,8));
             }else { // stored in W-Reg

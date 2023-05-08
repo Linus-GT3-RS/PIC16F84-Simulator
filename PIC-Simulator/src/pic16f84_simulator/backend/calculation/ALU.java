@@ -6,11 +6,11 @@ import pic16f84_simulator.backend.memory.SFR;
 public class ALU {
     public int[] wReg = new int[8];
 
-    public int[] AdditionWF(int indexCell) {
+    public int[] AdditionWF(int[] Arr) {
         int[] result = new int[8];
         int sum = 0;
         for (int i = wReg.length - 1; i >= 0; i--) {
-            sum = sum + wReg[i] + MC.ram.readSpecificBit(indexCell, i);
+            sum = sum + wReg[i] + Arr[i];
             if (sum == 2) { // Fall des Überlaufs/Übertrags
                 if (i == 4) {
                     SFR.status_setDC(1);
