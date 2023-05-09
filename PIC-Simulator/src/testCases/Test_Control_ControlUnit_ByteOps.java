@@ -33,6 +33,8 @@ class Test_Control_ControlUnit_ByteOps {
         assertEquals(0,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 6)); //DC-Flag
         assertEquals(0,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); //Z-Flag
         assertEquals(0,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 7)); //C-Flag
+        assertArrayEquals(new int[] {0,0,0,0,0,1,0,1},MC.ram.readDataCell(SFR.PCL.asIndex()));
+        assertArrayEquals(new int[] {0,0,0,0,0,0,0,0},MC.ram.readDataCell(SFR.PCLATH.asIndex()));
     }
 
     @Test // Linus
