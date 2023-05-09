@@ -27,7 +27,7 @@ public enum LitConOps implements Instruction { // Linus
         public void exe(int[] k) {
         }
     },
-    CLRWDT { // Eduard
+    CLRWDT { // Eduard -> Watchdog-Timer
         @Override
         public void exe(int[] k) {
         }
@@ -40,6 +40,12 @@ public enum LitConOps implements Instruction { // Linus
     IORLW { // Eduard
         @Override
         public void exe(int[] k) {
+            int wAsDec = Utils.binaryToDec(MC.alu.wReg);
+            int kAsDec = Utils.binaryToDec(k);
+            int[] wAndK = Utils.decToBinary(wAsDec ^ kAsDec, 8);
+            MC.alu.wReg = wAndK;
+            SFR.status_setZ(wAndK);
+            MC.control.pc++;
         }
     },
     MOVLW { // Linus
