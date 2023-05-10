@@ -16,7 +16,6 @@ public enum ByteOps implements Instruction { // Linus
                 MC.alu.wReg = result;
             }
             SFR.status_setZ(result);
-            MC.control.pcpp();
         }
     },
     ANDWF { // Linus
@@ -30,8 +29,7 @@ public enum ByteOps implements Instruction { // Linus
                 MC.alu.wReg = wAndF; 
             } 
             else MC.ram.writeDataCell(indexFile, wAndF);            
-            SFR.status_setZ(wAndF);  
-            MC.control.pcpp();
+            SFR.status_setZ(wAndF); 
         }
     },
     CLRF { // Eduard
@@ -40,7 +38,6 @@ public enum ByteOps implements Instruction { // Linus
             MC.ram.writeDataCell(indexFile, new int[] { 0, 0, 0, 0, 0, 0, 0, 0 });
             SFR.status_setZ(new int[8]);
             MC.control.pc++;
-            MC.control.pcpp();
         }
     },
     CLRW { // Linus
@@ -48,7 +45,6 @@ public enum ByteOps implements Instruction { // Linus
         public void exe(int d, int indexFile) {
             MC.alu.wReg = new int[] {0,0,0,0,0,0,0,0};
             SFR.status_setZ(new int[8]);
-            MC.control.pcpp();
         }
     },
     COMF { // Eduard
@@ -61,7 +57,6 @@ public enum ByteOps implements Instruction { // Linus
                 } else {
                     result[i] = 0;
                 }
-                MC.control.pcpp();
             }
             if (d == 1) {// stored in RAM
                 MC.ram.writeDataCell(indexFile, result);
@@ -69,7 +64,6 @@ public enum ByteOps implements Instruction { // Linus
                 MC.alu.wReg = result;
             }
             SFR.status_setZ(result);
-            MC.control.pc++;
         }
     },
     DECF { // Linus
@@ -78,7 +72,6 @@ public enum ByteOps implements Instruction { // Linus
             int res = Utils.binaryToDec(MC.ram.readDataCell(indexFile)) - 1;
             storeResult(d, indexFile, res);
             SFR.status_setZ(res);
-            MC.control.pc++;
         }
     },
     DECFSZ { // Eduard
@@ -97,7 +90,6 @@ public enum ByteOps implements Instruction { // Linus
             if (result == 0) {
                 ByteOps.NOP.exe(0, 0);
             }
-            MC.control.pcpp();
         }
     },
     INCF { // Linus
@@ -118,7 +110,6 @@ public enum ByteOps implements Instruction { // Linus
             if (result == 0) {
                 ByteOps.NOP.exe(0, 0);
             }
-            MC.control.pcpp();
         }
     },
     IORWF { // Linus
@@ -136,7 +127,6 @@ public enum ByteOps implements Instruction { // Linus
                 MC.ram.writeDataCell(indexFile, result);
             }
             SFR.status_setZ(result);
-            MC.control.pcpp();
         }
     },
     MOVWF { // Linus
@@ -147,7 +137,7 @@ public enum ByteOps implements Instruction { // Linus
     NOP { // Eduard
         @Override
         public void exe(int d, int indexFile) {
-            MC.control.pc++;
+            MC.control.pcpp(); // dont remove
         }
     },
     RLF { // Linus
@@ -171,7 +161,6 @@ public enum ByteOps implements Instruction { // Linus
             } else { // store in W-Reg
                 MC.alu.wReg = result;
             }
-            MC.control.pcpp();
         }
     },
     SUBWF { // Linus
@@ -190,7 +179,6 @@ public enum ByteOps implements Instruction { // Linus
             } else { // store in W-Reg
                 MC.alu.wReg = result;
             }
-            MC.control.pcpp();
         }
     },
     XORWF { // Linus

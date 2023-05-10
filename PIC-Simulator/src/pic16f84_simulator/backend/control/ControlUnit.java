@@ -47,6 +47,7 @@ public class ControlUnit {
             System.arraycopy(instrReg.readReg(),instr.kStart(),  k, 0, (14-instr.kStart()));
             instr.exe(k);
         }
+        pcpp();
     }
     
     public void pcpp() {
