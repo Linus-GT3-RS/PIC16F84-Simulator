@@ -16,50 +16,56 @@ import pic16f84_simulator.backend.tools.Utils;
 public class ControlUnit {
 
     private static boolean creationAllowed = true; // secures the creation of ONLY ONE instance of this class
-    public ControlUnit() {
-        if(ControlUnit.creationAllowed == false) {
-            throw new IllegalArgumentException("Theres already an instance of this class!"); 
-        }
-        ControlUnit.creationAllowed = false;      
-    }
 
+    public ControlUnit() {
+        if (ControlUnit.creationAllowed == false) {
+            throw new IllegalArgumentException("Theres already an instance of this class!");
+        }
+        ControlUnit.creationAllowed = false;
+    }
+    
     public int pc = 0;
     public Register instrReg = new Register(14);
     public InstructionDecoder instrDecoder = new InstructionDecoder();
 
     
-    public void exe() {        
+    public void exe() {
         instrReg.writeReg(MC.pm.readDataCell(pc)); // load instReg
         Instruction instruct = instrDecoder.extractOpC(instrReg.readReg()); // load OpCode
 
-        if(instruct instanceof ByteOps instr) {            
-            int dBit = instrReg.readBit(instr.indexDbit)  ;
-            int indexFile = Utils.binaryToDec(Arrays.copyOfRange(instrReg.readReg(), instr.fileStart, instrReg.readReg().length));          
+        if (instruct instanceof ByteOps instr) {
+            int dBit = instrReg.readBit(instr.indexDbit);
+            int indexFile = Utils
+                    .binaryToDec(Arrays.copyOfRange(instrReg.readReg(), instr.fileStart, instrReg.readReg().length));
             instr.exe(dBit, indexFile);
         }
-        if(instruct instanceof BitOps instr) {            
-            int indexBit = Utils.binaryToDec(Arrays.copyOfRange(instrReg.readReg(), instr.dBitStart, instr.dBitEnd+1));
-            int indexFile = Utils.binaryToDec(Arrays.copyOfRange(instrReg.readReg(), instr.fileStart, instrReg.readReg().length));
-            instr.exe(indexBit, indexFile);            
+        if (instruct instanceof BitOps instr) {
+            int indexBit = Utils
+                    .binaryToDec(Arrays.copyOfRange(instrReg.readReg(), instr.dBitStart, instr.dBitEnd + 1));
+            int indexFile = Utils
+                    .binaryToDec(Arrays.copyOfRange(instrReg.readReg(), instr.fileStart, instrReg.readReg().length));
+            instr.exe(indexBit, indexFile);
         }
-        if(instruct instanceof LitConOps instr){
-            int[] k = new int[14-instr.kStart()];
-            System.arraycopy(instrReg.readReg(),instr.kStart(),  k, 0, (14-instr.kStart()));
+        if (instruct instanceof LitConOps instr) {
+            int[] k = new int[14 - instr.kStart()];
+            System.arraycopy(instrReg.readReg(), instr.kStart(), k, 0, (14 - instr.kStart()));
             instr.exe(k);
         }
+        pcpp();
     }
-    
+
     public void pcpp() {
         Instruction instruct = instrDecoder.extractOpC(instrReg.readReg()); // load OpCode
-        if(instruct instanceof ByteOps instr && instr == ByteOps.NOP) {
-        }else {
+        if (instruct instanceof ByteOps instr && instr == ByteOps.NOP) {
+        } 
+        else {
             pc++;
             int[] pclBinary = Utils.decToBinary(pc, 13);
             MC.ram.writeDataCell(SFR.PCL.asIndex(), Arrays.copyOfRange(pclBinary, 5, 13));
             int[] pclLatchBinary = new int[8];
             System.arraycopy(pclBinary, 0, pclLatchBinary, 3, 5);
-            MC.ram.writeDataCell(SFR.PCLATH.asIndex(),pclLatchBinary);
+            MC.ram.writeDataCell(SFR.PCLATH.asIndex(), pclLatchBinary);
         }
     }
-    
+
 }
