@@ -24,11 +24,7 @@ public enum ByteOps implements Instruction { // Linus
             int wAsDec = Utils.binaryToDec(MC.alu.wReg);
             int fAsDec = Utils.binaryToDec(MC.ram.readDataCell(indexFile));
             int[] wAndF = Utils.decToBinary(wAsDec & fAsDec, 8);
-            
-            if(d == 0) {
-                MC.alu.wReg = wAndF; 
-            } 
-            else MC.ram.writeDataCell(indexFile, wAndF);            
+            storeResult(d, indexFile, wAndF);         
             SFR.status_setZ(wAndF); 
         }
     },
