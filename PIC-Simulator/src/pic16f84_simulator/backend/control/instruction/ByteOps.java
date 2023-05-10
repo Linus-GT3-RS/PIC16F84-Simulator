@@ -10,11 +10,7 @@ public enum ByteOps implements Instruction { // Linus
         public void exe(int d, int indexFile) {
             int[] operand = MC.ram.readDataCell(indexFile);
             int[] result = MC.alu.AdditionWF(operand);
-            if (d == 1) { // store in RAM
-                MC.ram.writeDataCell(indexFile, result);
-            } else { // store in W-Reg
-                MC.alu.wReg = result;
-            }
+            storeResult(d,indexFile,result);
             SFR.status_setZ(result);
         }
     },
@@ -54,11 +50,7 @@ public enum ByteOps implements Instruction { // Linus
                     result[i] = 0;
                 }
             }
-            if (d == 1) {// stored in RAM
-                MC.ram.writeDataCell(indexFile, result);
-            } else { // stored in W-Reg
-                MC.alu.wReg = result;
-            }
+            storeResult(d,indexFile,result);
             SFR.status_setZ(result);
         }
     },
@@ -78,11 +70,7 @@ public enum ByteOps implements Instruction { // Linus
             if (result < 0) {
                 result = result + 256;
             }
-            if (d == 1) {// stored in RAM
-                MC.ram.writeDataCell(indexFile, Utils.decToBinary(result, 8));
-            } else { // stored in W-Reg
-                MC.alu.wReg = Utils.decToBinary(result, 8);
-            }
+            storeResult(d,indexFile,result);
             if (result == 0) {
                 ByteOps.NOP.exe(0, 0);
             }
@@ -98,11 +86,7 @@ public enum ByteOps implements Instruction { // Linus
         public void exe(int d, int indexFile) {
             int result = Utils.binaryToDec(MC.ram.readDataCell(indexFile));
             result++;
-            if (d == 1) {// stored in RAM
-                MC.ram.writeDataCell(indexFile, Utils.decToBinary(result, 8));
-            } else { // stored in W-Reg
-                MC.alu.wReg = Utils.decToBinary(result, 8);
-            }
+            storeResult(d,indexFile,result);
             if (result == 0) {
                 ByteOps.NOP.exe(0, 0);
             }
@@ -152,11 +136,7 @@ public enum ByteOps implements Instruction { // Linus
                 result[0] = 1;
             }
             SFR.status_setC(MC.ram.readSpecificBit(indexFile, 7));
-            if (d == 1) { // store in RAM
-                MC.ram.writeDataCell(indexFile, result);
-            } else { // store in W-Reg
-                MC.alu.wReg = result;
-            }
+            storeResult(d,indexFile,result);
         }
     },
     SUBWF { // Linus
@@ -170,11 +150,7 @@ public enum ByteOps implements Instruction { // Linus
             int[] result = new int[8];
             System.arraycopy(MC.ram.readDataCell(indexFile), 4, result, 0, 4);
             System.arraycopy(MC.ram.readDataCell(indexFile), 0, result, 4, 4);
-            if (d == 1) { // store in RAM
-                MC.ram.writeDataCell(indexFile, result);
-            } else { // store in W-Reg
-                MC.alu.wReg = result;
-            }
+            storeResult(d,indexFile,result);
         }
     },
     XORWF { // Linus
