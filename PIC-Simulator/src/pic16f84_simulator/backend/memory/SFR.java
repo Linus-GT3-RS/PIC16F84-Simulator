@@ -39,12 +39,15 @@ public enum SFR {
         }
     }
     
+    public static void status_setDC(int bit) {
+        MC.ram.writeSpecificBit(SFR.STATUS.asIndex(),6,bit);
+    }
     public static int status_getC() {
-        return MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 0);
+        return MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 7);
     }
     
     public static void status_setC(int bit) {
-        MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 0, bit);
+        MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 7, bit);
     }
     
     public static void status_setZ(int res) {

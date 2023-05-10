@@ -15,18 +15,27 @@ class Test_Control_ControlUnit_ByteOps {
     void testADDWF() { 
         MC.pm.readTestProgram(TP.s3);
 
-        //Case 1: Store in w-Reg #w = 0; #f = 0
+        //Case 1: Store in w-Reg #w = 8; #f = 8
+        MC.alu.wReg = new int[] {0,0,0,0,1,0,0,0};
+        MC.ram.writeDataCell(12, new int[] {0,0,0,0,1,0,0,0});
         MC.control.pc=3; // 00 0111 0000 1100 d=0 -> Store in w-Reg
         MC.control.exe();
-        assertArrayEquals(MC.alu.wReg,new int[] {0,0,0,0,0,0,0,0});
+        assertArrayEquals(MC.alu.wReg,new int[] {0,0,0,1,0,0,0,0});
+        assertEquals(1,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 6)); //DC-Flag
+        assertEquals(0,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); //Z-Flag
+        assertEquals(0,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 7)); //C-Flag
 
         //Case 2: Store in f-Reg #w = 1; #f = 1
-        // pc -> 00 0111 1000 1100
-        MC.control.pc=3;
+        MC.control.pc=4;//00 0111 1000 1100 d=1 -> Store in f-Reg
         MC.ram.writeDataCell(12, new int[] {0,0,0,0,0,0,0,1});
         MC.alu.wReg = new int[] {0,0,0,0,0,0,0,1};
         MC.control.exe();
-        assertArrayEquals(MC.alu.wReg,new int[] {0,0,0,0,0,0,1,0});
+        assertArrayEquals(new int[] {0,0,0,0,0,0,1,0},MC.ram.readDataCell(12));
+        assertEquals(0,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 6)); //DC-Flag
+        assertEquals(0,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); //Z-Flag
+        assertEquals(0,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 7)); //C-Flag
+        assertArrayEquals(new int[] {0,0,0,0,0,1,0,1},MC.ram.readDataCell(SFR.PCL.asIndex()));
+        assertArrayEquals(new int[] {0,0,0,0,0,0,0,0},MC.ram.readDataCell(SFR.PCLATH.asIndex()));
     }
 
     @Test // Linus
@@ -67,6 +76,7 @@ class Test_Control_ControlUnit_ByteOps {
         MC.control.pc=7; // 00 0001 1000 1100
         MC.control.exe();
         assertArrayEquals(MC.ram.readDataCell(12),new int[] {0,0,0,0,0,0,0,0});
+        assertEquals(1,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); //Z-Flag
     }
 
     @Test // Linus
@@ -88,6 +98,7 @@ class Test_Control_ControlUnit_ByteOps {
         MC.control.pc=8; // 00 1001 0000 1101 -> d=0 f=13
         MC.control.exe();
         assertArrayEquals(new int[] {1,0,0,0,1,1,0,1},MC.alu.wReg);
+        assertEquals(0,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); //Z-Flag
     }
     
     @Test
@@ -116,6 +127,11 @@ class Test_Control_ControlUnit_ByteOps {
         MC.control.exe();
         assertArrayEquals(new int[] {0,0,0,0,0,0,0,0},MC.ram.readDataCell(12));
         assertEquals(MC.control.pc,20);
+        
+        // Case result is -1
+        MC.control.pc=18;
+        MC.control.exe();
+        assertArrayEquals(new int[] {1,1,1,1,1,1,1,1}, MC.ram.readDataCell(12));
     }
 
     @Test  // Eduard
@@ -134,10 +150,19 @@ class Test_Control_ControlUnit_ByteOps {
     void testMOVF() {
         MC.pm.readTestProgram(TP.s6);
 
+        //Case: Z-Flag is 0
         MC.ram.writeDataCell(12, new int[] {0,1,1,0,1,0,1,0});
         MC.control.pc=5;// 00 1000 0000 1100
         MC.control.exe();
         assertArrayEquals(new int[] {0,1,1,0,1,0,1,0},MC.alu.wReg);
+        assertEquals(0,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); //Z-Flag
+        
+        //Case: Z-Flag is 1
+        MC.ram.writeDataCell(12, new int[] {0,0,0,0,0,0,0,0});
+        MC.control.pc=5;// 00 1000 0000 1100
+        MC.control.exe();
+        assertArrayEquals(new int[] {0,0,0,0,0,0,0,0},MC.alu.wReg);
+        assertEquals(1,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); //Z-Flag
     }
     
     @Test // Eduard
@@ -145,18 +170,18 @@ class Test_Control_ControlUnit_ByteOps {
         MC.pm.readTestProgram(TP.s6);
         
         // Case 1: Cary is 1
-        MC.ram.writeDataCell(0, new int[] {0,0,0,0,1,1,1,1});
-        MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 0, 1);
+        MC.ram.writeDataCell(0, new int[] {0,0,0,0,1,1,1,0});
+        MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 7, 1);
         MC.control.pc=22;// 00 1100 1000 0000
         MC.control.exe();
         assertArrayEquals(new int[] {1,0,0,0,0,1,1,1},MC.ram.readDataCell(0));
-        assertEquals(SFR.status_getC(),1);
+        assertEquals(0,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 7)); //C-Flag
         
         // Case 2: Carry is 0
-        MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 0, 0);
         MC.control.pc=22;
         MC.control.exe();
         assertArrayEquals(new int[] {0,1,0,0,0,0,1,1},MC.ram.readDataCell(0));
+        assertEquals(1,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 7)); //C-Flag
     }
     
     @Test // Eduard

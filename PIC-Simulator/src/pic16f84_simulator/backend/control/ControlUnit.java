@@ -1,5 +1,6 @@
 package pic16f84_simulator.backend.control;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 import pic16f84_simulator.MC;
@@ -9,6 +10,7 @@ import pic16f84_simulator.backend.control.instruction.Instruction;
 import pic16f84_simulator.backend.control.instruction.InstructionDecoder;
 import pic16f84_simulator.backend.control.instruction.LitConOps;
 import pic16f84_simulator.backend.memory.Register;
+import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.Utils;
 
 public class ControlUnit {
@@ -41,8 +43,22 @@ public class ControlUnit {
             instr.exe(indexBit, indexFile);            
         }
         if(instruct instanceof LitConOps instr){
-            String k = Utils.cutArray(instrReg.readReg(), instr.kStart(), instrReg.readReg().length-1);
+            int[] k = new int[14-instr.kStart()];
+            System.arraycopy(instrReg.readReg(),instr.kStart(),  k, 0, (14-instr.kStart()));
             instr.exe(k);
+        }
+    }
+    
+    public void pcpp() {
+        Instruction instruct = instrDecoder.extractOpC(instrReg.readReg()); // load OpCode
+        if(instruct instanceof ByteOps instr && instr == ByteOps.NOP) {
+        }else {
+            pc++;
+            int[] pclBinary = Utils.decToBinary(pc, 13);
+            MC.ram.writeDataCell(SFR.PCL.asIndex(), Arrays.copyOfRange(pclBinary, 5, 13));
+            int[] pclLatchBinary = new int[8];
+            System.arraycopy(pclBinary, 0, pclLatchBinary, 3, 5);
+            MC.ram.writeDataCell(SFR.PCLATH.asIndex(),pclLatchBinary);
         }
     }
     
