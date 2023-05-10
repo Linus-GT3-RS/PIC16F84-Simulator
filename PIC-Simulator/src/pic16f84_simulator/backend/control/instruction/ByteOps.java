@@ -105,11 +105,7 @@ public enum ByteOps implements Instruction { // Linus
         @Override
         public void exe(int d, int indexFile) {
             int[] result = MC.ram.readDataCell(indexFile);
-            if (d == 0) { // move to instr-Reg
-                MC.alu.wReg = result;
-            } else { // move to f-Reg itself
-                MC.ram.writeDataCell(indexFile, result);
-            }
+            storeResult(d,indexFile,result);
             SFR.status_setZ(result);
         }
     },
