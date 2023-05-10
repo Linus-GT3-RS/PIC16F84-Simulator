@@ -50,16 +50,12 @@ public class ControlUnit {
     }
     
     public void pcpp() {
-        Instruction instruct = instrDecoder.extractOpC(instrReg.readReg()); // load OpCode
-        if(instruct instanceof ByteOps instr && instr == ByteOps.NOP) {
-        }else {
-            pc++;
-            int[] pclBinary = Utils.decToBinary(pc, 13);
-            MC.ram.writeDataCell(SFR.PCL.asIndex(), Arrays.copyOfRange(pclBinary, 5, 13));
-            int[] pclLatchBinary = new int[8];
-            System.arraycopy(pclBinary, 0, pclLatchBinary, 3, 5);
-            MC.ram.writeDataCell(SFR.PCLATH.asIndex(),pclLatchBinary);
-        }
+        pc++;
+        int[] pclBinary = Utils.decToBinary(pc, 13);
+        MC.ram.writeDataCell(SFR.PCL.asIndex(), Arrays.copyOfRange(pclBinary, 5, 13));
+        int[] pclLatchBinary = new int[8];
+        System.arraycopy(pclBinary, 0, pclLatchBinary, 3, 5);
+        MC.ram.writeDataCell(SFR.PCLATH.asIndex(),pclLatchBinary);
     }
     
 }
