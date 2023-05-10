@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.TP;
+import pic16f84_simulator.backend.tools.Utils;
 
 class Test_Control_ControlUnit_ByteOps {
 
@@ -88,7 +89,17 @@ class Test_Control_ControlUnit_ByteOps {
         MC.control.exe();
         assertArrayEquals(new int[] {1,0,0,0,1,1,0,1},MC.alu.wReg);
     }
-
+    
+    @Test
+    void testDECF() {
+        MC.pm.readTestProgram(TP.s3);
+        MC.control.pc = 9; // 000011 0 0001100
+        int oldContentF = Utils.binaryToDec(MC.ram.readDataCell(12));
+        MC.control.exe(); // ihn hauts im conv decToBin raus, weil wir ne neg. Zahl versuchen zu konvertieren -> mit Eduard klären
+        int res = Utils.binaryToDec(MC.alu.wReg);
+        assertEquals(oldContentF - 1, res);
+    }
+    
     @Test  // Eduard
     void testDECFSZ() {
         MC.pm.readTestProgram(TP.s4);

@@ -4,6 +4,7 @@ package pic16f84_simulator.backend.memory;
 import java.util.Arrays;
 
 import pic16f84_simulator.MC;
+import pic16f84_simulator.backend.tools.Utils;
 
 // Types of addressable Register
 public enum SFR {
@@ -44,6 +45,11 @@ public enum SFR {
     
     public static void status_setC(int bit) {
         MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 0, bit);
+    }
+    
+    public static void status_setZ(int res) {
+        int[] conv = Utils.decToBinary(res, 8);
+        status_setZ(conv);
     }
     
     public static void status_setZ(int[] result) {

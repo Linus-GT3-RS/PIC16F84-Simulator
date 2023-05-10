@@ -27,9 +27,9 @@ public enum ByteOps implements Instruction { // Linus
             int wAsDec = Utils.binaryToDec(MC.alu.wReg);
             int fAsDec = Utils.binaryToDec(MC.ram.readDataCell(indexFile));
             int[] wAndF = Utils.decToBinary(wAsDec & fAsDec, 8);
-            
+
             if(d == 0) {
-               MC.alu.wReg = wAndF; 
+                MC.alu.wReg = wAndF; 
             } 
             else MC.ram.writeDataCell(indexFile, wAndF);            
             SFR.status_setZ(wAndF);   
@@ -44,8 +44,8 @@ public enum ByteOps implements Instruction { // Linus
     CLRW { // Linus
         @Override
         public void exe(int d, int indexFile) {
-           MC.alu.wReg = new int[] {0,0,0,0,0,0,0,0};
-           SFR.status_setZ(new int[8]);
+            MC.alu.wReg = new int[] {0,0,0,0,0,0,0,0};
+            SFR.status_setZ(new int[8]);
         }
     }, 
     COMF { // Eduard
@@ -66,11 +66,17 @@ public enum ByteOps implements Instruction { // Linus
             }
             MC.control.pc++;
         }
-    }, DECF { // Linus
+    }, 
+    DECF { // Linus
         @Override
         public void exe(int d, int indexFile) {
+            int res = Utils.binaryToDec(MC.ram.readDataCell(indexFile)) - 1;
+            storeResult(d, indexFile, res);
+            SFR.status_setZ(res);
+            MC.control.pc++;
         }
-    }, DECFSZ { // Eduard
+    }, 
+    DECFSZ { // Eduard
         @Override
         public void exe(int d, int indexFile) {
             int result = Utils.binaryToDec(MC.ram.readDataCell(indexFile));
@@ -176,6 +182,19 @@ public enum ByteOps implements Instruction { // Linus
     public int fileStart = 7;
 
     public abstract void exe(int d, int indexFile);
+    
+    
+    private static void storeResult(int d, int indxFile, int res) {
+        int[] conv = Utils.decToBinary(res, 8);
+        storeResult(d, indxFile, conv);
+    }
+    
+    private static void storeResult(int d, int indxFile, int[] res) {
+        if(d == 0) {
+            MC.alu.wReg = res;
+        }
+        else MC.ram.writeDataCell(indxFile, res);
+    }
 
 
 }
