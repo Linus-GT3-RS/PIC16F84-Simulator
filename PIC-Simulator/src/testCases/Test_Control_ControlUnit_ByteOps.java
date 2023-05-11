@@ -104,11 +104,16 @@ class Test_Control_ControlUnit_ByteOps {
     @Test
     void testDECF() {
         MC.pm.readTestProgram(TP.s3);
+        
         MC.control.pc = 9; // 000011 0 0001100
-        int oldContentF = Utils.binaryToDec(MC.ram.readDataCell(12));
-        MC.control.exe(); // ihn hauts im conv decToBin raus, weil wir ne neg. Zahl versuchen zu konvertieren -> mit Eduard klären
-        int res = Utils.binaryToDec(MC.alu.wReg);
-        assertEquals(oldContentF - 1, res);
+        MC.ram.writeDataCell(12, new int[8]);
+        MC.control.exe();
+        assertEquals(255, Utils.binaryToDec(MC.alu.wReg));
+        
+        MC.control.pc = 9; // 000011 0 0001100
+        MC.ram.writeDataCell(12, new int[] {1,0,0,1,1,0,1,1});
+        MC.control.exe();
+        assertEquals(154, Utils.binaryToDec(MC.alu.wReg));
     }
     
     @Test  // Eduard

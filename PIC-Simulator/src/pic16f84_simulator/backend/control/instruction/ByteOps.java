@@ -11,7 +11,7 @@ public enum ByteOps implements Instruction { // Linus
             int[] operand = MC.ram.readDataCell(indexFile);
             int[] result = MC.alu.AdditionWF(operand);
             storeResult(d,indexFile,result);
-            SFR.status_setZ(result);
+            SFR.updateZflag(result);
         }
     },
     ANDWF { // Linus
@@ -21,14 +21,14 @@ public enum ByteOps implements Instruction { // Linus
             int fAsDec = Utils.binaryToDec(MC.ram.readDataCell(indexFile));
             int[] wAndF = Utils.decToBinary(wAsDec & fAsDec, 8);
             storeResult(d, indexFile, wAndF);         
-            SFR.status_setZ(wAndF); 
+            SFR.updateZflag(wAndF); 
         }
     },
     CLRF { // Eduard
         @Override
         public void exe(int d, int indexFile) {
             MC.ram.writeDataCell(indexFile, new int[] { 0, 0, 0, 0, 0, 0, 0, 0 });
-            SFR.status_setZ(new int[8]);
+            SFR.updateZflag(new int[8]);
             MC.control.pc++;
         }
     },
@@ -36,7 +36,7 @@ public enum ByteOps implements Instruction { // Linus
         @Override
         public void exe(int d, int indexFile) {
             MC.alu.wReg = new int[] {0,0,0,0,0,0,0,0};
-            SFR.status_setZ(new int[8]);
+            SFR.updateZflag(new int[8]);
         }
     },
     COMF { // Eduard
@@ -51,15 +51,18 @@ public enum ByteOps implements Instruction { // Linus
                 }
             }
             storeResult(d,indexFile,result);
-            SFR.status_setZ(result);
+            SFR.updateZflag(result);
         }
     },
     DECF { // Linus
         @Override
         public void exe(int d, int indexFile) {
             int res = Utils.binaryToDec(MC.ram.readDataCell(indexFile)) - 1;
+            if(res < 0) {
+                res += 256;
+            }
+            SFR.updateZflag(res);
             storeResult(d, indexFile, res);
-            SFR.status_setZ(res);
         }
     },
     DECFSZ { // Eduard
@@ -102,7 +105,7 @@ public enum ByteOps implements Instruction { // Linus
         public void exe(int d, int indexFile) {
             int[] result = MC.ram.readDataCell(indexFile);
             storeResult(d,indexFile,result);
-            SFR.status_setZ(result);
+            SFR.updateZflag(result);
         }
     },
     MOVWF { // Linus

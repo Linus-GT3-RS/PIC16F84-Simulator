@@ -18,7 +18,7 @@ public enum LitConOps implements Instruction { // Linus
             int kAsDec = Utils.binaryToDec(k);
             int[] wAndK = Utils.decToBinary(wAsDec & kAsDec, 8);
             MC.alu.wReg = wAndK;
-            SFR.status_setZ(wAndK);
+            SFR.updateZflag(wAndK);
         }
     },
     CALL { // Linus
@@ -43,7 +43,7 @@ public enum LitConOps implements Instruction { // Linus
             int kAsDec = Utils.binaryToDec(k);
             int[] wAndK = Utils.decToBinary(wAsDec ^ kAsDec, 8);
             MC.alu.wReg = wAndK;
-            SFR.status_setZ(wAndK);
+            SFR.updateZflag(wAndK);
         }
     },
     MOVLW { // Linus

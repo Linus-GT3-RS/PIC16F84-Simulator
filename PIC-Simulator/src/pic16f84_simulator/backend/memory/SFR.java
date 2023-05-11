@@ -50,12 +50,11 @@ public enum SFR {
         MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 7, bit);
     }
     
-    public static void status_setZ(int res) {
+    public static void updateZflag(int res) {
         int[] conv = Utils.decToBinary(res, 8);
-        status_setZ(conv);
+        updateZflag(conv);
     }
-    
-    public static void status_setZ(int[] result) {
+    public static void updateZflag(int[] result) {
         if(Arrays.equals(result, new int[8])) {
             MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 5, 1);
         }
