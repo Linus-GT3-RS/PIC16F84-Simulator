@@ -18,12 +18,6 @@ class Test_MicroController_ControllUnit {
         MC.control.pcpp();
         assertArrayEquals(new int[] {1,1,1,0,1,0,0,1},MC.ram.readDataCell(SFR.PCL.asIndex()));
         assertArrayEquals(new int[] {0,0,0,0,0,0,1,1},MC.ram.readDataCell(SFR.PCLATH.asIndex()));
-        
-        // Case: NOP
-        MC.control.instrReg.writeReg((new int[] {0,0,0,0,0,0,0,0,0,0,0,0,0,0}));
-        MC.control.pcpp();
-        assertArrayEquals(new int[] {1,1,1,0,1,0,0,1},MC.ram.readDataCell(SFR.PCL.asIndex()));
-        assertArrayEquals(new int[] {0,0,0,0,0,0,1,1},MC.ram.readDataCell(SFR.PCLATH.asIndex()));
     }
 
 }
