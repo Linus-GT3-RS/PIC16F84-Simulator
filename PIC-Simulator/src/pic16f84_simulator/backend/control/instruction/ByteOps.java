@@ -81,6 +81,10 @@ public enum ByteOps implements Instruction { // Linus
     INCF { // Linus
         @Override
         public void exe(int d, int indexFile) {
+            
+            
+            
+            
         }
     },
     INCFSZ { // Eduard
@@ -128,12 +132,12 @@ public enum ByteOps implements Instruction { // Linus
         public void exe(int d, int indexFile) {
             int[] result = new int[8];
             System.arraycopy(MC.ram.readDataCell(indexFile), 0, result, 1, 7);
-            if (SFR.status_getC() == 0) {
+            if (SFR.getCflag() == 0) {
                 result[0] = 0;
             } else {
                 result[0] = 1;
             }
-            SFR.status_setC(MC.ram.readSpecificBit(indexFile, 7));
+            SFR.setCflag(MC.ram.readSpecificBit(indexFile, 7));
             storeResult(d,indexFile,result);
         }
     },
