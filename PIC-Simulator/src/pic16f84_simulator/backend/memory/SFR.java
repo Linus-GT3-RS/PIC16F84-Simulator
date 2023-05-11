@@ -38,23 +38,56 @@ public enum SFR {
         default -> {return -1;} //not possible
         }
     }
-    
-    public static void status_setDC(int bit) {
+
+    public static void setDCflag(int bit) {
         MC.ram.writeSpecificBit(SFR.STATUS.asIndex(),6,bit);
     }
-    public static int status_getC() {
+    public static int getDCflag() {
+        return MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 6);
+    }
+    
+    public static void setCflag(int bit) {
+        MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 7, bit);
+    }
+    public static int getCflag() {
         return MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 7);
     }
     
-    public static void status_setC(int bit) {
-        MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 7, bit);
+    public static int getZflag() {
+        return MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5);
     }
     
-    public static void updateZflag(int res) {
+    /*
+     * can be called before or after correcting scope
+     * adds nibbles of a to nibbles of b and updates DC-flag
+     */
+    public static void updateDCflag(int a, int b) { // Linus
+        if(a < 0 || b < 0) {
+            throw new IllegalArgumentException("Cant use negative numbers here");
+        }
+        int res = (a & 15) + (b & 15);
+        if(res > 15) {
+            setDCflag(1);
+        } else setDCflag(0);
+    }
+    
+    /*
+     * updateCflag() has to be called BEFORE correcting the scope
+     */
+    public static void updateCflag(int res) { // Linus
+        if(res > 255) {
+            MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 7, 1);
+        } else MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 7, 0);
+    }
+    
+    /*
+     * updateZflag() has to be called AFTER correcting the scope
+     */
+    public static void updateZflag(int res) { // Linus
         int[] conv = Utils.decToBinary(res, 8);
         updateZflag(conv);
     }
-    public static void updateZflag(int[] result) {
+    public static void updateZflag(int[] result) { // Linus
         if(Arrays.equals(result, new int[8])) {
             MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 5, 1);
         }
