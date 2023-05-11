@@ -27,16 +27,15 @@ public enum ByteOps implements Instruction { // Linus
     CLRF { // Eduard
         @Override
         public void exe(int d, int indexFile) {
-            MC.ram.writeDataCell(indexFile, new int[] { 0, 0, 0, 0, 0, 0, 0, 0 });
-            SFR.updateZflag(new int[8]);
-            MC.control.pc++;
+            MC.ram.writeDataCell(indexFile, new int[8]);
+            SFR.updateZflag(0);
         }
     },
     CLRW { // Linus
         @Override
         public void exe(int d, int indexFile) {
-            MC.alu.wReg = new int[] {0,0,0,0,0,0,0,0};
-            SFR.updateZflag(new int[8]);
+            MC.alu.wReg = new int[8];
+            SFR.updateZflag(0);
         }
     },
     COMF { // Eduard
@@ -160,15 +159,13 @@ public enum ByteOps implements Instruction { // Linus
 
     public int indexDbit = 6;
     public int fileStart = 7;
-
     public abstract void exe(int d, int indexFile);
     
     
     private static void storeResult(int d, int indxFile, int res) {
         int[] conv = Utils.decToBinary(res, 8);
         storeResult(d, indxFile, conv);
-    }
-    
+    }    
     private static void storeResult(int d, int indxFile, int[] res) {
         if(d == 0) {
             MC.alu.wReg = res;
