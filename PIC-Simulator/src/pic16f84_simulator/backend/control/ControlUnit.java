@@ -1,8 +1,5 @@
 package pic16f84_simulator.backend.control;
-
-import java.lang.reflect.Array;
 import java.util.Arrays;
-
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.control.instruction.BitOps;
 import pic16f84_simulator.backend.control.instruction.ByteOps;
@@ -15,12 +12,9 @@ import pic16f84_simulator.backend.tools.Utils;
 
 public class ControlUnit {
 
-    private static boolean creationAllowed = true; // secures the creation of ONLY ONE instance of this class
+    private static boolean allow = true; // secures the creation of ONLY ONE instance of this class
     public ControlUnit() {
-        if(ControlUnit.creationAllowed == false) {
-            throw new IllegalArgumentException("Theres already an instance of this class!"); 
-        }
-        ControlUnit.creationAllowed = false;      
+        allow = Utils.allow(allow, this);      
     }
 
     public int pc = 0;

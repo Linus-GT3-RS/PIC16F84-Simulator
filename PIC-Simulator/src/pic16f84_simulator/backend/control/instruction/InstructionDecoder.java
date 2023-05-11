@@ -7,12 +7,9 @@ import pic16f84_simulator.backend.tools.Utils;
 
 public class InstructionDecoder {
     
-    private static boolean creationAllowed = true; // secures the creation of ONLY ONE instance of this class
+    private static boolean allow = true; // secures the creation of ONLY ONE instance of this class
     public InstructionDecoder() {
-        if(InstructionDecoder.creationAllowed == false) {
-            throw new IllegalArgumentException("Theres already an instance of this class!"); 
-        }
-        InstructionDecoder.creationAllowed = false;      
+        allow = Utils.allow(allow, this);     
     }
 
     public Instruction extractOpC(int[] instr) {

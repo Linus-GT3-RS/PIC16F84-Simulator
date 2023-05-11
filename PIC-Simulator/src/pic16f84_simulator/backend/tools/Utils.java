@@ -94,5 +94,12 @@ public class Utils {
         }
         return result.strip();
     }
+    
+    public static boolean allow (boolean condt, Object c) {
+        if(condt == false) {
+            throw new IllegalArgumentException("Es gibt schon eine Instanz von " + c.getClass());
+        }
+        return false; 
+    }
 
 }

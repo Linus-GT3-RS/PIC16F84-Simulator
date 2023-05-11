@@ -4,15 +4,13 @@ import pic16f84_simulator.backend.calculation.ALU;
 import pic16f84_simulator.backend.control.ControlUnit;
 import pic16f84_simulator.backend.memory.Program_Memory;
 import pic16f84_simulator.backend.memory.RAM_Memory;
+import pic16f84_simulator.backend.tools.Utils;
 
 public class MC {
     
-    private static boolean creationAllowed = true; // secures the creation of ONLY ONE instance of this class
+    private static boolean allow = true; // secures the creation of ONLY ONE instance of this class
     public MC() {
-        if(MC.creationAllowed == false) {
-            throw new IllegalArgumentException("Theres already an instance of this class!"); 
-        }
-        MC.creationAllowed = false;      
+        allow = Utils.allow(allow, this);
     }
     
     public static Program_Memory pm = new Program_Memory();

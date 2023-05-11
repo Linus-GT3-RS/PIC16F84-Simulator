@@ -3,21 +3,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import pic16f84_simulator.backend.tools.Utils;
 
 public class Program_Memory extends Template_Memory {// Eduard
 
-    private static boolean creationAllowed = true; // secures the creation of ONLY ONE instance of this class
+    private static boolean allow = true; // secures the creation of ONLY ONE instance of this class
     public Program_Memory(){
-        super(1024,14);
-        if(Program_Memory.creationAllowed == false) {
-            throw new IllegalArgumentException("Theres already an instance of this class: ProgramMemory !"); 
-        }
-        Program_Memory.creationAllowed = false; 
+        super(1024, 14);
+        allow = Utils.allow(allow, this);
     }
 
     public void readTestProgram(String path) {        

@@ -1,17 +1,15 @@
 package pic16f84_simulator.backend.memory;
+import pic16f84_simulator.backend.tools.Utils;
 
 /*
  * "index" should be: MemoryLocation (Adresse der Speicherzelle)
- */
+ */ 
 public class RAM_Memory extends Template_Memory { // Linus
 
-    private static boolean creationAllowed = true; // secures the creation of ONLY ONE instance of this class
+    private static boolean allow = true; // secures the creation of ONLY ONE instance of this class
     public RAM_Memory() {
         super(208, 8); // "second unimplemented block" (address d0 - ff) is for obvious reasons not implemented
-        if(RAM_Memory.creationAllowed == false) {
-            throw new IllegalArgumentException("Theres already an instance of this class: ProgramMemory !"); 
-        }
-        RAM_Memory.creationAllowed = false;
+        allow = Utils.allow(allow, this);
     }   
 
 
@@ -39,7 +37,7 @@ public class RAM_Memory extends Template_Memory { // Linus
             throw new IllegalArgumentException("Thats not a bit: " + bit);
         }
         super.writeSpecificBit(indexCell, indexBit, bit);
-        
+
         int indxMirrored = mirrorBank(indexCell);
         if(indxMirrored != indexCell) {
             super.writeSpecificBit(indxMirrored, indexBit, bit);
@@ -58,7 +56,7 @@ public class RAM_Memory extends Template_Memory { // Linus
     // Hilfsmethode
     public int mirrorBank(int indexCell) {        
         int result = 0;
-        
+
         switch(indexCell) {
         case 1: // fall-through is correct
         case 5: // fall-through is correct
