@@ -102,7 +102,7 @@ class Test_Control_ControlUnit_ByteOps {
     }
     
     @Test
-    void testDECF() {
+    void testDECF() { // Linus
         MC.pm.readTestProgram(TP.s3);
         
         MC.control.pc = 9; // 000011 0 0001100
@@ -137,6 +137,22 @@ class Test_Control_ControlUnit_ByteOps {
         MC.control.pc=18;
         MC.control.exe();
         assertArrayEquals(new int[] {1,1,1,1,1,1,1,1}, MC.ram.readDataCell(12));
+    }
+    
+    @Test
+    void testINCF() { // Linus
+        MC.pm.readTestProgram(TP.s3);        
+        MC.control.pc = 10; // 001010 1 0001101
+        int expc1 = Utils.binaryToDec(MC.ram.readDataCell(13)) + 1;
+        expc1 = fixScope(expc1);
+        MC.control.exe();
+        assertArrayEquals(MC.ram.readDataCell(13), Utils.decToBinary(expc1, 8));
+        
+        MC.control.pc = 10; // 001010 1 0001101
+        MC.ram.writeDataCell(13, new int[] {1,1,1,1,1,1,1,1});
+        MC.control.exe();
+        assertArrayEquals(MC.ram.readDataCell(13), new int[8]);
+        assertEquals(SFR.getZflag(), 1);
     }
 
     @Test  // Eduard
@@ -198,4 +214,16 @@ class Test_Control_ControlUnit_ByteOps {
         MC.control.exe();
         assertArrayEquals(new int[] {0,0,1,1,1,1,0,0},MC.ram.readDataCell(0));
     }
+    
+    
+    private static int fixScope(int res) { // Linus
+        if(res > 255) {
+           return res - 256; 
+        }
+        else if(res < 0) {
+            return res + 256;
+        }
+        else return res;
+    }
+    
 }

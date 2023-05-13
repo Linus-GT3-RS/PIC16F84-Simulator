@@ -57,9 +57,7 @@ public enum ByteOps implements Instruction { // Linus
         @Override
         public void exe(int d, int indexFile) {
             int res = Utils.binaryToDec(MC.ram.readDataCell(indexFile)) - 1;
-            if(res < 0) {
-                res += 256;
-            }
+            res = fixScope(res);
             SFR.updateZflag(res);
             storeResult(d, indexFile, res);
         }
@@ -81,10 +79,11 @@ public enum ByteOps implements Instruction { // Linus
     INCF { // Linus
         @Override
         public void exe(int d, int indexFile) {
-            
-            
-            
-            
+            int[] f = MC.ram.readDataCell(indexFile);
+            int res = Utils.binaryToDec(f) + 1;
+            res = fixScope(res);
+            SFR.updateZflag(res);
+            storeResult(d, indexFile, res);
         }
     },
     INCFSZ { // Eduard
@@ -175,6 +174,18 @@ public enum ByteOps implements Instruction { // Linus
             MC.alu.wReg = res;
         }
         else MC.ram.writeDataCell(indxFile, res);
+    }
+    
+    // sets res to legal scope [0, 255]
+    // method affects NO flags --> has to be done elsewhere
+    private static int fixScope(int res) { // Linus
+        if(res > 255) {
+           return res - 256; 
+        }
+        else if(res < 0) {
+            return res + 256;
+        }
+        else return res;
     }
 
 }
