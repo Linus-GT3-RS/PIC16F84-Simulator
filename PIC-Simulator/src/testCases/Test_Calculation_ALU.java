@@ -9,6 +9,11 @@ class Test_Calculation_ALU {
     
     
     @Test
+    /*
+     * tests for
+     * - result (thereby legal scope: [0, 255])
+     * - flags: Z, C, DC
+     */
     void testAddition() {        
         assertArrayEquals(new int[] {1,0,0,1,1,0,0,0}, MC.alu.addition(new int[] {1,0,0,1, 1,0,0,1}, new int[] {1,1,1,1, 1,1,1,1}));
         assertEquals(0, SFR.getZflag()); 
@@ -27,21 +32,45 @@ class Test_Calculation_ALU {
     }
     
 
-    @Disabled
-    void testSubstract() {
-        /*
-         * test for right scope: [0, 255]
-         * test for flags: Z, C, DC FIXME
-         */
-        assertThrows(IllegalArgumentException.class, () -> { MC.alu.substraction(new int[9], new int[8]); });
-        assertThrows(IllegalArgumentException.class, () -> { MC.alu.substraction(new int[8], new int[2]); });
+    @Test
+    /*
+     * tests for
+     * - result (thereby legal scope: [0, 255])
+     * - flags: Z, C, DC
+     */
+    void testSubtract() { // Minuend - Subtrahend        
+        assertThrows(IllegalArgumentException.class, () -> { MC.alu.subtraction(new int[9], new int[8]); });
+        assertThrows(IllegalArgumentException.class, () -> { MC.alu.subtraction(new int[8], new int[] {1,1,1,0,0,0,1,1,0,1}); });
         
-        assertArrayEquals(MC.alu.substraction(new int[8], new int[8]), new int[8]);
-        assertArrayEquals(MC.alu.substraction(new int[8], new int[] {0,0,0,0,0,0,0,1}), new int[] {1,1,1,1,1,1,1,1});
-        assertArrayEquals(MC.alu.substraction(new int[] {0,0,0,0,0,0,0,1}, new int[8]), new int[] {0,0,0,0,0,0,0,1});
-        assertArrayEquals(MC.alu.substraction(new int[] {1,1,1,1,1,1,1,1}, new int[] {1,1,1,1,1,1,1,1}), new int[] {0,0,0,0,0,0,0,0}); 
-        assertArrayEquals(MC.alu.substraction(new int[] {1,1,1,0,1,0,1,0}, new int[] {0,1,0,0,1,0,0,1}), new int[] {1,0,1,0,0,0,0,1});
-        assertArrayEquals(MC.alu.substraction(new int[] {0,1,0,0,1,0,0,1}, new int[] {1,1,1,0,1,0,1,0}), new int[] {0,1,0,1,1,1,1,1});
+        assertArrayEquals(MC.alu.subtraction(new int[8], new int[8]), new int[8]);
+        assertEquals(SFR.getZflag(), 1);
+        assertEquals(SFR.getCflag(), 0);
+        assertEquals(SFR.getDCflag(), 0);
+        
+        assertArrayEquals(MC.alu.subtraction(new int[8], new int[] {0,0,0,0,0,0,0,1}), new int[] {1,1,1,1,1,1,1,1});
+        assertEquals(SFR.getZflag(), 0);
+        assertEquals(SFR.getCflag(), 0);
+        assertEquals(SFR.getDCflag(), 0);
+        
+        assertArrayEquals(MC.alu.subtraction(new int[] {0,0,0,0,0,0,0,1}, new int[8]), new int[] {0,0,0,0,0,0,0,1});
+        assertEquals(SFR.getZflag(), 0);
+        assertEquals(SFR.getCflag(), 0);
+        assertEquals(SFR.getDCflag(), 0);
+        
+        assertArrayEquals(MC.alu.subtraction(new int[] {1,1,1,1, 1,1,1,1}, new int[] {1,1,1,1, 1,1,1,1}), new int[] {0,0,0,0,0,0,0,0});
+        assertEquals(SFR.getZflag(), 1);
+        assertEquals(SFR.getCflag(), 1);
+        assertEquals(SFR.getDCflag(), 1);        
+        
+        assertArrayEquals(MC.alu.subtraction(new int[] {1,1,1,0, 1,0,1,0}, new int[] {0,1,0,0, 1,0,0,1}), new int[] {1,0,1,0,0,0,0,1});
+        assertEquals(SFR.getZflag(), 0);
+        assertEquals(SFR.getCflag(), 1);
+        assertEquals(SFR.getDCflag(), 1);        
+        
+        assertArrayEquals(MC.alu.subtraction(new int[] {0,1,0,0, 1,0,0,1}, new int[] {1,1,1,0, 1,0,1,0}), new int[] {0,1,0,1,1,1,1,1});
+        assertEquals(SFR.getZflag(), 0);
+        assertEquals(SFR.getCflag(), 0);
+        assertEquals(SFR.getDCflag(), 0);
     }
 
 }

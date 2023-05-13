@@ -10,6 +10,7 @@ public class ALU {
     }
 
     public int[] wReg = new int[8];
+    
 
     public int[] AdditionWF(int[] Arr) {
         int[] result = new int[8];
@@ -66,31 +67,21 @@ public class ALU {
         return Utils.decToBinary(res, 8);
     }
 
-    // returns: a - b (while handling underflow issues) --> result is between [0, 255]
-    // updates following flags in StatusReg: ZeroFlag, CarryFlag, DigitCaryFlag
-    public int[] substraction(int[] arr1, int[] arr2) { // Linus
-        //        if(arr1.length != 8 || arr2.length != 8) {
-        //            throw new IllegalArgumentException("Cant use substract() on an array with length !=8");
-        //        } --> wird in Addition getestet
-        int a = Utils.binaryToDec(arr1); 
+    
+    /*
+     *  returns: a - b (while handling underflow issues) --> result is between [0, 255]
+     *      does that by calling addition(a, b) with Zweierkomplement
+     *      thereby following flags in StatusReg get updated: ZeroFlag, CarryFlag, DigitCaryFlag
+ *      Note:
+ *      PIC16F84 does not invert C-flag or DC-flag after subtraction --> manufactoring defect !
+     */
+    public int[] subtraction(int[] arr1, int[] arr2) { // Linus
         int b = Utils.binaryToDec(arr2);
-        int res = a - b;
-        if(res < 0) { // fix scope
-            res += 256;
-        }    
-
-
-        /*
-         * neue Idee: Subtract durch Addition mim Zweierkomplement abbilden => eig addition() einfach schreiben
-         * => NACH add einfach C und DC invertieren (so wie es der PIC eig machen sollte), dann passt alles
-         */
-        // STEHEN DIE an der richtigen Position? vom result her
-        SFR.updateZflag(res);
-        // FIXME C
-        // FIXME DC
-
-
-        return Utils.decToBinary(res, 8); 
+        int zweierkomplement = (~b) + 1;
+        if(zweierkomplement < 0) {
+            zweierkomplement += 256;
+        }
+        return addition(arr1, Utils.decToBinary(zweierkomplement, 8));
     }
 
 
