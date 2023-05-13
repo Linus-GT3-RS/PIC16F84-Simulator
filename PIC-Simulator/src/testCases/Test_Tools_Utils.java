@@ -1,24 +1,26 @@
 package testCases;
-
 import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
+import pic16f84_simulator.MC;
+import pic16f84_simulator.backend.calculation.ALU;
+import pic16f84_simulator.backend.control.ControlUnit;
+import pic16f84_simulator.backend.control.instruction.InstructionDecoder;
+import pic16f84_simulator.backend.memory.Program_Memory;
+import pic16f84_simulator.backend.memory.RAM_Memory;
 import pic16f84_simulator.backend.tools.Utils;
 
 class Test_Tools_Utils {
     
     @Test
     void testOnlyOne() {
-        
-        // FIXME
-        
-        
-        
+        new MC();
+        assertThrows(IllegalArgumentException.class, () -> { new MC(); });
+        assertThrows(IllegalArgumentException.class, () -> { new ALU(); });
+        assertThrows(IllegalArgumentException.class, () -> { new ControlUnit(); });
+        assertThrows(IllegalArgumentException.class, () -> { new InstructionDecoder(); });
+        assertThrows(IllegalArgumentException.class, () -> { new Program_Memory(); });
+        assertThrows(IllegalArgumentException.class, () -> { new RAM_Memory(); });
     }
-    
-    /*
-     * Ab hier Tests für die Methoden aus Util
-     */
     
     @Test
     void testCutArray() {
