@@ -50,11 +50,10 @@ public class Utils {
      */
     public static int[] decToBinary(int dec, int size) {
         String binary = Integer.toBinaryString(dec);
-
-        // Sanity Check
         if (binary.length() > size) {
-            throw new UnknownLocationException("number is to huge for bit-word");
+            throw new IllegalArgumentException("Number is to big for bit-word");
         }
+        
         int[] result = new int[size];
         for (int i = size - 1; i >= size - binary.length(); i--) {
             int charPosition = i - (size - binary.length());
