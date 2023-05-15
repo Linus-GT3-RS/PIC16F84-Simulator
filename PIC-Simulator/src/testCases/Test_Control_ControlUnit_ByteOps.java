@@ -166,6 +166,22 @@ class Test_Control_ControlUnit_ByteOps {
         assertArrayEquals(new int[] {0,0,0,0,0,1,0,0},MC.ram.readDataCell(12));
         assertEquals(MC.control.pc,27);
     }
+    
+    @Test
+    void testIORWF() { // Linus
+        MC.pm.readTestProgram(TP.s3);    
+        
+        MC.control.pc = 12; // 000100 1 0001100=12
+        MC.alu.wReg = new int[8];
+        MC.ram.writeDataCell(12, new int[] {1,0,0,1, 1,1,0,1});
+        MC.control.exe();
+        assertArrayEquals(MC.ram.readDataCell(12), new int[] {1,0,0,1, 1,1,0,1});
+        
+        MC.control.pc = 12; // 000100 1 0001100=12
+        MC.alu.wReg = new int[] {0,1,1,1, 0,0,0,1};
+        MC.control.exe();
+        assertArrayEquals(MC.ram.readDataCell(12), new int[] {1,1,1,1, 1,1,0,1});
+    }
 
     @Test // Eduard
     void testMOVF() {

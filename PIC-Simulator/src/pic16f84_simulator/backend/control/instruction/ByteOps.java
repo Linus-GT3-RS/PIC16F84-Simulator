@@ -97,9 +97,14 @@ public enum ByteOps implements Instruction { // Linus
             }
         }
     },
-    IORWF { // Linus
+    IORWF { // Linus 
         @Override
-        public void exe(int d, int indexFile) {
+        public void exe(int d, int indexFile) { // Inclusive OR: A or B or both --> |
+            int w = Utils.binaryToDec(MC.alu.wReg);
+            int f = Utils.binaryToDec(MC.ram.readDataCell(indexFile));
+            int[] res = Utils.decToBinary((w | f), 8);
+            SFR.updateZflag(res);
+            storeResult(d, indexFile, res);
         }
     },
     MOVF { // Eduard
