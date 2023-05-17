@@ -1,5 +1,7 @@
 package pic16f84_simulator.backend.control.instruction;
 
+import java.util.Arrays;
+
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.Utils;
@@ -74,6 +76,9 @@ public enum LitConOps implements Instruction { // Linus
     SUBLW { // Eduard
         @Override
         public void exe(int[] k) {
+            int[] wReg = MC.alu.wReg;
+            int[] result = MC.alu.subtraction(wReg, k);
+            MC.alu.wReg = result;
         }
     },
     XORLW { // Linus

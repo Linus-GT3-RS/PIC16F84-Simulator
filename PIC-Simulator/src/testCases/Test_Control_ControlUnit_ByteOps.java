@@ -94,7 +94,7 @@ class Test_Control_ControlUnit_ByteOps {
     @Test // Eduard
     void testCOMF() {
         MC.pm.readTestProgram(TP.s3);
-        MC.ram.writeDataCell(13, new int[] {0,1,1,1,0,0,1,0});
+        MC.ram.writeDataCell(13, new int[] {0,1,1,1,0,0,1,0}); 
         MC.control.pc=8; // 00 1001 0000 1101 -> d=0 f=13
         MC.control.exe();
         assertArrayEquals(new int[] {1,0,0,0,1,1,0,1},MC.alu.wReg);
