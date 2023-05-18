@@ -4,6 +4,7 @@ package pic16f84_simulator.backend.memory;
 import java.util.Arrays;
 
 import pic16f84_simulator.MC;
+import pic16f84_simulator.backend.tools.UnknownLocationException;
 import pic16f84_simulator.backend.tools.Utils;
 
 // Types of addressable Register
@@ -57,6 +58,7 @@ public enum SFR {
         return MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5);
     }
     
+    
     /*
      * can be called before or after correcting scope
      * adds nibbles of a to nibbles of b and updates DC-flag
@@ -92,5 +94,16 @@ public enum SFR {
             MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 5, 1);
         }
         else MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 5, 0);
+    }
+    
+    // get SFR.FSR address
+    public static int[] getFSR() { // Eduard
+        int[] result = MC.ram.readDataCell(SFR.FSR.asIndex());
+        return result;
+    }
+    
+    // set SFR.FSR address
+    public static void setFSR(int Address) {
+        MC.ram.writeDataCell(SFR.FSR.asIndex(), Utils.decToBinary(Address, 8));
     }
 }

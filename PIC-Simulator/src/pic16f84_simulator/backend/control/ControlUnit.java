@@ -28,12 +28,20 @@ public class ControlUnit {
 
         if(instruct instanceof ByteOps instr) {            
             int dBit = instrReg.readBit(instr.indexDbit)  ;
-            int indexFile = Utils.binaryToDec(Arrays.copyOfRange(instrReg.readReg(), instr.fileStart, instrReg.readReg().length));          
+            int indexFile = Utils.binaryToDec(Arrays.copyOfRange(instrReg.readReg(), instr.fileStart, instrReg.readReg().length));    
+            if(indexFile == 0)
+            {
+                indexFile = Utils.binaryToDec(MC.ram.readDataCell(SFR.FSR.asIndex()));
+            }
             instr.exe(dBit, indexFile);
         }
         if(instruct instanceof BitOps instr) {            
             int indexBit = Utils.binaryToDec(Arrays.copyOfRange(instrReg.readReg(), instr.dBitStart, instr.dBitEnd+1));
             int indexFile = Utils.binaryToDec(Arrays.copyOfRange(instrReg.readReg(), instr.fileStart, instrReg.readReg().length));
+            if(indexFile == 0)
+            {
+                indexFile = Utils.binaryToDec(MC.ram.readDataCell(SFR.FSR.asIndex()));
+            }
             instr.exe(indexBit, indexFile);            
         }
         if(instruct instanceof LitConOps instr){
@@ -44,6 +52,7 @@ public class ControlUnit {
         pcpp();
     }
     
+    // Increase the PC-Counter and load in specific register PCL and PCLATH
     public void pcpp() {
         pc++;
         int[] pclBinary = Utils.decToBinary(pc, 13);
@@ -52,5 +61,4 @@ public class ControlUnit {
         System.arraycopy(pclBinary, 0, pclLatchBinary, 3, 5);
         MC.ram.writeDataCell(SFR.PCLATH.asIndex(),pclLatchBinary);
     }
-    
 }

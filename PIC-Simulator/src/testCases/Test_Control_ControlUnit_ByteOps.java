@@ -2,6 +2,8 @@ package testCases;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Test;
 
 import pic16f84_simulator.MC;
@@ -191,9 +193,10 @@ class Test_Control_ControlUnit_ByteOps {
         MC.pm.readTestProgram(TP.s6);
         
         // Case 1: Cary is 1
-        MC.ram.writeDataCell(0, new int[] {0,0,0,0,1,1,1,0});
+        
         MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 7, 1);
-        MC.control.pc=22;// 00 1100 1000 0000
+        MC.control.pc=22;// 00 1100 1000 0000 // Indirect Adressing -> 0
+        MC.ram.writeDataCell(0, new int[] {0,0,0,0,1,1,1,0});
         MC.control.exe();
         assertArrayEquals(new int[] {1,0,0,0,0,1,1,1},MC.ram.readDataCell(0));
         assertEquals(0,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 7)); //C-Flag
@@ -209,10 +212,11 @@ class Test_Control_ControlUnit_ByteOps {
     void testSWAPF() {
         MC.pm.readTestProgram(TP.s6);
         
-        MC.ram.writeDataCell(0, new int[] {1,1,0,0,0,0,1,1});
-        MC.control.pc=30;// 00 1110 1000 0000
+        MC.control.pc=30;// 00 1110 1000 0000 // -> indirect address
+        SFR.setFSR(15);
+        MC.ram.writeDataCell(15, new int[] {1,1,0,0,0,0,1,1});
         MC.control.exe();
-        assertArrayEquals(new int[] {0,0,1,1,1,1,0,0},MC.ram.readDataCell(0));
+        assertArrayEquals(new int[] {0,0,1,1,1,1,0,0},MC.ram.readDataCell(15));
     }
     
     
