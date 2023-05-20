@@ -39,6 +39,14 @@ public enum SFR {
         default -> {return -1;} //not possible
         }
     }
+    
+    
+    /*
+     * 
+     * Status Register
+     * 
+     * 
+     */
 
     public static void setDCflag(int bit) {
         MC.ram.writeSpecificBit(SFR.STATUS.asIndex(),6,bit);
@@ -57,7 +65,6 @@ public enum SFR {
     public static int getZflag() {
         return MC.ram.readBit(SFR.STATUS.asIndex(), 5);
     }
-    
     
     /*
      * can be called before or after correcting scope
@@ -95,6 +102,15 @@ public enum SFR {
         }
         else MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 5, 0);
     }
+    
+    
+    
+    /*
+     * 
+     * FSR Register
+     * 
+     * 
+     */
     
     // get SFR.FSR address
     public static int[] getFSR() { // Eduard
