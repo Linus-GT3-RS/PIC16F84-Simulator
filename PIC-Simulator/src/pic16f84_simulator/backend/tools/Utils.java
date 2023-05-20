@@ -72,7 +72,6 @@ public class Utils {
             throw new NegativeArraySizeException("New size is smaller than original size");
         }
         int[] result = new int[newSize];
-
         if (newSize == old.length) {
             result = old;
         }

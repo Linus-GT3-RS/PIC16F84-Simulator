@@ -1,5 +1,6 @@
 package pic16f84_simulator.backend.control;
 import java.util.Arrays;
+
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.control.instruction.BitOps;
 import pic16f84_simulator.backend.control.instruction.ByteOps;
@@ -23,7 +24,7 @@ public class ControlUnit {
 
     
     public void exe() {        
-        instrReg.writeReg(MC.pm.readDataCell(pc)); // load instReg
+        instrReg.writeReg(MC.pm.readDataCell(pc)); // load instrReg
         Instruction instruct = instrDecoder.extractOpC(instrReg.readReg()); // load OpCode
 
         if(instruct instanceof ByteOps instr) {            

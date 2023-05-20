@@ -1,4 +1,5 @@
 package pic16f84_simulator.backend.calculation;
+import pic16f84_simulator.backend.memory.Register;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.Utils;
 
@@ -9,14 +10,14 @@ public class ALU {
         allow = Utils.allow(allow, this);
     }
 
-    public int[] wReg = new int[8];
+    public Register wReg = new Register(8);
     
 
     public int[] AdditionWF(int[] Arr) {
         int[] result = new int[8];
         int sum = 0;
         for (int i = wReg.length - 1; i >= 0; i--) {
-            sum = sum + wReg[i] + Arr[i];
+            sum = sum + wReg.readBit(i) + Arr[i];
             if (sum == 2) { // Fall des Überlaufs/Übertrags
                 if (i == 4) {
                     SFR.setDCflag(1);

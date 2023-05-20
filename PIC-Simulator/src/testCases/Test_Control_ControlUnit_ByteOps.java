@@ -1,6 +1,7 @@
 package testCases;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
@@ -13,22 +14,22 @@ class Test_Control_ControlUnit_ByteOps {
 
     @Test // Eduard
     void testADDWF() { 
-        MC.pm.readTestProgram(TP.s3);
+        MC.pm.loadTestProgram(TP.s3);
 
         //Case 1: Store in w-Reg #w = 8; #f = 8
-        MC.alu.wReg = new int[] {0,0,0,0,1,0,0,0};
+        MC.alu.wReg.writeReg(new int[] {0,0,0,0,1,0,0,0});
         MC.ram.writeDataCell(12, new int[] {0,0,0,0,1,0,0,0});
-        MC.control.pc=3; // 00 0111 0000 1100 d=0 -> Store in w-Reg
+        MC.control.pc = 3; // 00 0111 0000 1100 d=0 -> Store in w-Reg
         MC.control.exe();
-        assertArrayEquals(MC.alu.wReg,new int[] {0,0,0,1,0,0,0,0});
+        assertArrayEquals(MC.alu.wReg.readReg(), new int[] {0,0,0,1,0,0,0,0});
         assertEquals(1,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 6)); //DC-Flag
         assertEquals(0,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); //Z-Flag
         assertEquals(0,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 7)); //C-Flag
 
         //Case 2: Store in f-Reg #w = 1; #f = 1
-        MC.control.pc=4;//00 0111 1000 1100 d=1 -> Store in f-Reg
+        MC.control.pc = 4;//00 0111 1000 1100 d=1 -> Store in f-Reg
         MC.ram.writeDataCell(12, new int[] {0,0,0,0,0,0,0,1});
-        MC.alu.wReg = new int[] {0,0,0,0,0,0,0,1};
+        MC.alu.wReg.writeReg(new int[] {0,0,0,0,0,0,0,1});
         MC.control.exe();
         assertArrayEquals(new int[] {0,0,0,0,0,0,1,0},MC.ram.readDataCell(12));
         assertEquals(0,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 6)); //DC-Flag
@@ -40,14 +41,14 @@ class Test_Control_ControlUnit_ByteOps {
 
     @Test // Linus
     void testANDWF() { 
-        MC.pm.readTestProgram(TP.s3);
+        MC.pm.loadTestProgram(TP.s3);
 
         // Case1: dBit=0
         MC.control.pc = 5; // 000101 0 0001100
-        MC.alu.wReg = new int[] {1,0,1,0,1,0,1,0};
+        MC.alu.wReg.writeReg(new int[] {1,0,1,0,1,0,1,0});
         MC.ram.writeDataCell(12, new int[] {0,0,1,0,1,0,1,0});
         MC.control.exe();
-        assertArrayEquals(MC.alu.wReg, new int[] {0,0,1,0,1,0,1,0});
+        assertArrayEquals(MC.alu.wReg.readReg(), new int[] {0,0,1,0,1,0,1,0});
 
         // Case2: dBit=1
         MC.pm.writeDataCell(5, new int[] {0,0,0,1,0,1, 1 ,0,0,0,1,1,0,0}); // overrides current instruction in pm cause there is no other testCase
@@ -70,7 +71,7 @@ class Test_Control_ControlUnit_ByteOps {
 
     @Test // Eduard
     void testCLRF() {
-        MC.pm.readTestProgram(TP.s3);
+        MC.pm.loadTestProgram(TP.s3);
         MC.ram.writeDataCell(12, new int[] {1,1,1,1,1,1,1,1});
         assertArrayEquals(MC.ram.readDataCell(12),new int[] {1,1,1,1,1,1,1,1});
         MC.control.pc=7; // 00 0001 1000 1100
@@ -81,44 +82,44 @@ class Test_Control_ControlUnit_ByteOps {
 
     @Test // Linus
     void testCLRW() {
-        MC.pm.readTestProgram(TP.s3);        
+        MC.pm.loadTestProgram(TP.s3);        
         MC.control.pc = 16;        
-        MC.alu.wReg = new int[] {1,0,1,0,0,1,1,0}; // random val
+        MC.alu.wReg.writeReg(new int[] {1,0,1,0,0,1,1,0}); // random val
         MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 5, 0);
         MC.control.exe();
 
-        assertArrayEquals(MC.alu.wReg, new int[8]);
+        assertArrayEquals(MC.alu.wReg.readReg(), new int[8]);
         assertEquals(MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5), 1);
     }
 
     @Test // Eduard
     void testCOMF() {
-        MC.pm.readTestProgram(TP.s3);
+        MC.pm.loadTestProgram(TP.s3);
         MC.ram.writeDataCell(13, new int[] {0,1,1,1,0,0,1,0});
         MC.control.pc=8; // 00 1001 0000 1101 -> d=0 f=13
         MC.control.exe();
-        assertArrayEquals(new int[] {1,0,0,0,1,1,0,1},MC.alu.wReg);
+        assertArrayEquals(new int[] {1,0,0,0,1,1,0,1}, MC.alu.wReg.readReg());
         assertEquals(0,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); //Z-Flag
     }
     
     @Test
     void testDECF() { // Linus
-        MC.pm.readTestProgram(TP.s3);
+        MC.pm.loadTestProgram(TP.s3);
         
         MC.control.pc = 9; // 000011 0 0001100
         MC.ram.writeDataCell(12, new int[8]);
         MC.control.exe();
-        assertEquals(255, Utils.binaryToDec(MC.alu.wReg));
+        assertEquals(255, Utils.binaryToDec(MC.alu.wReg.readReg()));
         
         MC.control.pc = 9; // 000011 0 0001100
         MC.ram.writeDataCell(12, new int[] {1,0,0,1,1,0,1,1});
         MC.control.exe();
-        assertEquals(154, Utils.binaryToDec(MC.alu.wReg));
+        assertEquals(154, Utils.binaryToDec(MC.alu.wReg.readReg()));
     }
     
     @Test  // Eduard
     void testDECFSZ() {
-        MC.pm.readTestProgram(TP.s4);
+        MC.pm.loadTestProgram(TP.s4);
 
         // Case result is not 0
         MC.ram.writeDataCell(12,new int[] {0,0,0,0,0,0,1,0});
@@ -141,7 +142,7 @@ class Test_Control_ControlUnit_ByteOps {
     
     @Test
     void testINCF() { // Linus
-        MC.pm.readTestProgram(TP.s3);        
+        MC.pm.loadTestProgram(TP.s3);        
         MC.control.pc = 10; // 001010 1 0001101
         int expc1 = Utils.binaryToDec(MC.ram.readDataCell(13)) + 1;
         expc1 = fixScope(expc1);
@@ -157,7 +158,7 @@ class Test_Control_ControlUnit_ByteOps {
 
     @Test  // Eduard
     void testINCFSZ() {
-        MC.pm.readTestProgram(TP.s4);
+        MC.pm.loadTestProgram(TP.s4);
 
         // Case result is not 0
         MC.ram.writeDataCell(12, new int[] {0,0,0,0,0,0,1,1});
@@ -169,42 +170,57 @@ class Test_Control_ControlUnit_ByteOps {
     
     @Test
     void testIORWF() { // Linus
-        MC.pm.readTestProgram(TP.s3);    
+        MC.pm.loadTestProgram(TP.s3);    
         
         MC.control.pc = 12; // 000100 1 0001100=12
-        MC.alu.wReg = new int[8];
+        MC.alu.wReg.writeReg(new int[8]);
         MC.ram.writeDataCell(12, new int[] {1,0,0,1, 1,1,0,1});
         MC.control.exe();
         assertArrayEquals(MC.ram.readDataCell(12), new int[] {1,0,0,1, 1,1,0,1});
         
         MC.control.pc = 12; // 000100 1 0001100=12
-        MC.alu.wReg = new int[] {0,1,1,1, 0,0,0,1};
+        MC.alu.wReg.writeReg(new int[] {0,1,1,1, 0,0,0,1});
         MC.control.exe();
         assertArrayEquals(MC.ram.readDataCell(12), new int[] {1,1,1,1, 1,1,0,1});
     }
 
     @Test // Eduard
     void testMOVF() {
-        MC.pm.readTestProgram(TP.s6);
+        MC.pm.loadTestProgram(TP.s6);
 
         //Case: Z-Flag is 0
         MC.ram.writeDataCell(12, new int[] {0,1,1,0,1,0,1,0});
         MC.control.pc=5;// 00 1000 0000 1100
         MC.control.exe();
-        assertArrayEquals(new int[] {0,1,1,0,1,0,1,0},MC.alu.wReg);
+        assertArrayEquals(new int[] {0,1,1,0,1,0,1,0}, MC.alu.wReg.readReg());
         assertEquals(0,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); //Z-Flag
         
         //Case: Z-Flag is 1
         MC.ram.writeDataCell(12, new int[] {0,0,0,0,0,0,0,0});
         MC.control.pc=5;// 00 1000 0000 1100
         MC.control.exe();
-        assertArrayEquals(new int[] {0,0,0,0,0,0,0,0},MC.alu.wReg);
+        assertArrayEquals(new int[] {0,0,0,0,0,0,0,0}, MC.alu.wReg.readReg());
         assertEquals(1,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); //Z-Flag
+    }
+    
+    @Test
+    void testMOVWF() { // Linus FIXME
+        MC.pm.loadTestProgram(TP.s3);
+        
+        MC.control.pc = 1; // 000000 1 0001100=12
+        // wReg setzen 1,1,0,0,1,1,0,1
+        MC.control.exe();
+        assertArrayEquals(new int[] {1,1,0,0,1,1,0,1}, MC.ram.readDataCell(12));
+        
+        MC.control.pc = 6; // 000000 1 0001101=13
+        // wReg setzen 1,0,0,0,1,1,1,1
+        MC.control.exe();
+        assertArrayEquals(new int[] {1,0,0,0,1,1,1,1}, MC.ram.readDataCell(13));
     }
     
     @Test // Eduard
     void testRRF() {
-        MC.pm.readTestProgram(TP.s6);
+        MC.pm.loadTestProgram(TP.s6);
         
         // Case 1: Cary is 1
         MC.ram.writeDataCell(0, new int[] {0,0,0,0,1,1,1,0});
@@ -223,7 +239,7 @@ class Test_Control_ControlUnit_ByteOps {
     
     @Test // Eduard
     void testSWAPF() {
-        MC.pm.readTestProgram(TP.s6);
+        MC.pm.loadTestProgram(TP.s6);
         
         MC.ram.writeDataCell(0, new int[] {1,1,0,0,0,0,1,1});
         MC.control.pc=30;// 00 1110 1000 0000

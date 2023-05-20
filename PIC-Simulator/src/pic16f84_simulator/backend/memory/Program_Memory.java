@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+
 import pic16f84_simulator.backend.tools.Utils;
 
 public class Program_Memory extends Template_Memory {// Eduard
@@ -12,8 +13,26 @@ public class Program_Memory extends Template_Memory {// Eduard
         super(1024, 14);
         allow = Utils.allow(allow, this);
     }
+    
+    public int[] readDataCell(int indexCell) {
+        return super.readCell(indexCell);
+    }
+    
+    public int readSpecificBit(int indexCell, int indexBit) {
+        return super.readBit(indexCell, indexBit);
+    }
+    
+    @Override
+    public void writeDataCell(int indexCell, int[] data) {
+        super.writeDataCell(indexCell, data);
+    }
+    
+    @Override
+    public void writeSpecificBit(int indexCell, int indexBit, int bit) {
+        super.writeSpecificBit(indexCell, indexBit, bit);
+    }
 
-    public void readTestProgram(String path) {        
+    public void loadTestProgram(String path) {    
         File file = new File(path); // Read File
 
         //If it has problems this code will be executed

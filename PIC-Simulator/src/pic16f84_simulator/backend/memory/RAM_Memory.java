@@ -14,14 +14,11 @@ public class RAM_Memory extends Template_Memory { // Linus
 
 
     /*
-     * writes to specific RamAdress --> gets mirrored automatically
+     * writes to specific RamAddress --> gets mirrored automatically
      */
     @Override
     public void writeDataCell(int indexCell, int[] data) {
-        checkMemoryLocation(indexCell); // checks if unimplemented
-        if(data.length != 8) {
-            throw new NegativeArraySizeException ("The bit-word has the wrong size");
-        }                
+        checkAddress(indexCell);               
         super.writeDataCell(indexCell, data);
 
         int indexMirrored = mirrorBank(indexCell);
@@ -32,10 +29,7 @@ public class RAM_Memory extends Template_Memory { // Linus
 
     @Override
     public void writeSpecificBit(int indexCell, int indexBit, int bit) {
-        checkMemoryLocation(indexCell);
-        if(bit != 0 && bit != 1) {
-            throw new IllegalArgumentException("Thats not a bit: " + bit);
-        }
+        checkAddress(indexCell);        
         super.writeSpecificBit(indexCell, indexBit, bit);
 
         int indxMirrored = mirrorBank(indexCell);
@@ -43,12 +37,24 @@ public class RAM_Memory extends Template_Memory { // Linus
             super.writeSpecificBit(indxMirrored, indexBit, bit);
         }        
     }
+    
+    public int[] readDataCell(int indexCell) {
+        checkAddress(indexCell);
+        return super.readCell(indexCell);
+    }
+    
+    public int readSpecificBit(int indexCell, int indexBit) {
+        checkAddress(indexCell);
+        return super.readBit(indexCell, indexBit);
+    }
 
 
 
-    // Hilfsmethode
-    public void checkMemoryLocation(int index) {
-        if(index == 7 || index == 135 || index >= 80 && index <= 127) { // -> des sind alles die "unimplemented MemoryLocations"
+    /*
+     * Checks if given address is unimplemented space
+     */
+    public void checkAddress(int index) {
+        if(index == 7 || index == 135 || index >= 80 && index <= 127) { // -> these are all the "unimplemented MemoryLocations".
             throw new NegativeArraySizeException ("This address is not available");
         }
     }    

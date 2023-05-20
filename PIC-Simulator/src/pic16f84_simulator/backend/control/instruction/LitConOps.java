@@ -14,10 +14,10 @@ public enum LitConOps implements Instruction { // Linus
     ANDLW { // Eduard
         @Override
         public void exe(int[] k) {
-            int wAsDec = Utils.binaryToDec(MC.alu.wReg);
+            int wAsDec = Utils.binaryToDec(MC.alu.wReg.readReg());
             int kAsDec = Utils.binaryToDec(k);
             int[] wAndK = Utils.decToBinary(wAsDec & kAsDec, 8);
-            MC.alu.wReg = wAndK;
+            MC.alu.wReg.writeReg(wAndK);
             SFR.updateZflag(wAndK);
         }
     },
@@ -39,10 +39,10 @@ public enum LitConOps implements Instruction { // Linus
     IORLW { // Eduard
         @Override
         public void exe(int[] k) {
-            int wAsDec = Utils.binaryToDec(MC.alu.wReg);
+            int wAsDec = Utils.binaryToDec(MC.alu.wReg.readReg());
             int kAsDec = Utils.binaryToDec(k);
             int[] wAndK = Utils.decToBinary(wAsDec ^ kAsDec, 8);
-            MC.alu.wReg = wAndK;
+            MC.alu.wReg.writeReg(wAndK);
             SFR.updateZflag(wAndK);
         }
     },

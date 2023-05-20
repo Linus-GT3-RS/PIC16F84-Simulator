@@ -1,9 +1,27 @@
 package pic16f84_simulator.backend.memory;
 
-public class Register extends Template_Register {
+public class Register extends Template_Memory {
     
-    public Register(int size){
-        super(size);
+    public Register(int numbOfBits){
+        super(1, numbOfBits);
+    }
+    
+    public int length = readReg().length;
+    
+    public int[] readReg() {
+        return super.readCell(0);
+    }
+    
+    public int readBit(int indx) {
+        return super.readBit(0, indx);
+    }
+    
+    public void writeReg(int[] bitWord) {
+      super.writeDataCell(0, bitWord);
+    }
+    
+    public void writeBit(int indx, int bit) {
+        super.writeSpecificBit(0, indx, bit);
     }
 
 }

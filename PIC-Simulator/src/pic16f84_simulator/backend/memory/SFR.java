@@ -43,18 +43,18 @@ public enum SFR {
         MC.ram.writeSpecificBit(SFR.STATUS.asIndex(),6,bit);
     }
     public static int getDCflag() {
-        return MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 6);
+        return MC.ram.readBit(SFR.STATUS.asIndex(), 6);
     }
     
     public static void setCflag(int bit) {
         MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 7, bit);
     }
     public static int getCflag() {
-        return MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 7);
+        return MC.ram.readBit(SFR.STATUS.asIndex(), 7);
     }
     
     public static int getZflag() {
-        return MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5);
+        return MC.ram.readBit(SFR.STATUS.asIndex(), 5);
     }
     
     /*

@@ -1,13 +1,14 @@
 package testCases;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.RAM_Memory;
 import pic16f84_simulator.backend.memory.SFR;
-import pic16f84_simulator.backend.tools.UnknownLocationException;
 
 class Test_Memory_RamMemory {
     
@@ -59,7 +60,7 @@ class Test_Memory_RamMemory {
         assertArrayEquals(new int[] {0,0,0,0,0,0,1,1}, ram.readDataCell(79));
         assertArrayEquals(new int[] {0,0,0,0,0,0,1,1}, ram.readDataCell(207));
         
-        ram.writeDataCell(140, new int[] {1,0,1,0,1,0,0,0}); 
+        ram.writeDataCell(140, new int[] {1,0,1,0,1,0,0,0});
         assertArrayEquals(new int[] {1,0,1,0,1,0,0,0}, ram.readDataCell(140));
         assertArrayEquals(new int[] {1,0,1,0,1,0,0,0}, ram.readDataCell(12));
         
@@ -70,11 +71,11 @@ class Test_Memory_RamMemory {
     @Test
     void testCheckMemoryLocation() {
         RAM_Memory ram = MC.ram;        
-        assertThrows(NegativeArraySizeException .class, () -> {ram.checkMemoryLocation(7);});
-        assertThrows(NegativeArraySizeException .class, () -> {ram.checkMemoryLocation(135);});
-        assertThrows(NegativeArraySizeException .class, () -> {ram.checkMemoryLocation(80);});
-        assertThrows(NegativeArraySizeException .class, () -> {ram.checkMemoryLocation(90);});
-        assertThrows(NegativeArraySizeException .class, () -> {ram.checkMemoryLocation(127);});    
+        assertThrows(NegativeArraySizeException .class, () -> {ram.checkAddress(7);});
+        assertThrows(NegativeArraySizeException .class, () -> {ram.checkAddress(135);});
+        assertThrows(NegativeArraySizeException .class, () -> {ram.checkAddress(80);});
+        assertThrows(NegativeArraySizeException .class, () -> {ram.checkAddress(90);});
+        assertThrows(NegativeArraySizeException .class, () -> {ram.checkAddress(127);});    
     }
     
     

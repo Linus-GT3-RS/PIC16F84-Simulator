@@ -1,6 +1,10 @@
 package testCases;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Test;
+
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.calculation.ALU;
 import pic16f84_simulator.backend.control.ControlUnit;

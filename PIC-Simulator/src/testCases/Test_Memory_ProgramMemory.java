@@ -1,24 +1,22 @@
 package testCases;
 
-import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 import org.junit.jupiter.api.Test;
 
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.Program_Memory;
 import pic16f84_simulator.backend.tools.TP;
-import pic16f84_simulator.backend.tools.UnknownLocationException;
 
 class Test_Memory_ProgramMemory { // Eduard
 
     @Test
     void testReadTestProgramm() {
         Program_Memory pm = MC.pm;        
-        pm.readTestProgram(TP.s1);
+        pm.loadTestProgram(TP.s1);
         assertArrayEquals(pm.readDataCell(0), new int[] {1,1,0,0,0,0,0,0,0,1,0,0,0,1} );
         
-        pm.readTestProgram(TP.s5);
+        pm.loadTestProgram(TP.s5);
         assertArrayEquals(pm.readDataCell(13), new int[] {0,1, 1,1,0,1, 0,0,0,0, 1,1,0,0}); //01 1101 0000 1100
      }
     

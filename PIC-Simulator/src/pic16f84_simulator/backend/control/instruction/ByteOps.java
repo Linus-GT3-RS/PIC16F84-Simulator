@@ -17,7 +17,7 @@ public enum ByteOps implements Instruction { // Linus
     ANDWF { // Linus
         @Override
         public void exe(int d, int indexFile) {
-            int wAsDec = Utils.binaryToDec(MC.alu.wReg);
+            int wAsDec = Utils.binaryToDec(MC.alu.wReg.readReg());
             int fAsDec = Utils.binaryToDec(MC.ram.readDataCell(indexFile));
             int[] wAndF = Utils.decToBinary(wAsDec & fAsDec, 8);
             storeResult(d, indexFile, wAndF);         
@@ -34,7 +34,7 @@ public enum ByteOps implements Instruction { // Linus
     CLRW { // Linus
         @Override
         public void exe(int d, int indexFile) {
-            MC.alu.wReg = new int[8];
+            MC.alu.wReg.writeReg(new int[8]);
             SFR.updateZflag(0);
         }
     },
@@ -100,7 +100,7 @@ public enum ByteOps implements Instruction { // Linus
     IORWF { // Linus 
         @Override
         public void exe(int d, int indexFile) { // Inclusive OR: A or B or both --> |
-            int w = Utils.binaryToDec(MC.alu.wReg);
+            int w = Utils.binaryToDec(MC.alu.wReg.readReg());
             int f = Utils.binaryToDec(MC.ram.readDataCell(indexFile));
             int[] res = Utils.decToBinary((w | f), 8);
             SFR.updateZflag(res);
@@ -118,6 +118,7 @@ public enum ByteOps implements Instruction { // Linus
     MOVWF { // Linus
         @Override
         public void exe(int d, int indexFile) {
+            storeResult(1, indexFile, MC.alu.wReg.readReg());
         }
     },
     NOP { // Eduard
@@ -176,7 +177,7 @@ public enum ByteOps implements Instruction { // Linus
     }    
     private static void storeResult(int d, int indxFile, int[] res) {
         if(d == 0) {
-            MC.alu.wReg = res;
+            MC.alu.wReg.writeReg(res);
         }
         else MC.ram.writeDataCell(indxFile, res);
     }
