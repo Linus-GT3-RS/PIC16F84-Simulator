@@ -76,9 +76,9 @@ public enum LitConOps implements Instruction { // Linus
     SUBLW { // Eduard
         @Override
         public void exe(int[] k) {
-            int[] wReg = MC.alu.wReg;
+            int[] wReg = MC.alu.wReg.readReg();
             int[] result = MC.alu.subtraction(wReg, k);
-            MC.alu.wReg = result;
+            MC.alu.wReg.writeReg(result);
         }
     },
     XORLW { // Linus
