@@ -206,16 +206,16 @@ class Test_Control_ControlUnit_ByteOps {
     }
     
     @Test
-    void testMOVWF() { // Linus FIXME
+    void testMOVWF() { // Linus
         MC.pm.loadTestProgram(TP.s3);
         
         MC.control.pc = 1; // 000000 1 0001100=12
-        // wReg setzen 1,1,0,0,1,1,0,1
+        MC.alu.wReg.writeReg(new int[] {1,1,0,0,1,1,0,1});
         MC.control.exe();
         assertArrayEquals(new int[] {1,1,0,0,1,1,0,1}, MC.ram.readDataCell(12));
         
         MC.control.pc = 6; // 000000 1 0001101=13
-        // wReg setzen 1,0,0,0,1,1,1,1
+        MC.alu.wReg.writeReg(new int[] {1,0,0,0,1,1,1,1});
         MC.control.exe();
         assertArrayEquals(new int[] {1,0,0,0,1,1,1,1}, MC.ram.readDataCell(13));
     }
