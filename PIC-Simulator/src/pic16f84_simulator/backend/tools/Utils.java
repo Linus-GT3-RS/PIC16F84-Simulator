@@ -95,7 +95,7 @@ public class Utils {
     
     public static boolean allow (boolean condt, Object c) {
         if(condt == false) {
-            throw new IllegalArgumentException("Es gibt schon eine Instanz von " + c.getClass());
+            throw new IllegalArgumentException("There is already an instance of " + c.getClass());
         }
         return false; 
     }

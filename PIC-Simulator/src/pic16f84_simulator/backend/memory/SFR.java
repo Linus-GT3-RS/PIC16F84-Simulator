@@ -4,7 +4,6 @@ package pic16f84_simulator.backend.memory;
 import java.util.Arrays;
 
 import pic16f84_simulator.MC;
-import pic16f84_simulator.backend.tools.UnknownLocationException;
 import pic16f84_simulator.backend.tools.Utils;
 
 // Types of addressable Register
