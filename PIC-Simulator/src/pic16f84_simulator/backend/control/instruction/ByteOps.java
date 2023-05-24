@@ -1,4 +1,8 @@
 package pic16f84_simulator.backend.control.instruction;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.Utils;
@@ -130,6 +134,15 @@ public enum ByteOps implements Instruction { // Linus
     RLF { // Linus
         @Override
         public void exe(int d, int indexFile) {
+            int[] f = MC.ram.readDataCell(indexFile);
+            int cFlag = SFR.getCflag();
+            
+            SFR.setCflag(f[0]);            
+            for(int i = 0; i < 7; i++) {
+                f[i] = f[i + 1];
+            }
+            f[7] = cFlag;
+            storeResult(d, indexFile, f);
         }
     },
     RRF { // Eduard
