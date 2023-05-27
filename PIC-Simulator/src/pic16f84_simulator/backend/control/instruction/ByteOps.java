@@ -161,7 +161,11 @@ public enum ByteOps implements Instruction { // Linus
     },
     SUBWF { // Linus
         @Override
-        public void exe(int d, int indexFile) {
+        public void exe(int d, int indexFile) {            
+            int[] f = MC.ram.readDataCell(indexFile);
+            int[] w = MC.alu.wReg.readReg();
+            int[] res = MC.alu.subtraction(f, w);
+            storeResult(d, indexFile, res);  
         }
     },
     SWAPF { // Eduard
@@ -175,7 +179,12 @@ public enum ByteOps implements Instruction { // Linus
     },
     XORWF { // Linus
         @Override
-        public void exe(int d, int indexFile) {
+        public void exe(int d, int indexFile) { // FIXME XORWF
+            int f = Utils.binaryToDec(MC.ram.readDataCell(indexFile));
+            int w = Utils.binaryToDec(MC.alu.wReg.readReg());
+            int xorWF = f ^ w;
+            SFR.updateZflag(xorWF);
+            storeResult(d, indexFile, xorWF);
         }
     };
 

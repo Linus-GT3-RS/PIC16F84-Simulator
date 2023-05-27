@@ -249,6 +249,16 @@ class Test_Control_ControlUnit_ByteOps {
         assertArrayEquals(new int[] {0,1,0,0,0,0,1,1},MC.ram.readDataCell(0));
         assertEquals(1,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 7)); //C-Flag
     }
+    
+    @Test
+    void testSUBWF() { // Linus
+        MC.pm.loadTestProgram(TP.s3);        
+        MC.control.pc = 17; // 000010 0 0001100=12
+        MC.ram.writeDataCell(12, new int[] {1,1,1,1, 1,1,1,1}); // 255
+        MC.alu.wReg.writeReg(new int[] {1,0,1,0, 1,0,1,0}); // 170
+        MC.control.exe();
+        assertArrayEquals(new int[] {0,1,0,1, 0,1,0,1}, MC.alu.wReg.readReg()); // f - w = 85
+    }
 
     @Test // Eduard
     void testSWAPF() {
