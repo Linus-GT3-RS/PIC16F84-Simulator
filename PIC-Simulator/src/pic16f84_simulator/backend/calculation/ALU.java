@@ -70,11 +70,16 @@ public class ALU {
 
     
     /*
-     *  returns: a - b (while handling underflow issues) --> result is between [0, 255]
+     *  returns: a - b (while handling underflow issues) -
+     *  -> result is between [0, 255]
      *      does that by calling addition(a, b) with Zweierkomplement
-     *      thereby following flags in StatusReg get updated: ZeroFlag, CarryFlag, DigitCaryFlag
+ *      
+ *      following flags in StatusReg get updated: ZeroFlag, CarryFlag, DigitCaryFlag
+ *      
  *      Note:
- *      PIC16F84 does not invert C-flag or DC-flag after subtraction --> manufactoring defect !
+ *      PIC16F84 does not invert C-flag or DC-flag after subtraction 
+ *      --> manufactoring defect !
+ *      
      */
     public int[] subtraction(int[] arr1, int[] arr2) { // Linus
         int b = Utils.binaryToDec(arr2);
