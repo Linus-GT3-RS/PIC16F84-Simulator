@@ -234,7 +234,7 @@ class Test_Control_ControlUnit_ByteOps {
     void testRRF() {
         MC.pm.loadTestProgram(TP.s6);
 
-        // Case 1: Cary is 1
+        // Case 1: Carry is 1
 
         MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 7, 1);
         MC.control.pc=22;// 00 1100 1000 0000 // Indirect Adressing -> 0

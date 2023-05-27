@@ -82,4 +82,20 @@ class Test_Control_ControlUnit_LitConOps {
         assertEquals(1,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 6)); //DC-Flag
         
     }
+    
+    @Test //Eduard
+    void testRETURN() {
+        MC.pm.loadTestProgram(TP.s2);
+        
+        // Case tos is 0
+        MC.control.pc = 7;
+        MC.control.exe();
+        assertEquals(1,MC.control.pc);
+        
+        // Case tos is 2
+        MC.stack.push();
+        MC.control.pc = 7;
+        MC.control.exe();
+        assertEquals(3,MC.control.pc);
+    }
 }

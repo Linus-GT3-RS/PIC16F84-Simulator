@@ -64,6 +64,7 @@ public enum LitConOps implements Instruction { // Linus
     RETURN { // Eduard
         @Override
         public void exe(int[] k) {
+            MC.stack.pop();
         }
     },
     SLEEP { // Linus
