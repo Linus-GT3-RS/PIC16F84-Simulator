@@ -179,7 +179,7 @@ public enum ByteOps implements Instruction { // Linus
     },
     XORWF { // Linus
         @Override
-        public void exe(int d, int indexFile) { // FIXME XORWF
+        public void exe(int d, int indexFile) {
             int f = Utils.binaryToDec(MC.ram.readDataCell(indexFile));
             int w = Utils.binaryToDec(MC.alu.wReg.readReg());
             int xorWF = f ^ w;

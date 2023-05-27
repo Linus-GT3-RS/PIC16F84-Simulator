@@ -270,6 +270,17 @@ class Test_Control_ControlUnit_ByteOps {
         MC.control.exe();
         assertArrayEquals(new int[] {0,0,1,1,1,1,0,0},MC.ram.readDataCell(15));
     }
+    
+    @Test
+    void testXORWF() {
+        MC.pm.loadTestProgram(TP.s6);        
+        MC.control.pc = 31; // 000110 1 0000000
+        SFR.setFSR(25);
+        MC.ram.writeDataCell(25, new int[] {0,1,0,1, 1,1,1,0});
+        MC.alu.wReg.writeReg(new int[] {1,1,0,0, 0,0,1,1});
+        MC.control.exe();
+        assertArrayEquals(new int[] {1,0,0,1, 1,1,0,1}, MC.ram.readDataCell(25));
+    }
 
 
     private static int fixScope(int res) { // Linus
