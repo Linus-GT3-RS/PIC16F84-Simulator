@@ -206,7 +206,7 @@ public enum ByteOps implements Instruction { // Linus
     
     // sets res to legal scope [0, 255]
     // method affects NO flags --> has to be done elsewhere
-    private static int fixScope(int res) { // Linus
+    public static int fixScope(int res) { // Linus
         if(res > 255) {
            return res - 256; 
         }
