@@ -1,7 +1,10 @@
 package pic16f84_simulator.backend.control;
 
-public class Prescaler {
+enum Mode { TMR, WDOG }
 
+public class Prescaler {
+    
+    private Mode mode;
     
     // Don't be hard to yourself
     
