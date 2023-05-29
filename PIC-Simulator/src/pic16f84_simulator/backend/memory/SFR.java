@@ -121,4 +121,17 @@ public enum SFR {
     public static void setFSR(int Address) {
         MC.ram.writeDataCell(SFR.FSR.asIndex(), Utils.decToBinary(Address, 8));
     }
+    
+    
+    /*
+     * 
+     * Option Register
+     * 
+     * 
+     */
+    public static int getPSA() {
+        return MC.ram.readSpecificBit(SFR.OPTION.asIndex(), 4);
+    }
+    
+    
 }

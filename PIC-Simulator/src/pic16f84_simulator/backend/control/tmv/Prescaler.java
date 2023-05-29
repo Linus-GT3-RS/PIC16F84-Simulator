@@ -1,4 +1,4 @@
-package pic16f84_simulator.backend.control;
+package pic16f84_simulator.backend.control.tmv;
 
 import java.util.Arrays;
 

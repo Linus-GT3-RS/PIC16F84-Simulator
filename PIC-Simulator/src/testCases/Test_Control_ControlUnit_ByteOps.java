@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import pic16f84_simulator.MC;
+import pic16f84_simulator.backend.control.tmv.WatchDog;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.TP;
 import pic16f84_simulator.backend.tools.Utils;
@@ -13,7 +14,7 @@ import pic16f84_simulator.backend.tools.Utils;
 class Test_Control_ControlUnit_ByteOps {
 
     @Test // Eduard
-    void testADDWF() { 
+    void testADDWF() {
         MC.pm.loadTestProgram(TP.s3);
 
         //Case 1: Store in w-Reg #w = 8; #f = 8
@@ -222,7 +223,7 @@ class Test_Control_ControlUnit_ByteOps {
     void testRLF() { // Linus
         MC.pm.loadTestProgram(TP.s4);        
         MC.control.pc = 3; // 001101 1 0001100=12
-        
+
         MC.ram.writeDataCell(12, new int[] {1,0,1,0,1,0,1,0});
         SFR.setCflag(0);
         MC.control.exe();
@@ -249,7 +250,7 @@ class Test_Control_ControlUnit_ByteOps {
         assertArrayEquals(new int[] {0,1,0,0,0,0,1,1},MC.ram.readDataCell(0));
         assertEquals(1,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 7)); //C-Flag
     }
-    
+
     @Test
     void testSUBWF() { // Linus
         MC.pm.loadTestProgram(TP.s3);        
@@ -270,7 +271,7 @@ class Test_Control_ControlUnit_ByteOps {
         MC.control.exe();
         assertArrayEquals(new int[] {0,0,1,1,1,1,0,0},MC.ram.readDataCell(15));
     }
-    
+
     @Test
     void testXORWF() {
         MC.pm.loadTestProgram(TP.s6);        
