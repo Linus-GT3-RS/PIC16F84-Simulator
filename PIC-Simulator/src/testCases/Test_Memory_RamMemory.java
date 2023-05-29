@@ -26,6 +26,7 @@ class Test_Memory_RamMemory {
         assertArrayEquals(new int[] {0,0,0,0,0,0,1,1}, ram.readDataCell(0));
         assertArrayEquals(new int[] {0,0,0,0,0,0,1,1}, ram.readDataCell(128));
         
+        ram.writeDataCell(129, new int[8]);        
         ram.writeDataCell(1, new int[] {1,1,1,1,1,0,1,1});
         assertArrayEquals(new int[] {1,1,1,1,1,0,1,1}, ram.readDataCell(1));
         assertArrayEquals(new int[] {0,0,0,0,0,0,0,0}, ram.readDataCell(129));
