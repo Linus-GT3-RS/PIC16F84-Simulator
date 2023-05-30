@@ -53,6 +53,7 @@ public class ControlUnit {
             instr.exe(k);
         }
         pcpp();
+        MC.tvw.tm.timerpp();
     }
     
     // Increase the PC-Counter and load in specific register PCL and PCLATH

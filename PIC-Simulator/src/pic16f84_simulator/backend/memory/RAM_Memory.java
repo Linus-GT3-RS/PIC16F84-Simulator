@@ -1,4 +1,5 @@
 package pic16f84_simulator.backend.memory;
+import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.tools.Utils;
 
 /*
@@ -20,6 +21,7 @@ public class RAM_Memory extends Template_Memory { // Linus
     public void writeDataCell(int indexCell, int[] data) {
         checkAddress(indexCell);               
         super.writeDataCell(indexCell, data);
+        checkUp(indexCell);
 
         int indexMirrored = mirrorBank(indexCell);
         if(indexMirrored != indexCell) {
@@ -96,6 +98,13 @@ public class RAM_Memory extends Template_Memory { // Linus
             return res + 256;
         }
         else return res;
+    }
+
+    private void checkUp(int indx) {        
+        switch(indx) {
+        case 1 -> { MC.tvw.tm.delayBy2Cycles(); }
+        default -> {}
+        }
     }
 
 
