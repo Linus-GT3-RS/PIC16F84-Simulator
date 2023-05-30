@@ -11,7 +11,7 @@ class TMR0InterruptException extends RuntimeException { TMR0InterruptException(S
 public class Timer { // the time must go one
 
     private int delay = 0; // is used to realise the (2) waiting cycles after writing to TMR0 --> count of delays
-    private double forPRS;
+    private double incrCheck;
 
     // has to be called after writing to TMR0 to offset timer by 2 cycles
     public void delayBy2Cycles() {
@@ -46,11 +46,11 @@ public class Timer { // the time must go one
     private int incrTimer() {
         int tmr0 = Utils.binaryToDec(MC.ram.readDataCell(SFR.TMR0.asIndex()));
         if(SFR.getPSA() == 0) { // Prescaler is assigned to Timer
-            this.forPRS += 1.0 / (double)MC.tvw.ps.getPRS();
-            if((int)this.forPRS != 1) {
+            this.incrCheck += 1.0 / (double)MC.tvw.ps.getPRS();
+            if((int)this.incrCheck != 1) {
                 return tmr0;               
             }
-            this.forPRS = 0.0;
+            this.incrCheck = 0.0;
         }
         return tmr0 + 1;
     }
