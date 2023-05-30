@@ -13,9 +13,11 @@ public class Prescaler {
         int[] optionReg = MC.ram.readDataCell(SFR.OPTION.asIndex());
         optionReg = Arrays.copyOfRange(optionReg, 5, 8);
         int n = Utils.binaryToDec(optionReg); // get n from OptionReg PS0-PS2
+        
         if(MC.ram.readSpecificBit(SFR.OPTION.asIndex(), 4) == 1) { // case 1 -> WDT
             return (int)Math.pow(2,n); // 1 * 2^n
-        }else { // case 0 -> TMR0
+        }
+        else { // case 0 -> TMR0
             return 2 * (int)Math.pow(2, n); // 2 * 2^n
         }
     }

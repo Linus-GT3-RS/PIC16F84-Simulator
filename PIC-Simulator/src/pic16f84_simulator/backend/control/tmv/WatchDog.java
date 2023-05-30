@@ -26,7 +26,7 @@ public class WatchDog { // A Dog can bite
     private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     private Runnable task = new Runnable() {
         int counter = 0;
-        int timer = MC.tmv.wd.getTimer();
+        int timer = MC.tvw.wd.getTimer();
         
         @Override
         public void run() { // System.out.println("Timer tick: " + counter);
@@ -42,7 +42,7 @@ public class WatchDog { // A Dog can bite
         // this.on = true;
         this.timer = this.std;
         if(SFR.getPSA() == 1){
-            this.timer *= MC.tmv.ps.getPRS();
+            this.timer *= MC.tvw.ps.getPRS();
         }
         this.executor.scheduleAtFixedRate(task, 0, 1, TimeUnit.MILLISECONDS); // Timer starten, der alle x Zeiteinheiten ausgeführt wird      
     }

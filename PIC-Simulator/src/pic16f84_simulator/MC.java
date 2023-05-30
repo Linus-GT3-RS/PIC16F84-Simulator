@@ -2,7 +2,7 @@ package pic16f84_simulator;
 
 import pic16f84_simulator.backend.calculation.ALU;
 import pic16f84_simulator.backend.control.ControlUnit;
-import pic16f84_simulator.backend.control.tmv.TMVController;
+import pic16f84_simulator.backend.control.tmv.TVWController;
 import pic16f84_simulator.backend.memory.Program_Memory;
 import pic16f84_simulator.backend.memory.RAM_Memory;
 import pic16f84_simulator.backend.memory.StackBuffer;
@@ -19,7 +19,7 @@ public class MC {
     public static RAM_Memory ram = new RAM_Memory();
     public static StackBuffer stack = new StackBuffer();
     
-    public static TMVController tmv = new TMVController();
+    public static TVWController tvw = new TVWController();
     public static ControlUnit control = new ControlUnit();
     public static ALU alu = new ALU();
     

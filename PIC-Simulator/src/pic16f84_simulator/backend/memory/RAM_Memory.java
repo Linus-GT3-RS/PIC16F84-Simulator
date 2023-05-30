@@ -37,12 +37,12 @@ public class RAM_Memory extends Template_Memory { // Linus
             super.writeSpecificBit(indxMirrored, indexBit, bit);
         }        
     }
-    
+
     public int[] readDataCell(int indexCell) {
         checkAddress(indexCell);
         return super.readCell(indexCell);
     }
-    
+
     public int readSpecificBit(int indexCell, int indexBit) {
         checkAddress(indexCell);
         return super.readBit(indexCell, indexBit);
@@ -83,6 +83,19 @@ public class RAM_Memory extends Template_Memory { // Linus
             result -= 256;
         }      
         return result;
+    }
+
+
+    // sets res to legal scope [0, 255]
+    // method affects NO flags --> has to be done elsewhere
+    public static int fixScope(int res) { // Linus
+        if(res > 255) {
+            return res - 256; 
+        }
+        else if(res < 0) {
+            return res + 256;
+        }
+        else return res;
     }
 
 

@@ -38,8 +38,8 @@ public enum SFR {
         default -> {return -1;} //not possible
         }
     }
-    
-    
+
+
     /*
      * 
      * Status Register
@@ -53,18 +53,18 @@ public enum SFR {
     public static int getDCflag() {
         return MC.ram.readBit(SFR.STATUS.asIndex(), 6);
     }
-    
+
     public static void setCflag(int bit) {
         MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 7, bit);
     }
     public static int getCflag() {
         return MC.ram.readBit(SFR.STATUS.asIndex(), 7);
     }
-    
+
     public static int getZflag() {
         return MC.ram.readBit(SFR.STATUS.asIndex(), 5);
     }
-    
+
     /*
      * can be called before or after correcting scope
      * adds nibbles of a to nibbles of b and updates DC-flag
@@ -78,7 +78,7 @@ public enum SFR {
             setDCflag(1);
         } else setDCflag(0);
     }
-    
+
     /*
      * updateCflag() has to be called BEFORE correcting the scope
      */
@@ -87,7 +87,7 @@ public enum SFR {
             MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 7, 1);
         } else MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 7, 0);
     }
-    
+
     /*
      * updateZflag() has to be called AFTER correcting the scope
      */
@@ -101,28 +101,28 @@ public enum SFR {
         }
         else MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 5, 0);
     }
-    
-    
-    
+
+
+
     /*
      * 
      * FSR Register
      * 
      * 
      */
-    
+
     // get SFR.FSR address
     public static int[] getFSR() { // Eduard
         int[] result = MC.ram.readDataCell(SFR.FSR.asIndex());
         return result;
     }
-    
+
     // set SFR.FSR address
     public static void setFSR(int Address) {
         MC.ram.writeDataCell(SFR.FSR.asIndex(), Utils.decToBinary(Address, 8));
     }
-    
-    
+
+
     /*
      * 
      * Option Register
@@ -132,6 +132,20 @@ public enum SFR {
     public static int getPSA() {
         return MC.ram.readSpecificBit(SFR.OPTION.asIndex(), 4);
     }
-    
-    
+
+    public static int getTOCS() {
+        return MC.ram.readSpecificBit(SFR.OPTION.asIndex(), 2);
+    }
+
+
+    /*
+     * 
+     * INTCON Register
+     * 
+     * 
+     */
+    public static void setTOIF() {
+        MC.ram.writeSpecificBit(SFR.INTCON.asIndex(), 5, 1);
+    }
+
 }
