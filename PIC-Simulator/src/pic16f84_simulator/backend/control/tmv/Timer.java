@@ -1,5 +1,4 @@
 package pic16f84_simulator.backend.control.tmv;
-
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.RAM_Memory;
 import pic16f84_simulator.backend.memory.SFR;
@@ -11,7 +10,7 @@ class TMR0InterruptException extends RuntimeException { TMR0InterruptException(S
 
 public class Timer { // the time must go one
 
-    private int delay = 0; // is used to realise the (2) waiting cycles after writing to TMR0
+    private int delay = 0; // is used to realise the (2) waiting cycles after writing to TMR0 --> count of delays
     private double forPRS;
 
     // has to be called after writing to TMR0 to offset timer by 2 cycles
