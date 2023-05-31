@@ -21,4 +21,8 @@ public class Prescaler {
             return 2 * (int)Math.pow(2, n); // 2 * 2^n
         }
     }
+    
+    public static void clearPRS() { // TODO @Eduard clearPRS
+        // Seite 2 Fachblatt Watchdog/Timer
+    }
 }

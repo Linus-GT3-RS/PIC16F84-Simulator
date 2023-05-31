@@ -10,7 +10,7 @@ import pic16f84_simulator.backend.tools.Utils;
 @SuppressWarnings("serial")
 class WatchdogTimerFinishedException extends RuntimeException{ WatchdogTimerFinishedException(String s){ super(s); }}
 
-public class WatchDog {// FIXME Tests machen
+public class WatchDog {// TODO @Linus Tests machen WatchDog
     
     private static boolean allow = true; // secures the creation of ONLY ONE instance of this class    
     public WatchDog(){

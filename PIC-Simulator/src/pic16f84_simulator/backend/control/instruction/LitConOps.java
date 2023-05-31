@@ -29,7 +29,7 @@ public enum LitConOps implements Instruction { // Linus
     CLRWDT { // Eduard
         @Override
         public void exe(int[] k) {
-            
+            // Not implemnted
         }
     },
     GOTO { // Linus
@@ -55,6 +55,7 @@ public enum LitConOps implements Instruction { // Linus
     RETFIE { // Eduard
         @Override
         public void exe(int[] k) {
+            // TODO @Eduard RETFIE
         }
     },
     RETLW { // Linus
@@ -71,6 +72,7 @@ public enum LitConOps implements Instruction { // Linus
     SLEEP { // Linus
         @Override
         public void exe(int[] k) {
+            // Not implemented
         }
     },
     SUBLW { // Eduard

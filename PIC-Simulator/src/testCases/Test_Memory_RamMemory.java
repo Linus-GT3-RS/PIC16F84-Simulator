@@ -11,6 +11,8 @@ import pic16f84_simulator.backend.memory.RAM_Memory;
 import pic16f84_simulator.backend.memory.SFR;
 
 class Test_Memory_RamMemory {
+    
+    // TODO @Eduard testOtherReset
 
     @Test
     void testPowerOnReset() {
@@ -33,6 +35,8 @@ class Test_Memory_RamMemory {
         MC.timer.tryIncrInternalTimer(); // no change in tmr0
         MC.timer.tryIncrInternalTimer(); // tmr0 gets incr
         assertArrayEquals(new int[] {0,0,0,0,0,0,1,0}, MC.ram.readDataCell(SFR.TMR0.asIndex()));
+        
+        //TODO @Eduard add Test clearPRS
 
         // test for caseX
     }

@@ -131,7 +131,7 @@ public class RAM_Memory extends Template_Memory { // Linus
      */
     private void checkUp(int indx) {   
         switch(indx) {
-        case 1 -> { MC.timer.delayBy2Cycles(); }
+        case 1 -> { MC.timer.delayBy2Cycles(); } // TODO @Eduard Connecto clearPRS
         default -> {}
         }
     }

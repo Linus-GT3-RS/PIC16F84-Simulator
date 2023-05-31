@@ -5,11 +5,7 @@ import pic16f84_simulator.backend.memory.RAM_Memory;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.Utils;
 
-@SuppressWarnings("serial")
-class TMR0InterruptException extends RuntimeException { TMR0InterruptException(String s) { super(s); } }
-
-
-public class Timer { // FIXME Tests machen
+public class Timer { // TODO @Linus Tests machen Timer
 
     private int delay = 0; // is used to realise the (2) waiting cycles after writing to TMR0 --> count of delays
     private double incrCheck;
