@@ -36,6 +36,13 @@ public abstract class Template_Memory { // Eduard + Linus
         this.memory[indexCell][indexBit] = bit;
     }
     
+    /*
+     * resets all cells to 0
+     */
+    public void danger_reset() {
+        this.memory = new int[this.memory.length][this.memory[0].length];
+    }
+    
     
     private void checkBit(int bit) {
         if(bit != 0 && bit != 1) {
