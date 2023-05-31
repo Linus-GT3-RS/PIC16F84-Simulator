@@ -132,6 +132,9 @@ public enum SFR {
     public static int getPSA() {
         return MC.ram.readSpecificBit(SFR.OPTION.asIndex(), 4);
     }
+    public static void setPSA(int val) {
+        MC.ram.writeSpecificBit(SFR.OPTION.asIndex(), 4, val);
+    }
 
     public static int getTOCS() {
         return MC.ram.readSpecificBit(SFR.OPTION.asIndex(), 2);
