@@ -55,7 +55,11 @@ public class Timer { // the time must go one // FIXME Tests machen
         return tmr0 + 1;
     }
 
-
-
+    /*
+     * for debugging purpose only
+     */
+    public void debug_clearDelay() {
+        this.delay = 0;
+    }
 
 }
