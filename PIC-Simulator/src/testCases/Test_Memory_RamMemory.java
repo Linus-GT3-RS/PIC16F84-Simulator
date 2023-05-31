@@ -11,8 +11,17 @@ import pic16f84_simulator.backend.memory.RAM_Memory;
 import pic16f84_simulator.backend.memory.SFR;
 
 class Test_Memory_RamMemory {
-    
-    
+
+    @Test
+    void testPowerOnReset() {
+        MC.ram.powerOnReset();
+        assertArrayEquals(new int[8], MC.ram.readDataCell(20)); // GPR
+        assertArrayEquals(new int[8], MC.ram.readDataCell(150)); // GPR
+        assertArrayEquals(new int[8], MC.ram.readDataCell(1)); // SFR
+        assertArrayEquals(new int[] {0,0,0,1, 1,0,0,0}, MC.ram.readDataCell(3)); // SFR
+        assertArrayEquals(new int[] {0,0,0,1, 1,0,0,0}, MC.ram.readDataCell(131)); // SFR
+    }
+
     @Test
     void testCheckUp() {        
         // test for case: 1 (tmr0)
@@ -24,29 +33,29 @@ class Test_Memory_RamMemory {
         MC.timer.tryIncrInternalTimer(); // no change in tmr0
         MC.timer.tryIncrInternalTimer(); // tmr0 gets incr
         assertArrayEquals(new int[] {0,0,0,0,0,0,1,0}, MC.ram.readDataCell(SFR.TMR0.asIndex()));
-        
+
         // test for caseX
     }
-    
-    
+
+
     @Test
     void testWriteRam() {
         RAM_Memory ram = MC.ram;
-        
+
         // SFR
         ram.writeDataCell(0, new int[] {0,1,1,0,1,0,1,1});
         assertArrayEquals(new int[] {0,1,1,0,1,0,1,1}, ram.readDataCell(0));
         assertArrayEquals(new int[] {0,1,1,0,1,0,1,1}, ram.readDataCell(128));
-        
+
         ram.writeDataCell(SFR.INDF.asIndex(), new int[] {0,0,0,0,0,0,1,1});
         assertArrayEquals(new int[] {0,0,0,0,0,0,1,1}, ram.readDataCell(0));
         assertArrayEquals(new int[] {0,0,0,0,0,0,1,1}, ram.readDataCell(128));
-        
+
         ram.writeDataCell(129, new int[8]);        
         ram.writeDataCell(1, new int[] {1,1,1,1,1,0,1,1});
         assertArrayEquals(new int[] {1,1,1,1,1,0,1,1}, ram.readDataCell(1));
         assertArrayEquals(new int[] {0,0,0,0,0,0,0,0}, ram.readDataCell(129));
-        
+
         ram.writeDataCell(SFR.STATUS.asIndex(), new int[] {0,1,1,0,1,0,1,1});
         assertArrayEquals(new int[] {0,1,1,0,1,0,1,1}, ram.readDataCell(SFR.STATUS.asIndex()));
         assertArrayEquals(new int[] {0,1,1,0,1,0,1,1}, ram.readDataCell(131));
@@ -58,12 +67,12 @@ class Test_Memory_RamMemory {
         ram.writeDataCell(129, new int[] {0,0,0,0,0,0,1,1});
         assertArrayEquals(new int[] {0,0,0,0,0,0,1,1}, ram.readDataCell(129));
         assertArrayEquals(new int[] {1,1,1,1,1,0,1,1}, ram.readDataCell(1));
-        
+
         ram.writeDataCell(128, new int[] {1,1,0,0,0,0,1,1});
         assertArrayEquals(new int[] {1,1,0,0,0,0,1,1}, ram.readDataCell(128));
         assertArrayEquals(new int[] {1,1,0,0,0,0,1,1}, ram.readDataCell(0));
 
-        
+
         // GPR
         ram.writeDataCell(12, new int[] {1,0,0,0,0,0,0,1});
         assertArrayEquals(new int[] {1,0,0,0,0,0,0,1}, ram.readDataCell(12));
@@ -76,15 +85,15 @@ class Test_Memory_RamMemory {
         ram.writeDataCell(79, new int[] {0,0,0,0,0,0,1,1});
         assertArrayEquals(new int[] {0,0,0,0,0,0,1,1}, ram.readDataCell(79));
         assertArrayEquals(new int[] {0,0,0,0,0,0,1,1}, ram.readDataCell(207));
-        
+
         ram.writeDataCell(140, new int[] {1,0,1,0,1,0,0,0});
         assertArrayEquals(new int[] {1,0,1,0,1,0,0,0}, ram.readDataCell(140));
         assertArrayEquals(new int[] {1,0,1,0,1,0,0,0}, ram.readDataCell(12));
-        
+
     }
-    
-    
-    
+
+
+
     @Test
     void testCheckMemoryLocation() {
         RAM_Memory ram = MC.ram;        
@@ -94,8 +103,8 @@ class Test_Memory_RamMemory {
         assertThrows(NegativeArraySizeException .class, () -> {ram.checkAddress(90);});
         assertThrows(NegativeArraySizeException .class, () -> {ram.checkAddress(127);});    
     }
-    
-    
+
+
     @Test
     void testtryToMirrorBank() {
         RAM_Memory ram = MC.ram;        
@@ -106,7 +115,7 @@ class Test_Memory_RamMemory {
         assertEquals(133, ram.mirrorBank(133));//
         assertEquals(9, ram.mirrorBank(9));
         assertEquals(137, ram.mirrorBank(137));//
-        
+
         // GPR
         assertEquals(128, ram.mirrorBank(0));
         assertEquals(0, ram.mirrorBank(128));//        
@@ -117,7 +126,7 @@ class Test_Memory_RamMemory {
         assertEquals(207, ram.mirrorBank(79));        
         assertEquals(79, ram.mirrorBank(207));//      
     }
-    
-    
+
+
 
 }
