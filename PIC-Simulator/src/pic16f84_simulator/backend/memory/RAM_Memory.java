@@ -99,8 +99,12 @@ public class RAM_Memory extends Template_Memory { // Linus
         }
         else return res;
     }
-
-    private void checkUp(int indx) { // FIXME Tests machen   
+    
+    /* 
+     * to be used to do certain things, when a specific cell is written
+     *      !! if cell is mirrored, both indize have to be checked down here !!
+     */
+    private void checkUp(int indx) {   
         switch(indx) {
         case 1 -> { MC.timer.delayBy2Cycles(); }
         default -> {}
