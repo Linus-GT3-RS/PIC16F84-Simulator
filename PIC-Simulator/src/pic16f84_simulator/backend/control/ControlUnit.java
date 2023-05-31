@@ -53,8 +53,9 @@ public class ControlUnit {
             instr.exe(k);
         }
         pcpp();
-        MC.timer.tryIncrInternalTimer();
+        MC.timer.tryIncrInternalTimer(); // has to be called after pcpp to insure correct pc is pushed onto stack in case of tmr0Interrupt
     }
+    
     
     // Increase the PC-Counter and load in specific register PCL and PCLATH
     public void pcpp() {

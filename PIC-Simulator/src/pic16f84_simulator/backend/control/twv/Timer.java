@@ -1,5 +1,6 @@
 package pic16f84_simulator.backend.control.twv;
 import pic16f84_simulator.MC;
+import pic16f84_simulator.backend.control.Interrupts;
 import pic16f84_simulator.backend.memory.RAM_Memory;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.Utils;
@@ -35,7 +36,7 @@ public class Timer { // FIXME Tests machen
         
         if(tmr0New == 256) { // checks for overflow from 255 to 0
             SFR.setTOIF();
-            throw new TMR0InterruptException("TMR0 Interrupt");
+            tmr0Interrupt();
         }
     }
     
@@ -54,6 +55,14 @@ public class Timer { // FIXME Tests machen
         }
         return tmr0 + 1;
     }
+    
+    
+    private void tmr0Interrupt() {
+        if(SFR.getGIE() == 1 && SFR.getTOIE() == 1) {
+           Interrupts.stdResponseRoutine();
+        }
+    }
+    
 
     /*
      * for debugging purpose only
