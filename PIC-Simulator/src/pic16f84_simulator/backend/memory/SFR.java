@@ -135,6 +135,9 @@ public enum SFR {
 
     public static int getTOCS() {
         return MC.ram.readSpecificBit(SFR.OPTION.asIndex(), 2);
+    }    
+    public static void setTOCS() {
+        MC.ram.writeSpecificBit(SFR.OPTION.asIndex(), 2, 1);
     }
 
 
