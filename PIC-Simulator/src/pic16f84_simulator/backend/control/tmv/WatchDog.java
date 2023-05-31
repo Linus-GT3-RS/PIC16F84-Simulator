@@ -21,23 +21,6 @@ public class WatchDog { // A Dog can bite // FIXME Tests machen
     private int timer; // timer val to be counted to
     // private boolean on = false; // for toggle function in gui
     
-    /*
-     * Watchdog timer implementation
-     */
-    private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-    private Runnable task = new Runnable() {
-        int counter = 0;
-        int timer = MC.wdog.getTimer();
-        
-        @Override
-        public void run() { // System.out.println("Timer tick: " + counter);
-            counter++;
-            if (counter == timer) { // Timer nach x Wiederholungen beenden
-                executor.shutdown();
-                throw new WatchdogTimerFinishedException("Watchdog timer has reached zero");
-            }
-        }
-    };
     
     public void startWD() {
         // this.on = true;
@@ -45,12 +28,12 @@ public class WatchDog { // A Dog can bite // FIXME Tests machen
         if(SFR.getPSA() == 1){
             this.timer *= MC.prescaler.getPRS();
         }
-        this.executor.scheduleAtFixedRate(task, 0, 1, TimeUnit.MILLISECONDS); // Timer starten, der alle x Zeiteinheiten ausgeführt wird      
+        WDThread.executor.scheduleAtFixedRate(WDThread.task, 0, 1, TimeUnit.MILLISECONDS); // Timer starten, der alle x Zeiteinheiten ausgeführt wird      
     }
     
     public void stopWD() {
         // this.on = false;
-        this.executor.shutdownNow();
+        WDThread.executor.shutdownNow();
     }
     
     public int getTimer() {
