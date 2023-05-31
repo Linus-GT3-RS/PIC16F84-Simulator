@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import pic16f84_simulator.MC;
-import pic16f84_simulator.backend.control.tmv.WatchDog;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.TP;
 import pic16f84_simulator.backend.tools.Utils;

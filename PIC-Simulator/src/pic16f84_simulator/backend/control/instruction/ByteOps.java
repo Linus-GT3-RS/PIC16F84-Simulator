@@ -1,8 +1,4 @@
 package pic16f84_simulator.backend.control.instruction;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.Utils;

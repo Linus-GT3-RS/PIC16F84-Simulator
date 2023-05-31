@@ -8,7 +8,7 @@ import pic16f84_simulator.backend.tools.Utils;
 class TMR0InterruptException extends RuntimeException { TMR0InterruptException(String s) { super(s); } }
 
 
-public class Timer { // the time must go one
+public class Timer { // the time must go one // FIXME Tests machen
 
     private int delay = 0; // is used to realise the (2) waiting cycles after writing to TMR0 --> count of delays
     private double incrCheck;
@@ -46,7 +46,7 @@ public class Timer { // the time must go one
     private int incrTimer() {
         int tmr0 = Utils.binaryToDec(MC.ram.readDataCell(SFR.TMR0.asIndex()));
         if(SFR.getPSA() == 0) { // Prescaler is assigned to Timer
-            this.incrCheck += 1.0 / (double)MC.tvw.ps.getPRS();
+            this.incrCheck += 1.0 / (double)MC.prescaler.getPRS();
             if((int)this.incrCheck != 1) {
                 return tmr0;               
             }

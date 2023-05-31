@@ -1,8 +1,9 @@
 package pic16f84_simulator;
-
 import pic16f84_simulator.backend.calculation.ALU;
 import pic16f84_simulator.backend.control.ControlUnit;
-import pic16f84_simulator.backend.control.tmv.TVWController;
+import pic16f84_simulator.backend.control.tmv.Prescaler;
+import pic16f84_simulator.backend.control.tmv.Timer;
+import pic16f84_simulator.backend.control.tmv.WatchDog;
 import pic16f84_simulator.backend.memory.Program_Memory;
 import pic16f84_simulator.backend.memory.RAM_Memory;
 import pic16f84_simulator.backend.memory.StackBuffer;
@@ -15,13 +16,25 @@ public class MC {
         allow = Utils.allow(allow, this);
     }
     
+    /*
+     * Memory
+     */
     public static Program_Memory pm = new Program_Memory();
     public static RAM_Memory ram = new RAM_Memory();
     public static StackBuffer stack = new StackBuffer();
     
-    public static TVWController tvw = new TVWController();
+    /*
+     * CPU
+     */
     public static ControlUnit control = new ControlUnit();
     public static ALU alu = new ALU();
+    
+    /*
+     * Timing
+     */
+    public static WatchDog wdog = new WatchDog();
+    public static Prescaler prescaler = new Prescaler();
+    public static Timer timer = new Timer();
     
     
     

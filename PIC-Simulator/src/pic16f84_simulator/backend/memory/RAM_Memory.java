@@ -100,9 +100,9 @@ public class RAM_Memory extends Template_Memory { // Linus
         else return res;
     }
 
-    private void checkUp(int indx) {        
+    private void checkUp(int indx) { // FIXME Tests machen   
         switch(indx) {
-        case 1 -> { MC.tvw.tm.delayBy2Cycles(); }
+        case 1 -> { MC.timer.delayBy2Cycles(); }
         default -> {}
         }
     }

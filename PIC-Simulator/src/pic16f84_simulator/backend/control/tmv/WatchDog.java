@@ -2,6 +2,7 @@ package pic16f84_simulator.backend.control.tmv;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.Utils;
@@ -9,7 +10,7 @@ import pic16f84_simulator.backend.tools.Utils;
 @SuppressWarnings("serial")
 class WatchdogTimerFinishedException extends RuntimeException{ WatchdogTimerFinishedException(String s){ super(s); }}
 
-public class WatchDog { // A Dog can bite
+public class WatchDog { // A Dog can bite // FIXME Tests machen
     
     private static boolean allow = true; // secures the creation of ONLY ONE instance of this class    
     public WatchDog(){
@@ -26,7 +27,7 @@ public class WatchDog { // A Dog can bite
     private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     private Runnable task = new Runnable() {
         int counter = 0;
-        int timer = MC.tvw.wd.getTimer();
+        int timer = MC.wdog.getTimer();
         
         @Override
         public void run() { // System.out.println("Timer tick: " + counter);
@@ -42,7 +43,7 @@ public class WatchDog { // A Dog can bite
         // this.on = true;
         this.timer = this.std;
         if(SFR.getPSA() == 1){
-            this.timer *= MC.tvw.ps.getPRS();
+            this.timer *= MC.prescaler.getPRS();
         }
         this.executor.scheduleAtFixedRate(task, 0, 1, TimeUnit.MILLISECONDS); // Timer starten, der alle x Zeiteinheiten ausgeführt wird      
     }
