@@ -1,9 +1,9 @@
 package pic16f84_simulator;
 import pic16f84_simulator.backend.calculation.ALU;
 import pic16f84_simulator.backend.control.ControlUnit;
-import pic16f84_simulator.backend.control.tmv.Prescaler;
-import pic16f84_simulator.backend.control.tmv.Timer;
-import pic16f84_simulator.backend.control.tmv.WatchDog;
+import pic16f84_simulator.backend.control.twv.Prescaler;
+import pic16f84_simulator.backend.control.twv.Timer;
+import pic16f84_simulator.backend.control.twv.WatchDog;
 import pic16f84_simulator.backend.memory.Program_Memory;
 import pic16f84_simulator.backend.memory.RAM_Memory;
 import pic16f84_simulator.backend.memory.StackBuffer;

@@ -1,4 +1,4 @@
-package pic16f84_simulator.backend.control.tmv;
+package pic16f84_simulator.backend.control.twv;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import pic16f84_simulator.MC;

@@ -7,7 +7,7 @@ import pic16f84_simulator.backend.control.instruction.ByteOps;
 import pic16f84_simulator.backend.control.instruction.Instruction;
 import pic16f84_simulator.backend.control.instruction.InstructionDecoder;
 import pic16f84_simulator.backend.control.instruction.LitConOps;
-import pic16f84_simulator.backend.control.tmv.Prescaler;
+import pic16f84_simulator.backend.control.twv.Prescaler;
 import pic16f84_simulator.backend.memory.Register;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.Utils;

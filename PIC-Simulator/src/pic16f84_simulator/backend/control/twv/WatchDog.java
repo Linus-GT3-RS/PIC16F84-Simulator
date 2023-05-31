@@ -1,4 +1,4 @@
-package pic16f84_simulator.backend.control.tmv;
+package pic16f84_simulator.backend.control.twv;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -10,7 +10,7 @@ import pic16f84_simulator.backend.tools.Utils;
 @SuppressWarnings("serial")
 class WatchdogTimerFinishedException extends RuntimeException{ WatchdogTimerFinishedException(String s){ super(s); }}
 
-public class WatchDog { // A Dog can bite // FIXME Tests machen
+public class WatchDog {// FIXME Tests machen
     
     private static boolean allow = true; // secures the creation of ONLY ONE instance of this class    
     public WatchDog(){

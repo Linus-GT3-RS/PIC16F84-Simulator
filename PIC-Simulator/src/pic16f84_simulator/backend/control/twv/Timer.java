@@ -1,4 +1,4 @@
-package pic16f84_simulator.backend.control.tmv;
+package pic16f84_simulator.backend.control.twv;
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.RAM_Memory;
 import pic16f84_simulator.backend.memory.SFR;
@@ -8,7 +8,7 @@ import pic16f84_simulator.backend.tools.Utils;
 class TMR0InterruptException extends RuntimeException { TMR0InterruptException(String s) { super(s); } }
 
 
-public class Timer { // the time must go one // FIXME Tests machen
+public class Timer { // FIXME Tests machen
 
     private int delay = 0; // is used to realise the (2) waiting cycles after writing to TMR0 --> count of delays
     private double incrCheck;
