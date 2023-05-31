@@ -13,6 +13,14 @@ public class RAM_Memory extends Template_Memory { // Linus
         allow = Utils.allow(allow, this);
     }   
 
+    
+    public void powerOnReset() { // Linus
+        this.danger_reset();
+        this.writeDataCell(SFR.STATUS.asIndex(), new int[] {0,0,0,1, 1,0,0,0}); // Bank0
+        this.writeDataCell(SFR.OPTION.asIndex(), new int[] {1,1,1,1, 1,1,1,1}); // from here on Bank1
+        this.writeDataCell(SFR.TRISA.asIndex(), new int[] {0,0,0,1, 1,1,1,1});
+        this.writeDataCell(SFR.TRISB.asIndex(), new int[] {1,1,1,1, 1,1,1,1});
+    }
 
     /*
      * writes to specific RamAddress --> gets mirrored automatically

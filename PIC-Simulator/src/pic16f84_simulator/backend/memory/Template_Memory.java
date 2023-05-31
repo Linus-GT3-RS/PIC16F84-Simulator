@@ -39,7 +39,7 @@ public abstract class Template_Memory { // Eduard + Linus
     /*
      * resets all cells to 0
      */
-    public void danger_reset() {
+    protected void danger_reset() {
         this.memory = new int[this.memory.length][this.memory[0].length];
     }
     
