@@ -22,7 +22,7 @@ public class Timer { // the time must go one
      * is used to increment TMRO every instruction cycle
      *     --> does that only IF internalClock is selected: TOCS=0    
      */
-    public void timerpp() {
+    public void tryIncrInternalTimer() {
         if(SFR.getTOCS() == 1) {
             return; // external clock is currently selected --> no implementation in this project
         }
