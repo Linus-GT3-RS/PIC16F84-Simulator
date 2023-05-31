@@ -26,9 +26,10 @@ public enum LitConOps implements Instruction { // Linus
         public void exe(int[] k) {
         }
     },
-    CLRWDT { // Eduard -> Watchdog-Timer
+    CLRWDT { // Eduard
         @Override
         public void exe(int[] k) {
+            
         }
     },
     GOTO { // Linus

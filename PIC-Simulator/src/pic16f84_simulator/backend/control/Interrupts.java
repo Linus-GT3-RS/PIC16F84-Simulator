@@ -5,5 +5,8 @@ public class Interrupts {
     // TMR0 Interrupt Linus
     
     // WTDOG abgelaufenInterrupt -> Reset Eduard
+    void WatchDogReset(){
+        
+    }
 
 }

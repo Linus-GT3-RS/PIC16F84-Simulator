@@ -18,7 +18,7 @@ abstract class WDThread {
             counter++;
             if (counter == timer) { // Timer nach x Wiederholungen beenden
                 executor.shutdown();
-                throw new WatchdogTimerFinishedException("Watchdog timer has reached zero");
+                throw new WatchdogTimerFinishedException("Watchdog timer has overflowed"); // -> WatchDog Reset is to call
             }
         }
     };
