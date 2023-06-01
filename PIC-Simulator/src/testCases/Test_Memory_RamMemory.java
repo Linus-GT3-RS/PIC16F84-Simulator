@@ -26,19 +26,17 @@ class Test_Memory_RamMemory {
 
     @Test
     void testCheckUp() {        
-        // test for case: 1 (tmr0)
-        SFR.setTOCS(0); // internalClock select
-        SFR.setPSA(1); // assign Prescaler to WDOG
-        MC.timer.debug_clearDelay();
-        MC.ram.writeDataCell(SFR.TMR0.asIndex(), new int[] {0,0,0,0,0,0,0,1});
-        MC.timer.tryIncrInternalTimer(); // no change in tmr0
-        MC.timer.tryIncrInternalTimer(); // no change in tmr0
-        MC.timer.tryIncrInternalTimer(); // tmr0 gets incr
-        assertArrayEquals(new int[] {0,0,0,0,0,0,1,0}, MC.ram.readDataCell(SFR.TMR0.asIndex()));
+        /*
+         * tests for case: 1 == tmr0
+         *  - tmr0Delay is tested int Test_timer
+         */
         
-        //TODO @Eduard add Test clearPRS
+        
+        // TODO @Eduard add Test clearPRS
 
-        // test for caseX
+        /*
+         *  test for caseX
+         */
     }
 
 

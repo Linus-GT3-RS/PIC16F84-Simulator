@@ -29,6 +29,7 @@ public class Timer { // TODO @Linus Tests machen Timer
         }
         int tmr0New = incrTimer(); // overflow is not yet corrected !!
         MC.ram.writeDataCell(SFR.TMR0.asIndex(), Utils.decToBinary(RAM_Memory.fixScope(tmr0New), 8));
+        this.delay -= 2; // has to be done to compensate for autom. delay +=2 caused by writeRam()
         
         if(tmr0New == 256) { // checks for overflow from 255 to 0
             SFR.setTOIF();
@@ -65,6 +66,9 @@ public class Timer { // TODO @Linus Tests machen Timer
      */
     public void debug_clearDelay() {
         this.delay = 0;
+    }    
+    public void debug_clearIncrCheck() {
+        this.incrCheck = 0.0;
     }
 
 }

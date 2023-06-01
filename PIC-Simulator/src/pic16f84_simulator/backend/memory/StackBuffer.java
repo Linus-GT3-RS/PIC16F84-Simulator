@@ -27,7 +27,7 @@ public class StackBuffer {
     }
     
     /*
-     * pops latest entry from stack into the pc
+     * pops newest entry from stack into the pc
      */
     public void pop() {
        tos = (tos + 7) % 8; // tos--
