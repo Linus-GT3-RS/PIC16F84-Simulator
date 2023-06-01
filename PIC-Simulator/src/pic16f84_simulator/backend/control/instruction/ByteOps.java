@@ -125,6 +125,7 @@ public enum ByteOps implements Instruction { // Linus
         @Override
         public void exe(int d, int indexFile) {
             MC.control.pcpp(); // dont remove
+            MC.timer.tryIncrInternalTimer();
         }
     },
     RLF { // Linus

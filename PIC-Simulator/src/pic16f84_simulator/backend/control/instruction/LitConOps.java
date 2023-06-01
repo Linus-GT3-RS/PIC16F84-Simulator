@@ -24,17 +24,19 @@ public enum LitConOps implements Instruction { // Linus
     CALL { // Linus
         @Override
         public void exe(int[] k) {
+            MC.timer.tryIncrInternalTimer();
         }
     },
-    CLRWDT { // Eduard
+    CLRWDT {
         @Override
         public void exe(int[] k) {
-            // Not implemnted
+            // Not implemented
         }
     },
     GOTO { // Linus
         @Override
         public void exe(int[] k) {
+            MC.timer.tryIncrInternalTimer();
         }
     },
     IORLW { // Eduard
@@ -64,15 +66,17 @@ public enum LitConOps implements Instruction { // Linus
     RETLW { // Linus
         @Override
         public void exe(int[] k) {
+            MC.timer.tryIncrInternalTimer();
         }
     },
     RETURN { // Eduard
         @Override
         public void exe(int[] k) {
             MC.stack.pop();
+            MC.timer.tryIncrInternalTimer();
         }
     },
-    SLEEP { // Linus
+    SLEEP {
         @Override
         public void exe(int[] k) {
             // Not implemented
