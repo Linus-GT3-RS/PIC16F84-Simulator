@@ -98,4 +98,17 @@ class Test_Control_ControlUnit_LitConOps {
         MC.control.exe();
         assertEquals(3,MC.control.pc);
     }
+    
+    @Test //Eduard
+    void testRETFIE() {
+        MC.pm.loadTestProgram(TP.s8);
+        
+        MC.control.pc = 27;
+        MC.stack.push();
+        
+        MC.control.exe();
+        
+        assertEquals(28,MC.control.pc);
+        assertEquals(1,MC.ram.readSpecificBit(SFR.INTCON.asIndex(), 0));
+    }
 }
