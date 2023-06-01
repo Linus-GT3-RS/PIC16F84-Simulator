@@ -13,6 +13,42 @@ import pic16f84_simulator.backend.memory.SFR;
 class Test_Memory_RamMemory {
     
     // TODO @Eduard testOtherReset
+    @Test 
+    void testOtherReset() {
+        int[] tmr0 = MC.ram.readDataCell(SFR.TMR0.asIndex());
+        int[] fsr = MC.ram.readDataCell(SFR.FSR.asIndex());
+        int status3 = MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 3);
+        int status4 = MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 4);
+        int status5 = MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5);
+        int status6 = MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 6);
+        int status7 = MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 7);
+        int porta3 = MC.ram.readSpecificBit(SFR.PORTA.asIndex(), 3);
+        int porta4 = MC.ram.readSpecificBit(SFR.PORTA.asIndex(), 4);
+        int porta5 = MC.ram.readSpecificBit(SFR.PORTA.asIndex(), 5);
+        int porta6 = MC.ram.readSpecificBit(SFR.PORTA.asIndex(), 6);
+        int porta7 = MC.ram.readSpecificBit(SFR.PORTA.asIndex(), 7);
+        int intcon7 = MC.ram.readSpecificBit(SFR.INTCON.asIndex(), 7);
+        int eecon14 = MC.ram.readSpecificBit(SFR.EECON1.asIndex(), 4);
+      
+        MC.ram.otherReset();
+        
+        assertArrayEquals(new int[8],MC.ram.readDataCell(SFR.INDF.asIndex()));
+        assertArrayEquals(tmr0,MC.ram.readDataCell(SFR.TMR0.asIndex()));
+        assertArrayEquals(new int[8],MC.ram.readDataCell(SFR.PCL.asIndex()));
+        assertArrayEquals(new int[] {0,0,0,status3,status4,status5,status6,status7},MC.ram.readDataCell(SFR.STATUS.asIndex()));
+        assertArrayEquals(fsr,MC.ram.readDataCell(SFR.FSR.asIndex()));
+        assertArrayEquals(new int[] {0,0,0,porta3,porta4,porta5,porta6,porta7},MC.ram.readDataCell(SFR.PORTA.asIndex()));
+        assertArrayEquals(MC.ram.readDataCell(SFR.PORTB.asIndex()),MC.ram.readDataCell(SFR.PORTB.asIndex()));
+        assertArrayEquals(MC.ram.readDataCell(SFR.EEDATA.asIndex()),MC.ram.readDataCell(SFR.EEDATA.asIndex()));
+        assertArrayEquals(MC.ram.readDataCell(SFR.EEADR.asIndex()),MC.ram.readDataCell(SFR.EEADR.asIndex()));
+        assertArrayEquals(new int[8],MC.ram.readDataCell(SFR.PCLATH.asIndex()));
+        assertArrayEquals(new int[] {0,0,0,0,0,0,0,intcon7},MC.ram.readDataCell(SFR.INTCON.asIndex()));
+        assertArrayEquals(new int[] {1,1,1,1,1,1,1,1},MC.ram.readDataCell(SFR.OPTION.asIndex()));
+        assertArrayEquals(new int[] {0,0,0,1,1,1,1,1},MC.ram.readDataCell(SFR.TRISA.asIndex()));
+        assertArrayEquals(new int[] {1,1,1,1,1,1,1,1},MC.ram.readDataCell(SFR.TRISB.asIndex()));
+        assertArrayEquals(new int[] {0,0,0,0,eecon14,0,0,0},MC.ram.readDataCell(SFR.EECON1.asIndex()));
+        assertArrayEquals(new int[8],MC.ram.readDataCell(SFR.EECON2.asIndex()));
+    }
 
     @Test
     void testPowerOnReset() {

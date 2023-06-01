@@ -16,7 +16,6 @@ public class RAM_Memory extends Template_Memory { // Linus
     public void otherReset() { // Eduard
         // ++++++++++++++++ Bank0 +++++++++++++++++++++++++++
         this.writeDataCell(SFR.INDF.asIndex(), new int[8]); 
-        this.writeDataCell(SFR.TMR0.asIndex(), new int[8]); MC.timer.debug_clearDelay();
         this.writeDataCell(SFR.PCL.asIndex(), new int[8]);
         this.writeSpecificBit(SFR.STATUS.asIndex(), 0, 0);
         this.writeSpecificBit(SFR.STATUS.asIndex(), 1, 0);
@@ -28,7 +27,7 @@ public class RAM_Memory extends Template_Memory { // Linus
         this.writeDataCell(SFR.OPTION.asIndex(), new int[] {1,1,1,1, 1,1,1,1});
         this.writeDataCell(SFR.TRISA.asIndex(), new int[] {0,0,0,1, 1,1,1,1});
         this.writeDataCell(SFR.TRISB.asIndex(), new int[] {1,1,1,1, 1,1,1,1});
-        this.writeDataCell(SFR.EECON1.asIndex(), new int[] {0,0,0,0,this.readSpecificBit(SFR.EECON1.asIndex(), 4),0,0,0,0});
+        this.writeDataCell(SFR.EECON1.asIndex(), new int[] {0,0,0,0,this.readSpecificBit(SFR.EECON1.asIndex(), 4),0,0,0});
     }
     
     public void powerOnReset() { // Linus
