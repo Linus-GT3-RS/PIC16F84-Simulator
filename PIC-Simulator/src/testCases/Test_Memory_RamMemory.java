@@ -12,7 +12,6 @@ import pic16f84_simulator.backend.memory.SFR;
 
 class Test_Memory_RamMemory {
     
-    // TODO @Eduard testOtherReset
     @Test 
     void testOtherReset() {
         int[] tmr0 = MC.ram.readDataCell(SFR.TMR0.asIndex());

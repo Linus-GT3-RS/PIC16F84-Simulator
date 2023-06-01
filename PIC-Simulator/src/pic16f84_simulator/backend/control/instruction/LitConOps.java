@@ -56,6 +56,9 @@ public enum LitConOps implements Instruction { // Linus
         @Override
         public void exe(int[] k) {
             // TODO @Eduard RETFIE
+            MC.stack.pop();
+            MC.ram.writeSpecificBit(SFR.INTCON.asIndex(), 0, 1);
+            MC.timer.tryIncrInternalTimer();
         }
     },
     RETLW { // Linus
