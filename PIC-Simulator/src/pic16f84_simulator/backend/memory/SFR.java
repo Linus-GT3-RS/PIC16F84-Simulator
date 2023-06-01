@@ -142,6 +142,13 @@ public enum SFR {
     public static void setTOCS(int val) {
         MC.ram.writeSpecificBit(SFR.OPTION.asIndex(), 2, val);
     }
+    
+    public static void setPS2To0(int[] vals){
+       MC.ram.writeSpecificBit(SFR.OPTION.asIndex(), 5, vals[0]); // PS2
+       MC.ram.writeSpecificBit(SFR.OPTION.asIndex(), 6, vals[1]); // PS1
+       MC.ram.writeSpecificBit(SFR.OPTION.asIndex(), 7, vals[2]); // PS0
+    }
+    
 
 
     /*
