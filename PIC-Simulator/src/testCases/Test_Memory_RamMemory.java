@@ -67,7 +67,6 @@ class Test_Memory_RamMemory {
          */
         
         
-        // TODO @Eduard add Test clearPRS
 
         /*
          *  test for caseX

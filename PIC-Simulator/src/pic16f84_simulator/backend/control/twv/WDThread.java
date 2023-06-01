@@ -2,6 +2,7 @@ package pic16f84_simulator.backend.control.twv;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import pic16f84_simulator.MC;
+import pic16f84_simulator.backend.control.Interrupts;
 
 abstract class WDThread {
     
@@ -17,8 +18,8 @@ abstract class WDThread {
         public void run() { // System.out.println("Timer tick: " + counter);
             counter++;
             if (counter == timer) { // Timer nach x Wiederholungen beenden
+                Interrupts.WatchDogTimeOut();
                 executor.shutdown();
-                throw new WatchdogTimerFinishedException("Watchdog timer has overflowed"); // -> WatchDog Reset is to call
             }
         }
     };

@@ -57,7 +57,6 @@ public enum LitConOps implements Instruction { // Linus
     RETFIE { // Eduard
         @Override
         public void exe(int[] k) {
-            // TODO @Eduard RETFIE
             MC.stack.pop();
             MC.control.pc--;
             MC.ram.writeSpecificBit(SFR.INTCON.asIndex(), 0, 1);

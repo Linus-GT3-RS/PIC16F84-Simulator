@@ -7,8 +7,7 @@ import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.Utils;
 
-@SuppressWarnings("serial")
-class WatchdogTimerFinishedException extends RuntimeException{ WatchdogTimerFinishedException(String s){ super(s); }}
+
 
 public class WatchDog {// TODO @Linus Tests machen WatchDog
     
