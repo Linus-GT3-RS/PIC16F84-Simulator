@@ -22,7 +22,6 @@ public class ControlUnit {
     public int pc = 0;
     public Register instrReg = new Register(14);
     public InstructionDecoder instrDecoder = new InstructionDecoder();
-    public Prescaler prescaler = new Prescaler();
 
     
     public void exe() {        
