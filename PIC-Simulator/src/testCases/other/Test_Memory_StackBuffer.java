@@ -1,4 +1,4 @@
-package testCases;
+package testCases.other;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
