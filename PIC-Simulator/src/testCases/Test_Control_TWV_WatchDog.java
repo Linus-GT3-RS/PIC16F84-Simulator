@@ -2,22 +2,19 @@ package testCases;
 
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.concurrent.TimeUnit;
-
-import org.junit.jupiter.api.Disabled;
-
-import pic16f84_simulator.backend.control.*;
 import org.junit.jupiter.api.Test;
-
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.SFR;
 
 class Test_Control_TWV_WatchDog {
 
     @Test
-    void testWatchDogEduard() { // TODO Eduard WDog
-        MC.wdog.start();// -> WatchDog TimeOut occured -> read Console throw Exception
+    void testWatchDogTimeout() throws InterruptedException {
+        MC.ram.powerOnReset();
+        assertEquals(1,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 3));
+        MC.wdog.start();// -> WatchDog TimeOut occured
+        while(MC.wdog.isRunning()) { Thread.sleep(10); }
         assertEquals(0,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 3));
     }
     

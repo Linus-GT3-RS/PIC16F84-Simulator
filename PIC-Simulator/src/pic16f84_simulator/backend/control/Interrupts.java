@@ -13,15 +13,4 @@ public abstract class Interrupts {
         MC.stack.push(-1);
         MC.control.pc = 4;
     }
-    
-    
-    // WTDOG abgelaufenInterrupt -> Reset Eduard
-    public static void WatchDogTimeOut(){
-        MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 3, 0);
-        MC.control.pc++;
-        // System.out.println("Watchdog timer has overflowed"); 
-
-        
-    }
-
 }
