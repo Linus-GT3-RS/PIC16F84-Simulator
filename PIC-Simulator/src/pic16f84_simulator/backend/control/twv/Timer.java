@@ -30,13 +30,13 @@ public class Timer {
         int tmr0New = incrTimer(); // overflow is not yet corrected !!
         MC.ram.writeDataCell(SFR.TMR0.asIndex(), Utils.decToBinary(RAM_Memory.fixScope(tmr0New), 8));
         this.delay -= 2; // has to be done to compensate for autom. delay +=2 caused by writeRam()
-        
+
         if(tmr0New == 256) { // checks for overflow from 255 to 0
             SFR.setTOIF();
             tmr0Interrupt();
         }
     }
-    
+
     /*
      *  returns the adjusted timer:
      *      - value depends whether prescaler is assigned to timer or not
@@ -52,14 +52,14 @@ public class Timer {
         }
         return tmr0 + 1;
     }
-    
-    
+
+
     private void tmr0Interrupt() {
         if(SFR.getGIE() == 1 && SFR.getTOIE() == 1) {
-           Interrupts.stdResponseRoutine();
+            Interrupts.stdResponseRoutine();
         }
     }
-    
+
 
     /*
      * for debugging purpose only
@@ -70,17 +70,12 @@ public class Timer {
     public void debug_clearIncrCheck() {
         this.incrCheck = 0.0;
     }
-    
+
     public int getPRS() {
-        if(MC.ram.readSpecificBit(SFR.OPTION.asIndex(), 4) == 1) { // case 1 -> WDT
-            return 1;
-        }
-        else
-        {
-            return 2*MC.prescaler.getPRS();
-        }
+        return 2*MC.prescaler.getPRS();
+
     }
-    
+
     // When write in timer
     public void clearPRS() {
         if(MC.ram.readSpecificBit(SFR.OPTION.asIndex(), 4) == 0) { // case 0 -> TMR
