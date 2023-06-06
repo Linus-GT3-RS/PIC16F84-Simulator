@@ -17,17 +17,24 @@ class Test_Control_ControlUnit_BitOps {
         MC.pm.loadTestProgram(TP.s5);
         MC.control.pc = 5; // 01 0010 0000 1100 -> 01 00bb bfff ffff 
         MC.control.exe();
-        assertEquals(MC.ram.readSpecificBit(Utils.binaryToDec(new int[] {0,0,0,1,1,0,0}),7),0);
+        assertEquals(MC.ram.readSpecificBit(12,4),0);
     }
     
     @Test
     void testBSF() { // Linus
+        MC.pm.loadTestProgram(TP.s7);
+        MC.control.pc = 1;
+        MC.control.exe();
+        assertArrayEquals(new int[] {0,0,1,0,0,0,0,0}, MC.ram.readDataCell(3)); // 01 0110 1000 0011
+        
         MC.pm.loadTestProgram(TP.s5);
-        MC.control.pc = 3; // 0101 111 0001100
+        MC.control.pc = 3; // 01 0111 1000 1100
         MC.ram.writeDataCell(12, new int[8]);
         MC.control.exe(); 
         assertArrayEquals(new int[] {0,0,0,0,0,0,0, 1}, MC.ram.readDataCell(12));
         assertArrayEquals(new int[] {0,0,0,0,0,0,0, 1}, MC.ram.readDataCell(140));
+        
+        
     }
     
     @Test

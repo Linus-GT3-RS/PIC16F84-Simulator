@@ -39,6 +39,7 @@ public class ControlUnit {
         }
         if(instruct instanceof BitOps instr) {            
             int indexBit = Utils.binaryToDec(Arrays.copyOfRange(instrReg.readReg(), instr.dBitStart, instr.dBitEnd+1));
+            indexBit = 7 - indexBit;
             int indexFile = Utils.binaryToDec(Arrays.copyOfRange(instrReg.readReg(), instr.fileStart, instrReg.readReg().length));
             if(indexFile == 0)
             {
