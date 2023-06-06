@@ -43,14 +43,13 @@ public class RAM_Memory extends Template_Memory { // Linus
      */
     @Override
     public void writeDataCell(int indexCell, int[] data) {
-        checkAddress(indexCell);               
+        checkAddress(indexCell);              
         super.writeDataCell(indexCell, data);
-        checkUp(indexCell);
-
         int indexMirrored = mirrorBank(indexCell);
         if(indexMirrored != indexCell) {
             super.writeDataCell(indexMirrored, data);
         }
+        checkUp(indexCell);
     }
 
     @Override
@@ -61,7 +60,8 @@ public class RAM_Memory extends Template_Memory { // Linus
         int indxMirrored = mirrorBank(indexCell);
         if(indxMirrored != indexCell) {
             super.writeSpecificBit(indxMirrored, indexBit, bit);
-        }        
+        }      
+        checkUp(indexCell);
     }
 
     public int[] readDataCell(int indexCell) {
@@ -130,7 +130,8 @@ public class RAM_Memory extends Template_Memory { // Linus
      */
     private void checkUp(int indx) {   
         switch(indx) {
-        case 1 -> { MC.timer.delayBy2Cycles(); }
+        case 1 -> { MC.timer.delayBy2Cycles(); MC.timer.clearPRS(); }
+        case 129 -> {MC.prescaler.setPRS();}
         default -> {}
         }
     }

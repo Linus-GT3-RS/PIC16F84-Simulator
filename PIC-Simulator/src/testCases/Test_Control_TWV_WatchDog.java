@@ -107,7 +107,7 @@ class Test_Control_TWV_WatchDog {
         for(int i = 0; i < reps; i++) {
             MC.wdog.start();
             while(MC.wdog.isRunning()) { Thread.sleep(10); }
-            sum_ns += MC.wdog.lastRuntime();
+            sum_ns += MC.wdog.debug_lastRuntime();
         }        
         long average_ns = sum_ns / reps;
         return TimeUnit.NANOSECONDS.toMillis(average_ns);

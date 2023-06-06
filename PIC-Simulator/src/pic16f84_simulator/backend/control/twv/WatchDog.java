@@ -1,6 +1,6 @@
 package pic16f84_simulator.backend.control.twv;
 import java.util.TimerTask;
-
+import java.util.concurrent.TimeUnit;
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.Utils;
@@ -18,12 +18,12 @@ public class WatchDog {
     private int wdogTimerVal; // timer val to be counted to
     private boolean isRunning = false; // ensures that only one WDog is running 
 
-    private static long start;
-    private static long lastRuntime; // in ns
+    private static long debug_start;
+    private static long debug_lastRuntime; // in ns
 
     // private boolean on = false; // for toggle function in gui
-
-
+    
+    
     public void start() { // this.on = true;
         if(this.isRunning == true) {
             throw new IllegalArgumentException("WDog is already running.. cannot start a second one");
@@ -31,9 +31,9 @@ public class WatchDog {
         setIsRunning(true);
         this.wdogTimerVal = this.std;
         if(SFR.getPSA() == 1){
-            this.wdogTimerVal *= MC.prescaler.getPRS();
+            this.wdogTimerVal *= getPRS();
         }  
-        start = System.nanoTime();
+        debug_start = System.nanoTime();
         startTimerThread();
     }
 
@@ -47,7 +47,7 @@ public class WatchDog {
 
             @Override         
             public void run() { //System.out.println("WDog overflow"); 
-            lastRuntime = System.nanoTime() - start;
+            debug_lastRuntime = System.nanoTime() - debug_start;
             timer.cancel(); // so thread can terminate after following code is run
 
             // Eduards WDog reset hier
@@ -73,6 +73,24 @@ public class WatchDog {
     public int getWDogTimerVal() {
         return this.wdogTimerVal;
     }
+    
+    public int getPRS() {
+        if(MC.ram.readSpecificBit(SFR.OPTION.asIndex(), 4) == 1) { // case 1 -> WDT
+            return MC.prescaler.getPRS();
+        }
+        else
+        {
+            return 1;
+        }
+    }
+    
+    // When SLEEP or CLRWDT
+    public void clearPRS() {
+        if(MC.ram.readSpecificBit(SFR.OPTION.asIndex(), 4) == 1) { // case 0 -> TMR
+            MC.prescaler.clearPRS();
+        }
+         
+    }
 
     void setIsRunning(boolean val) {
         this.isRunning = val;
@@ -82,8 +100,8 @@ public class WatchDog {
         return this.isRunning;
     }
 
-    public long lastRuntime() {
-        return lastRuntime;
+    public long debug_lastRuntime() {
+        return debug_lastRuntime;
     }
 
     //    public void toggle() {
