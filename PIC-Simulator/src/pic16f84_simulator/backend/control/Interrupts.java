@@ -19,7 +19,7 @@ public abstract class Interrupts {
     public static void WatchDogTimeOut(){
         MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 3, 0);
         MC.control.pc++;
-        System.out.println("Watchdog timer has overflowed"); 
+        // System.out.println("Watchdog timer has overflowed"); 
 
         
     }

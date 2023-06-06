@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.SFR;
 
-class Test_Control_TMV_Timer {
+class Test_Control_TWV_Timer {
 
     @Test
     void testDelayAndNoPrescaler() {
