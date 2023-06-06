@@ -98,7 +98,7 @@ class Test_Control_TWV_WatchDog {
         setup(1, new int[] {1,1,1});
         assertEquals(2_304, getAverage_ms());        
     }
-        
+           
     
     private long getAverage_ms() throws InterruptedException {
         System.out.println("Still running");
@@ -108,9 +108,9 @@ class Test_Control_TWV_WatchDog {
             MC.wdog.start();
             while(MC.wdog.isRunning()) { Thread.sleep(10); }
             sum_ns += MC.wdog.debug_lastRuntime();
-        }        
-        long average_ns = sum_ns / reps;
-        return TimeUnit.NANOSECONDS.toMillis(average_ns);
+        }
+        long sum_ms = TimeUnit.NANOSECONDS.toMillis(sum_ns);
+        return sum_ms / reps;
     }
     
     private void setup(int psa, int[] ps2to0) {
