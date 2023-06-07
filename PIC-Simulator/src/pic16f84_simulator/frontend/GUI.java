@@ -42,6 +42,9 @@ import javax.swing.JList;
 import javax.swing.JTable;
 import java.awt.List;
 import javax.swing.JMenu;
+import java.awt.Dimension;
+import java.awt.Frame;
+import javax.swing.border.BevelBorder;
 
 public class GUI extends JFrame {
 
@@ -67,39 +70,42 @@ public class GUI extends JFrame {
      * Create the frame.
      */
     public GUI() {
+        setVisible(true);
         setTitle("PIC16F84 Simulator");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 1024, 768);
-        
+        setBounds(0, 0, 1920, 1080);
+        setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH); // Important DO_NOT_DELETE !!!
+        // forBackUp: setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH); // Important DO_NOT_DELETE !!!
+
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
-        
+
         JMenu mnNewMenu = new JMenu("Programm laden...");
         mnNewMenu.setFont(new Font("Arial", Font.PLAIN, 12));
         menuBar.add(mnNewMenu);
-        
+
         JMenuItem mnNewMenu_1 = new JMenuItem("TP 1");
         mnNewMenu_1.setFont(new Font("Arial", Font.PLAIN, 12));
         mnNewMenu.add(mnNewMenu_1);
-        
+
         JMenuItem mnNewMenu_1_2 = new JMenuItem("TP 2");
         mnNewMenu_1_2.setFont(new Font("Arial", Font.PLAIN, 12));
         mnNewMenu.add(mnNewMenu_1_2);
-        
+
         JMenuItem mnNewMenu_1_2_1 = new JMenuItem("TP 3");
         mnNewMenu_1_2_1.setFont(new Font("Arial", Font.PLAIN, 12));
         mnNewMenu.add(mnNewMenu_1_2_1);
-        
+
         JMenuItem mnNewMenu_1_2_2 = new JMenuItem("TP 4");
         mnNewMenu_1_2_2.setFont(new Font("Arial", Font.PLAIN, 12));
         mnNewMenu.add(mnNewMenu_1_2_2);
-        
-        
-        
+
+
+
         JMenu mnHelp = new JMenu("Help");
         mnHelp.setFont(new Font("Arial", Font.PLAIN, 12));
         menuBar.add(mnHelp);
-        
+
         JMenuItem mnNewMenu_1_1 = new JMenuItem("Bei uns gibt es keine Hilfe");
         mnNewMenu_1_1.setFont(new Font("Arial", Font.PLAIN, 12));
         mnHelp.add(mnNewMenu_1_1);
@@ -109,64 +115,89 @@ public class GUI extends JFrame {
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         setContentPane(contentPane);
+        contentPane.setLayout(new BorderLayout(4, 4));
+
+        JPanel panel_collection = new JPanel();
+        panel_collection.setPreferredSize(new Dimension(100, 10));
+        panel_collection.setBackground(new Color(100, 149, 237));
+        contentPane.add(panel_collection, BorderLayout.CENTER);
+        panel_collection.setLayout(null);
+
+        JLabel lblWatchdog_1 = new JLabel("WatchDog");
+        lblWatchdog_1.setBounds(0, 0, 118, 635);
+        lblWatchdog_1.setForeground(Color.WHITE);
+        panel_collection.add(lblWatchdog_1);
+
+        JCheckBoxMenuItem chckbxmntmNewCheckItem_1 = new JCheckBoxMenuItem("WatchDog");
+        chckbxmntmNewCheckItem_1.setBounds(102, 154, 118, 174);
+        panel_collection.add(chckbxmntmNewCheckItem_1);
+
+        JLabel lblTimer_1 = new JLabel("Timer");
+        lblTimer_1.setBounds(236, 0, 118, 635);
+        lblTimer_1.setForeground(Color.WHITE);
+        panel_collection.add(lblTimer_1);
+
+        JLabel lblNewLabel_1 = new JLabel("Pins");
+        lblNewLabel_1.setBounds(354, 0, 118, 635);
+        lblNewLabel_1.setForeground(Color.WHITE);
+        panel_collection.add(lblNewLabel_1);
+
+        JPanel panel_controller = new JPanel();
+        panel_controller.setPreferredSize(new Dimension(10, 125));
+        panel_controller.setBackground(new Color(218, 112, 214));
+        contentPane.add(panel_controller, BorderLayout.SOUTH);
+        panel_controller.setLayout(null);
+
+        JButton btnNewButton_4 = new JButton("Reset");
+        btnNewButton_4.setBounds(564, 71, 75, 27);
+        btnNewButton_4.setFont(new Font("Arial", Font.PLAIN, 16));
+        panel_controller.add(btnNewButton_4);
+
+        JButton btnNewButton_3_1 = new JButton("RUN");
+        btnNewButton_3_1.setBounds(684, 36, 67, 27);
+        btnNewButton_3_1.setFont(new Font("Arial", Font.BOLD, 16));
+        panel_controller.add(btnNewButton_3_1);
+
+        JButton btnNewButton_1_1 = new JButton("Stop");
+        btnNewButton_1_1.setBounds(787, 38, 37, 23);
+        btnNewButton_1_1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+        btnNewButton_1_1.setBackground(new Color(95, 158, 160));
+        btnNewButton_1_1.setFont(new Font("Arial", Font.PLAIN, 16));
+        panel_controller.add(btnNewButton_1_1);
+
+        JButton btnNewButton_2_1 = new JButton("Next");
+        btnNewButton_2_1.setBounds(876, 71, 63, 27);
+        btnNewButton_2_1.setFont(new Font("Arial", Font.PLAIN, 16));
+        panel_controller.add(btnNewButton_2_1);
+
+        JPanel panel_ram = new JPanel();
+        panel_ram.setBorder(new EmptyBorder(8, 0, 13, 0));
+        panel_ram.setPreferredSize(new Dimension(520, 10));
+        panel_ram.setBackground(new Color(244, 164, 96));
+        contentPane.add(panel_ram, BorderLayout.WEST);
+        panel_ram.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 7));
         
-        JButton btnNewButton = new JButton("Reset");
-        btnNewButton.setFont(new Font("Arial", Font.PLAIN, 16));
-        btnNewButton.setBounds(259, 672, 100, 50);
-        btnNewButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
-        contentPane.setLayout(null);
-        contentPane.add(btnNewButton);
+        JPanel panel_1 = new JPanel();
+        panel_1.setPreferredSize(new Dimension(470, 400));
+        panel_ram.add(panel_1);
         
-        JButton btnNewButton_2 = new JButton("Next");
-        btnNewButton_2.setFont(new Font("Arial", Font.PLAIN, 16));
-        btnNewButton_2.setBounds(619, 672, 100, 50);
-        btnNewButton_2.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
-        contentPane.add(btnNewButton_2);
+        JLabel lblNewLabel = new JLabel("SFR");
+        panel_1.add(lblNewLabel);
         
-        JButton btnNewButton_1 = new JButton("Stop");
-        btnNewButton_1.setFont(new Font("Arial", Font.PLAIN, 16));
-        btnNewButton_1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
-        btnNewButton_1.setBounds(497, 633, 100, 50);
-        contentPane.add(btnNewButton_1);
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(470, 240));
+        panel_ram.add(panel);
+        panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         
-        JButton btnNewButton_3 = new JButton("RUN");
-        btnNewButton_3.setFont(new Font("Arial", Font.BOLD, 16));
-        btnNewButton_3.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
-        btnNewButton_3.setBounds(380, 633, 100, 50);
-        contentPane.add(btnNewButton_3);
-        
-        JCheckBoxMenuItem chckbxmntmNewCheckItem = new JCheckBoxMenuItem("WatchDog");
-        chckbxmntmNewCheckItem.setBounds(380, 282, 137, 26);
-        contentPane.add(chckbxmntmNewCheckItem);
-        
-        JLabel lblNewLabel = new JLabel("Pins");
-        lblNewLabel.setForeground(new Color(255, 255, 255));
-        lblNewLabel.setBounds(377, 34, 59, 23);
-        contentPane.add(lblNewLabel);
-        
-        JLabel lblTimer = new JLabel("Timer");
-        lblTimer.setForeground(Color.WHITE);
-        lblTimer.setBounds(538, 248, 59, 23);
-        contentPane.add(lblTimer);
-        
-        JLabel lblWatchdog = new JLabel("WatchDog");
-        lblWatchdog.setForeground(Color.WHITE);
-        lblWatchdog.setBounds(380, 248, 82, 23);
-        contentPane.add(lblWatchdog);
-        
-        
+        JLabel lblNewLabel_2 = new JLabel("GPR");
+        panel.add(lblNewLabel_2);
+
+        JPanel panel_pm = new JPanel();
+        panel_pm.setPreferredSize(new Dimension(530, 10));
+        panel_pm.setBackground(new Color(255, 215, 0));
+        contentPane.add(panel_pm, BorderLayout.EAST);
+
+
     }
     private static void addPopup(Component component, final JPopupMenu popup) {
     }
