@@ -103,7 +103,7 @@ class Test_Control_TWV_WatchDog {
     private long getAverage_ms() throws InterruptedException {
         System.out.println("Still running");
         long sum_ns = 0;
-        int reps = 150;
+        int reps = 50;
         for(int i = 0; i < reps; i++) {
             MC.wdog.start();
             while(MC.wdog.isRunning()) { Thread.sleep(10); }

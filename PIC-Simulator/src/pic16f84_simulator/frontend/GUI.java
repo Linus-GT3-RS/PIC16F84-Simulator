@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
+import javax.swing.BoxLayout;
 
 public class GUI extends JFrame {
 
@@ -41,7 +42,7 @@ public class GUI extends JFrame {
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         setContentPane(contentPane);
-        contentPane.setLayout(new BorderLayout(0, 0));
+        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.X_AXIS));
     }
 
 }
