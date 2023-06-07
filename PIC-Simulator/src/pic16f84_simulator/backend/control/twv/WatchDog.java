@@ -49,9 +49,7 @@ public class WatchDog {
             public void run() { //System.out.println("WDog overflow"); 
             debug_lastRuntime = System.nanoTime() - debug_start;
             timer.cancel(); // so thread can terminate after following code is run
-
-            // Eduards WDog reset hier
-
+            watchDogTimeOut();
             MC.wdog.setIsRunning(false); // now WDog is allowed to run again
             }        
 
@@ -65,8 +63,19 @@ public class WatchDog {
             setIsRunning(false);   
         } 
     }
+    
+    public static void watchDogTimeOut(){
+        MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 3, 0);
+        MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 4, 1);
+        MC.control.pc = 0;
+        MC.ram.otherReset();
+        // System.out.println("Watchdog timer has overflowed"); 
 
-
+        
+    }
+    
+    
+    
     /*
      * ------------------------------ Getter & Setter -------------------------------------
      */
