@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.tools.TP;
 
 import java.awt.Color;
@@ -26,6 +27,7 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JToolBar;
 import javax.swing.JDesktopPane;
+import javax.swing.JFileChooser;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JMenuBar;
@@ -33,6 +35,8 @@ import javax.swing.JPopupMenu;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+
 import javax.swing.JMenuItem;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JSeparator;
@@ -84,21 +88,142 @@ public class GUI extends JFrame {
         mnNewMenu.setFont(new Font("Arial", Font.PLAIN, 12));
         menuBar.add(mnNewMenu);
 
-        JMenuItem mnNewMenu_1 = new JMenuItem("TP 1");
-        mnNewMenu_1.setFont(new Font("Arial", Font.PLAIN, 12));
-        mnNewMenu.add(mnNewMenu_1);
+        JMenuItem tp1 = new JMenuItem("Testprogramm 1");
+        tp1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                MC.pm.loadTestProgram(TP.s1);
+            }
+        });
+        tp1.setFont(new Font("Arial", Font.PLAIN, 12));
+        mnNewMenu.add(tp1);
 
-        JMenuItem mnNewMenu_1_2 = new JMenuItem("TP 2");
-        mnNewMenu_1_2.setFont(new Font("Arial", Font.PLAIN, 12));
-        mnNewMenu.add(mnNewMenu_1_2);
+        JMenuItem tp2 = new JMenuItem("Testprogramm 2");
+        tp2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                MC.pm.loadTestProgram(TP.s2);
+            }
+        });
+        tp2.setFont(new Font("Arial", Font.PLAIN, 12));
+        mnNewMenu.add(tp2);
 
-        JMenuItem mnNewMenu_1_2_1 = new JMenuItem("TP 3");
-        mnNewMenu_1_2_1.setFont(new Font("Arial", Font.PLAIN, 12));
-        mnNewMenu.add(mnNewMenu_1_2_1);
+        JMenuItem tp3 = new JMenuItem("Testprogramm 3");
+        tp3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                MC.pm.loadTestProgram(TP.s3);
+            }
+        });
+        tp3.setFont(new Font("Arial", Font.PLAIN, 12));
+        mnNewMenu.add(tp3);
 
-        JMenuItem mnNewMenu_1_2_2 = new JMenuItem("TP 4");
-        mnNewMenu_1_2_2.setFont(new Font("Arial", Font.PLAIN, 12));
-        mnNewMenu.add(mnNewMenu_1_2_2);
+        JMenuItem tp4 = new JMenuItem("Testprogramm 4");
+        tp4.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                MC.pm.loadTestProgram(TP.s4);
+            }
+        });
+        tp4.setFont(new Font("Arial", Font.PLAIN, 12));
+        mnNewMenu.add(tp4);
+        
+        JMenuItem tp5 = new JMenuItem("Testprogramm 5");
+        tp5.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                MC.pm.loadTestProgram(TP.s5);
+            }
+        });
+        tp5.setFont(new Font("Arial", Font.PLAIN, 12));
+        mnNewMenu.add(tp5);
+        
+        JMenuItem tp6 = new JMenuItem("Testprogramm 6");
+        tp6.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                MC.pm.loadTestProgram(TP.s6);
+            }
+        });
+        tp6.setFont(new Font("Arial", Font.PLAIN, 12));
+        mnNewMenu.add(tp6);
+        
+        JMenuItem tp7 = new JMenuItem("Testprogramm 7");
+        tp7.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                MC.pm.loadTestProgram(TP.s7);
+            }
+        });
+        tp7.setFont(new Font("Arial", Font.PLAIN, 12));
+        mnNewMenu.add(tp7);
+        
+        JMenuItem tp8 = new JMenuItem("Testprogramm 8");
+        tp8.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                MC.pm.loadTestProgram(TP.s8);
+            }
+        });
+        tp8.setFont(new Font("Arial", Font.PLAIN, 12));
+        mnNewMenu.add(tp8);
+        
+        JMenuItem tp9 = new JMenuItem("Testprogramm 9");
+        tp9.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                MC.pm.loadTestProgram(TP.s9);
+            }
+        });
+        tp9.setFont(new Font("Arial", Font.PLAIN, 12));
+        mnNewMenu.add(tp9);
+        
+        JMenuItem tp10 = new JMenuItem("Testprogramm 10");
+        tp10.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                MC.pm.loadTestProgram(TP.s10);
+            }
+        });
+        tp10.setFont(new Font("Arial", Font.PLAIN, 12));
+        mnNewMenu.add(tp10);
+        
+        JMenuItem tp101 = new JMenuItem("Testprogramm 101");
+        tp101.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                MC.pm.loadTestProgram(TP.s101);
+            }
+        });
+        tp101.setFont(new Font("Arial", Font.PLAIN, 12));
+        mnNewMenu.add(tp101);
+        
+        JMenuItem tp11 = new JMenuItem("Testprogramm 11");
+        tp11.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                MC.pm.loadTestProgram(TP.s11);
+            }
+        });
+        tp11.setFont(new Font("Arial", Font.PLAIN, 12));
+        mnNewMenu.add(tp11);
+        
+        JMenuItem tpx = new JMenuItem("weitere laden ...");
+        tpx.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(e.getSource() == tpx) {
+                    JFileChooser fileChooser = new JFileChooser();
+                    int response = fileChooser.showOpenDialog(null); //select file to open -> return 0 for open, else 1 (close)
+                    if(response== fileChooser.APPROVE_OPTION) {
+                        MC.pm.loadTestProgram(fileChooser.getSelectedFile().getAbsolutePath());
+                        System.out.println(fileChooser.getSelectedFile().getAbsolutePath());
+                    }
+                }
+            }
+        });
+        tpx.setFont(new Font("Arial", Font.PLAIN, 12));
+        mnNewMenu.add(tpx);
 
 
 
