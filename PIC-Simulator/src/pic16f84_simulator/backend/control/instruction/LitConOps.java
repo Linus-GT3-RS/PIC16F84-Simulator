@@ -55,6 +55,7 @@ public enum LitConOps implements Instruction { // Linus
     MOVLW { // Linus
         @Override
         public void exe(int[] k) {
+            MC.alu.wReg.writeReg(k);
         }
     },
     RETFIE { // Eduard

@@ -60,6 +60,15 @@ class Test_Control_ControlUnit_LitConOps {
         assertEquals(1, MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); // Z-Flag
     }
     
+    @Test
+    void testMOVLW() {
+        MC.pm.loadTestProgram(TP.s4);
+        MC.control.pc = 0; // 110000 00010001
+        MC.alu.wReg.writeReg(new int[8]);
+        MC.control.exe();
+        assertArrayEquals(new int[] {0,0,0,1, 0,0,0,1}, MC.alu.wReg.readReg());
+    }
+    
     @Test // Eduard
     void testSUBLW() {
         MC.pm.loadTestProgram(TP.s1);
