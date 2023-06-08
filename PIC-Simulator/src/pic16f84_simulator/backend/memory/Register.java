@@ -6,9 +6,9 @@ public class Register extends Template_Memory {
         super(1, numbOfBits);
     }
     
-    public int length = readReg().length;
+    public int length = read().length;
     
-    public int[] readReg() {
+    public int[] read() {
         return super.readCell(0);
     }
     
@@ -16,7 +16,7 @@ public class Register extends Template_Memory {
         return super.readBit(0, indx);
     }
     
-    public void writeReg(int[] bitWord) {
+    public void write(int[] bitWord) {
       super.writeDataCell(0, bitWord);
     }
     
