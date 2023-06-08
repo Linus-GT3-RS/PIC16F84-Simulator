@@ -59,18 +59,7 @@ public class Timer {
             Interrupts.stdResponseRoutine();
         }
     }
-
-
-    /*
-     * for debugging purpose only
-     */
-    public void debug_clearDelay() {
-        this.delay = 0;
-    }    
-    public void debug_clearIncrCheck() {
-        this.incrCheck = 0.0;
-    }
-
+    
     public int getPRS() {
         return 2*MC.prescaler.getPRS();
 
@@ -81,6 +70,17 @@ public class Timer {
         if(MC.ram.readSpecificBit(SFR.OPTION.asIndex(), 4) == 0) { // case 0 -> TMR
             MC.prescaler.clearPRS();
         }
+    }
+
+
+    /*
+     * for debugging purpose only
+     */
+    public void debug_clearDelay() {
+        this.delay = 0;
+    }    
+    public void debug_clearIncrCheck() {
+        this.incrCheck = 0.0;
     }
 
 }
