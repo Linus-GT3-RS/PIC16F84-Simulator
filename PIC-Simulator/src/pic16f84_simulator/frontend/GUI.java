@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.tools.TP;
@@ -16,9 +18,13 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.GridLayout;
+
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.ListModel;
 import javax.swing.SpringLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -32,6 +38,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JMenuBar;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -51,8 +59,9 @@ import java.awt.Frame;
 import javax.swing.border.BevelBorder;
 
 public class GUI extends JFrame {
-
-    private JPanel contentPane;
+    
+    JMenuBar menuBar = new JMenuBar();
+    private JPanel contentPane = new JPanel();
 
     /**
      * Launch the application.
@@ -81,9 +90,139 @@ public class GUI extends JFrame {
         setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH); // Important DO_NOT_DELETE !!!
         // forBackUp: setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH); // Important DO_NOT_DELETE !!!
 
-        JMenuBar menuBar = new JMenuBar();
+        // --------------------------------------- Menubar ------------------------------------------------------------------------------------
+        
         setJMenuBar(menuBar);
+        setUpMenuBar();
+        
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Content Pane +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        contentPane = new JPanel();
+        contentPane.setForeground(new Color(192, 192, 192));
+        contentPane.setBackground(new Color(54, 54, 54));
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
+        setContentPane(contentPane);
+        contentPane.setLayout(new BorderLayout(4, 4));
+
+        /*
+         *  >>>>>>>>>>>>> panel_collection
+         */
+        JPanel panel_collection = new JPanel();
+        panel_collection.setPreferredSize(new Dimension(100, 10));
+        panel_collection.setBackground(new Color(100, 149, 237));
+        contentPane.add(panel_collection, BorderLayout.CENTER);
+        panel_collection.setLayout(null);
+
+        JLabel lblWatchdog_1 = new JLabel("WatchDog");
+        lblWatchdog_1.setBounds(0, 0, 118, 635);
+        lblWatchdog_1.setForeground(Color.WHITE);
+        panel_collection.add(lblWatchdog_1);
+
+        JCheckBoxMenuItem chckbxmntmNewCheckItem_1 = new JCheckBoxMenuItem("WatchDog");
+        chckbxmntmNewCheckItem_1.setBounds(102, 154, 118, 174);
+        panel_collection.add(chckbxmntmNewCheckItem_1);
+
+        JLabel lblTimer_1 = new JLabel("Timer");
+        lblTimer_1.setBounds(236, 0, 118, 635);
+        lblTimer_1.setForeground(Color.WHITE);
+        panel_collection.add(lblTimer_1);
+
+        JLabel lblNewLabel_1 = new JLabel("Pins");
+        lblNewLabel_1.setBounds(354, 0, 118, 635);
+        lblNewLabel_1.setForeground(Color.WHITE);
+        panel_collection.add(lblNewLabel_1);
+
+        
+        /*
+         *  >>>>>>>>>>>>> panel_controller
+         */
+        JPanel panel_controller = new JPanel();
+        panel_controller.setPreferredSize(new Dimension(10, 125));
+        panel_controller.setBackground(new Color(218, 112, 214));
+        contentPane.add(panel_controller, BorderLayout.SOUTH);
+        panel_controller.setLayout(null);
+
+        JButton btnNewButton_4 = new JButton("Reset");
+        btnNewButton_4.setBounds(564, 71, 75, 27);
+        btnNewButton_4.setFont(new Font("Arial", Font.PLAIN, 16));
+        panel_controller.add(btnNewButton_4);
+
+        JButton btnNewButton_3_1 = new JButton("RUN");
+        btnNewButton_3_1.setBounds(684, 36, 67, 27);
+        btnNewButton_3_1.setFont(new Font("Arial", Font.BOLD, 16));
+        panel_controller.add(btnNewButton_3_1);
+
+        JButton btnNewButton_1_1 = new JButton("Stop");
+        btnNewButton_1_1.setBounds(787, 38, 37, 23);
+        btnNewButton_1_1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+        btnNewButton_1_1.setBackground(new Color(95, 158, 160));
+        btnNewButton_1_1.setFont(new Font("Arial", Font.PLAIN, 16));
+        panel_controller.add(btnNewButton_1_1);
+
+        JButton btnNewButton_2_1 = new JButton("Next");
+        btnNewButton_2_1.setBounds(876, 71, 63, 27);
+        btnNewButton_2_1.setFont(new Font("Arial", Font.PLAIN, 16));
+        panel_controller.add(btnNewButton_2_1);
+
+        
+        /*
+         * >>>>>>>>>>>>>> panel_ram
+         */
+        JPanel panel_ram = new JPanel();
+        panel_ram.setBorder(new EmptyBorder(8, 0, 13, 0));
+        panel_ram.setPreferredSize(new Dimension(520, 10));
+        panel_ram.setBackground(new Color(244, 164, 96));
+        contentPane.add(panel_ram, BorderLayout.WEST);
+        panel_ram.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 7));
+        
+        JPanel panel_1 = new JPanel();
+        panel_1.setPreferredSize(new Dimension(470, 400));
+        panel_ram.add(panel_1);
+        
+        JLabel lblNewLabel = new JLabel("SFR");
+        panel_1.add(lblNewLabel);
+        
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(470, 240));
+        panel_ram.add(panel);
+        panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        
+        JLabel lblNewLabel_2 = new JLabel("GPR");
+        panel.add(lblNewLabel_2);
+
+        
+        /*
+         * >>>>>>>>>>>>>>>> panel_pm
+         */
+        JPanel panel_pm = new JPanel(new BorderLayout());
+
+        JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        centerPanel.setBackground(new Color(255, 215, 0));
+        JLabel label = new JLabel("Testprogramm");
+        centerPanel.add(label);
+
+        panel_pm.add(centerPanel, BorderLayout.NORTH);
+        
+        
+        JPanel testprogrammPanel = new JPanel(new BorderLayout());
+        testprogrammPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding von 10 Pixeln
+        testprogrammPanel.setBackground(new Color(255, 215, 0));
+        JScrollPane testprogramm_view = viewTestprogramm(null);
+
+        testprogrammPanel.add(testprogramm_view, BorderLayout.CENTER);
+        panel_pm.add(testprogrammPanel, BorderLayout.CENTER);
+
+        contentPane.add(panel_pm, BorderLayout.EAST);
+        
+
+
+    }
+    
+    void setUpMenuBar () {
+
+        /*
+         * ++++++++++++++++ Programm laden ++++++++++++++++++++
+         */
         JMenu mnNewMenu = new JMenu("Programm laden...");
         mnNewMenu.setFont(new Font("Arial", Font.PLAIN, 12));
         menuBar.add(mnNewMenu);
@@ -226,7 +365,9 @@ public class GUI extends JFrame {
         mnNewMenu.add(tpx);
 
 
-
+        /*
+         *  +++++++++++ Help +++++++++++
+         */
         JMenu mnHelp = new JMenu("Help");
         mnHelp.setFont(new Font("Arial", Font.PLAIN, 12));
         menuBar.add(mnHelp);
@@ -234,96 +375,46 @@ public class GUI extends JFrame {
         JMenuItem mnNewMenu_1_1 = new JMenuItem("Bei uns gibt es keine Hilfe");
         mnNewMenu_1_1.setFont(new Font("Arial", Font.PLAIN, 12));
         mnHelp.add(mnNewMenu_1_1);
-        contentPane = new JPanel();
-        contentPane.setForeground(new Color(192, 192, 192));
-        contentPane.setBackground(new Color(54, 54, 54));
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-        setContentPane(contentPane);
-        contentPane.setLayout(new BorderLayout(4, 4));
-
-        JPanel panel_collection = new JPanel();
-        panel_collection.setPreferredSize(new Dimension(100, 10));
-        panel_collection.setBackground(new Color(100, 149, 237));
-        contentPane.add(panel_collection, BorderLayout.CENTER);
-        panel_collection.setLayout(null);
-
-        JLabel lblWatchdog_1 = new JLabel("WatchDog");
-        lblWatchdog_1.setBounds(0, 0, 118, 635);
-        lblWatchdog_1.setForeground(Color.WHITE);
-        panel_collection.add(lblWatchdog_1);
-
-        JCheckBoxMenuItem chckbxmntmNewCheckItem_1 = new JCheckBoxMenuItem("WatchDog");
-        chckbxmntmNewCheckItem_1.setBounds(102, 154, 118, 174);
-        panel_collection.add(chckbxmntmNewCheckItem_1);
-
-        JLabel lblTimer_1 = new JLabel("Timer");
-        lblTimer_1.setBounds(236, 0, 118, 635);
-        lblTimer_1.setForeground(Color.WHITE);
-        panel_collection.add(lblTimer_1);
-
-        JLabel lblNewLabel_1 = new JLabel("Pins");
-        lblNewLabel_1.setBounds(354, 0, 118, 635);
-        lblNewLabel_1.setForeground(Color.WHITE);
-        panel_collection.add(lblNewLabel_1);
-
-        JPanel panel_controller = new JPanel();
-        panel_controller.setPreferredSize(new Dimension(10, 125));
-        panel_controller.setBackground(new Color(218, 112, 214));
-        contentPane.add(panel_controller, BorderLayout.SOUTH);
-        panel_controller.setLayout(null);
-
-        JButton btnNewButton_4 = new JButton("Reset");
-        btnNewButton_4.setBounds(564, 71, 75, 27);
-        btnNewButton_4.setFont(new Font("Arial", Font.PLAIN, 16));
-        panel_controller.add(btnNewButton_4);
-
-        JButton btnNewButton_3_1 = new JButton("RUN");
-        btnNewButton_3_1.setBounds(684, 36, 67, 27);
-        btnNewButton_3_1.setFont(new Font("Arial", Font.BOLD, 16));
-        panel_controller.add(btnNewButton_3_1);
-
-        JButton btnNewButton_1_1 = new JButton("Stop");
-        btnNewButton_1_1.setBounds(787, 38, 37, 23);
-        btnNewButton_1_1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-        btnNewButton_1_1.setBackground(new Color(95, 158, 160));
-        btnNewButton_1_1.setFont(new Font("Arial", Font.PLAIN, 16));
-        panel_controller.add(btnNewButton_1_1);
-
-        JButton btnNewButton_2_1 = new JButton("Next");
-        btnNewButton_2_1.setBounds(876, 71, 63, 27);
-        btnNewButton_2_1.setFont(new Font("Arial", Font.PLAIN, 16));
-        panel_controller.add(btnNewButton_2_1);
-
-        JPanel panel_ram = new JPanel();
-        panel_ram.setBorder(new EmptyBorder(8, 0, 13, 0));
-        panel_ram.setPreferredSize(new Dimension(520, 10));
-        panel_ram.setBackground(new Color(244, 164, 96));
-        contentPane.add(panel_ram, BorderLayout.WEST);
-        panel_ram.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 7));
         
-        JPanel panel_1 = new JPanel();
-        panel_1.setPreferredSize(new Dimension(470, 400));
-        panel_ram.add(panel_1);
-        
-        JLabel lblNewLabel = new JLabel("SFR");
-        panel_1.add(lblNewLabel);
-        
-        JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(470, 240));
-        panel_ram.add(panel);
-        panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        
-        JLabel lblNewLabel_2 = new JLabel("GPR");
-        panel.add(lblNewLabel_2);
-
-        JPanel panel_pm = new JPanel();
-        panel_pm.setPreferredSize(new Dimension(530, 10));
-        panel_pm.setBackground(new Color(255, 215, 0));
-        contentPane.add(panel_pm, BorderLayout.EAST);
-
-
     }
-    private static void addPopup(Component component, final JPopupMenu popup) {
+    
+    JScrollPane viewTestprogramm(TP tp) {
+        // Dummy File
+        String[] head = new String[] {"", ""};
+        String[][] line = new String[50][30];
+        line[0][0] = "   ";
+        line[0][1] = "                                                                                                                                               ";
+        if(tp != null) {
+
+            //Extract Data
+            //String[][] line = new String[][] {{"   ", "0000 3011           00018           movlw 11h           ;in W steht nun 11h, Statusreg. unverändert"},{"  ","0000 3000           00026           movlw 0             ;Index für Tabellenzugriff in 0FH"}}; 
+            
+        }
+        JTable table = new JTable(line,head) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Alle Zellen sind nicht bearbeitbar
+            }
+        };
+        JScrollPane scroll = new JScrollPane(table);
+        
+        table.setGridColor(Color.LIGHT_GRAY);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        for (int columnIndex = 0; columnIndex < table.getColumnCount(); columnIndex++) {
+            TableColumn column = table.getColumnModel().getColumn(columnIndex);
+            int preferredWidth = 0;
+            for (int rowIndex = 0; rowIndex < table.getRowCount(); rowIndex++) {
+                int cellWidth = table.getCellRenderer(rowIndex, columnIndex)
+                        .getTableCellRendererComponent(table, table.getValueAt(rowIndex, columnIndex), false, false, rowIndex, columnIndex)
+                        .getPreferredSize().width;
+                preferredWidth = Math.max(preferredWidth, cellWidth);
+            }
+            column.setPreferredWidth(preferredWidth + table.getIntercellSpacing().width);
+        }
+        table.setFont(new Font("Arial", Font.PLAIN, 12));
+        table.setAutoCreateRowSorter(true);
+        return scroll;
+        
+        
     }
 }
