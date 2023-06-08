@@ -8,8 +8,18 @@ import org.junit.jupiter.api.Test;
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.TP;
+import pic16f84_simulator.backend.tools.Utils;
 
 class Test_Control_ControlUnit_LitConOps {
+    
+    @Test
+    void testADDLW() {
+        MC.pm.loadTestProgram(TP.s4);        
+        MC.control.pc = 2; // 111110 00010001=17
+        MC.alu.wReg.writeReg(new int[] {1,0,0,1, 1,1,1,0}); // =158
+        MC.control.exe();
+        assertArrayEquals(Utils.decToBinary(175, 8), MC.alu.wReg.readReg());        
+    }
 
     @Test // Eduard
     void testANDLW() {

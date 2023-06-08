@@ -9,6 +9,9 @@ public enum LitConOps implements Instruction { // Linus
     ADDLW { // Linus
         @Override
         public void exe(int[] k) {
+            int[] w = MC.alu.wReg.readReg();
+            int[] res = MC.alu.addition(w, k);
+            MC.alu.wReg.writeReg(res);
         }
     },
     ANDLW { // Eduard
