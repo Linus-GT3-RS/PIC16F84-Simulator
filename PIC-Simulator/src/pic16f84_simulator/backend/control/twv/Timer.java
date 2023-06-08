@@ -65,7 +65,7 @@ public class Timer {
 
     }
 
-    // When write in timer
+    // when writing in timer
     public void clearPRS() {
         if(MC.ram.readSpecificBit(SFR.OPTION.asIndex(), 4) == 0) { // case 0 -> TMR
             MC.prescaler.clearPRS();
@@ -74,7 +74,7 @@ public class Timer {
 
 
     /*
-     * for debugging purpose only
+     ************************************* for debugging purposes only *********************************************************
      */
     public void debug_clearDelay() {
         this.delay = 0;

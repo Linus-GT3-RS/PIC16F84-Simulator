@@ -132,7 +132,7 @@ public class RAM_Memory extends Template_Memory { // Linus
         switch(indx) {
         case 1 -> { MC.timer.delayBy2Cycles(); MC.timer.clearPRS(); }
         case 129 -> {MC.prescaler.setPRS();}
-        default -> {}
+        default -> {} // has to be empty !!!
         }
     }
 
