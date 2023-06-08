@@ -9,18 +9,18 @@ public enum LitConOps implements Instruction { // Linus
     ADDLW { // Linus
         @Override
         public void exe(int[] k) {
-            int[] w = MC.alu.wReg.readReg();
+            int[] w = MC.alu.wReg.read();
             int[] res = MC.alu.addition(w, k);
-            MC.alu.wReg.writeReg(res);
+            MC.alu.wReg.write(res);
         }
     },
     ANDLW { // Eduard
         @Override
         public void exe(int[] k) {
-            int wAsDec = Utils.binaryToDec(MC.alu.wReg.readReg());
+            int wAsDec = Utils.binaryToDec(MC.alu.wReg.read());
             int kAsDec = Utils.binaryToDec(k);
             int[] wAndK = Utils.decToBinary(wAsDec & kAsDec, 8);
-            MC.alu.wReg.writeReg(wAndK);
+            MC.alu.wReg.write(wAndK);
             SFR.updateZflag(wAndK);
         }
     },
@@ -45,17 +45,17 @@ public enum LitConOps implements Instruction { // Linus
     IORLW { // Eduard
         @Override
         public void exe(int[] k) {
-            int wAsDec = Utils.binaryToDec(MC.alu.wReg.readReg());
+            int wAsDec = Utils.binaryToDec(MC.alu.wReg.read());
             int kAsDec = Utils.binaryToDec(k);
             int[] wAndK = Utils.decToBinary(wAsDec ^ kAsDec, 8);
-            MC.alu.wReg.writeReg(wAndK);
+            MC.alu.wReg.write(wAndK);
             SFR.updateZflag(wAndK);
         }
     },
     MOVLW { // Linus
         @Override
         public void exe(int[] k) {
-            MC.alu.wReg.writeReg(k);
+            MC.alu.wReg.write(k);
         }
     },
     RETFIE { // Eduard
@@ -64,13 +64,20 @@ public enum LitConOps implements Instruction { // Linus
             MC.stack.pop();
             MC.control.pc--;
             MC.ram.writeSpecificBit(SFR.INTCON.asIndex(), 0, 1);
-            MC.timer.tryIncrInternalTimer();
+            MC.timer.tryIncrInternalTimer(); // has to be at the end of code !!!
         }
     },
     RETLW { // Linus
         @Override
         public void exe(int[] k) {
-            MC.timer.tryIncrInternalTimer();
+            MC.alu.wReg.write(k);
+            
+            
+            
+            
+            
+            
+            MC.timer.tryIncrInternalTimer(); // has to be at the end of code !!!
         }
     },
     RETURN { // Eduard
@@ -89,9 +96,9 @@ public enum LitConOps implements Instruction { // Linus
     SUBLW { // Eduard
         @Override
         public void exe(int[] k) {
-            int[] wReg = MC.alu.wReg.readReg();
+            int[] wReg = MC.alu.wReg.read();
             int[] result = MC.alu.subtraction(wReg, k);
-            MC.alu.wReg.writeReg(result);
+            MC.alu.wReg.write(result);
         }
     },
     XORLW { // Linus

@@ -16,9 +16,9 @@ class Test_Control_ControlUnit_LitConOps {
     void testADDLW() {
         MC.pm.loadTestProgram(TP.s4);        
         MC.control.pc = 2; // 111110 00010001=17
-        MC.alu.wReg.writeReg(new int[] {1,0,0,1, 1,1,1,0}); // =158
+        MC.alu.wReg.write(new int[] {1,0,0,1, 1,1,1,0}); // =158
         MC.control.exe();
-        assertArrayEquals(Utils.decToBinary(175, 8), MC.alu.wReg.readReg());        
+        assertArrayEquals(Utils.decToBinary(175, 8), MC.alu.wReg.read());        
     }
 
     @Test // Eduard
@@ -27,16 +27,16 @@ class Test_Control_ControlUnit_LitConOps {
 
         // Case Z-Bit is 0
         MC.control.pc = 1; // 11 1001 0011 0000
-        MC.alu.wReg.writeReg(new int[] { 0, 1, 0, 1, 0, 1, 0, 0 });
+        MC.alu.wReg.write(new int[] { 0, 1, 0, 1, 0, 1, 0, 0 });
         MC.control.exe();
-        assertArrayEquals(new int[] { 0, 0, 0, 1, 0, 0, 0, 0 }, MC.alu.wReg.readReg());
+        assertArrayEquals(new int[] { 0, 0, 0, 1, 0, 0, 0, 0 }, MC.alu.wReg.read());
         assertEquals(0, MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); // Z-Flag
 
         // Case Z-Bit is 1
         MC.control.pc = 1;
-        MC.alu.wReg.writeReg(new int[8]);
+        MC.alu.wReg.write(new int[8]);
         MC.control.exe();
-        assertArrayEquals(new int[] { 0, 0, 0, 0, 0, 0, 0, 0 }, MC.alu.wReg.readReg());
+        assertArrayEquals(new int[] { 0, 0, 0, 0, 0, 0, 0, 0 }, MC.alu.wReg.read());
         assertEquals(1, MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); // Z-Flag
     }
 
@@ -47,16 +47,16 @@ class Test_Control_ControlUnit_LitConOps {
         
         // Case Z-Bit is 0
         MC.control.pc=2; // 11 1000 0000 1101
-        MC.alu.wReg.writeReg(new int[] { 0,1,0,1,1,1,1,1});
+        MC.alu.wReg.write(new int[] { 0,1,0,1,1,1,1,1});
         MC.control.exe();
-        assertArrayEquals(new int[] {0,1,0,1,0,0,1,0}, MC.alu.wReg.readReg());
+        assertArrayEquals(new int[] {0,1,0,1,0,0,1,0}, MC.alu.wReg.read());
         assertEquals(0, MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); // Z-Flag
         
         // Case Z-Bit is 1
         MC.control.pc=2;
-        MC.alu.wReg.writeReg(new int[] { 0,0,0,0,1,1,0,1});
+        MC.alu.wReg.write(new int[] { 0,0,0,0,1,1,0,1});
         MC.control.exe();
-        assertArrayEquals(new int[] {0,0,0,0,0,0,0,0}, MC.alu.wReg.readReg());
+        assertArrayEquals(new int[] {0,0,0,0,0,0,0,0}, MC.alu.wReg.read());
         assertEquals(1, MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); // Z-Flag
     }
     
@@ -64,9 +64,9 @@ class Test_Control_ControlUnit_LitConOps {
     void testMOVLW() {
         MC.pm.loadTestProgram(TP.s4);
         MC.control.pc = 0; // 110000 00010001
-        MC.alu.wReg.writeReg(new int[8]);
+        MC.alu.wReg.write(new int[8]);
         MC.control.exe();
-        assertArrayEquals(new int[] {0,0,0,1, 0,0,0,1}, MC.alu.wReg.readReg());
+        assertArrayEquals(new int[] {0,0,0,1, 0,0,0,1}, MC.alu.wReg.read());
     }
     
     @Test // Eduard
@@ -75,27 +75,27 @@ class Test_Control_ControlUnit_LitConOps {
         
         // Case normal Subtraction
         MC.control.pc = 3; // 11 1100 0011 1101 // subtract 61
-        MC.alu.wReg.writeReg(new int[] {1,1,1,1,1,1,1,1});
+        MC.alu.wReg.write(new int[] {1,1,1,1,1,1,1,1});
         MC.control.exe();
-        assertArrayEquals(new int[] {1,1,0,0,0,0,1,0}, MC.alu.wReg.readReg());
+        assertArrayEquals(new int[] {1,1,0,0,0,0,1,0}, MC.alu.wReg.read());
         assertEquals(0, MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); // Z-Flag
         assertEquals(1,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 7)); //C-Flag
         assertEquals(1,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 6)); //DC-Flag
         
         // Case Overflow
         MC.control.pc = 3; // 11 1100 0011 1101 // subtract 61
-        MC.alu.wReg.writeReg(new int[] {0,0,1,1,1,1,0,0});
+        MC.alu.wReg.write(new int[] {0,0,1,1,1,1,0,0});
         MC.control.exe();
-        assertArrayEquals(new int[] {1,1,1,1,1,1,1,1}, MC.alu.wReg.readReg());
+        assertArrayEquals(new int[] {1,1,1,1,1,1,1,1}, MC.alu.wReg.read());
         assertEquals(0, MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); // Z-Flag
         assertEquals(0,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 7)); //C-Flag
         assertEquals(0,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 6)); //DC-Flag
         
         // Case Zero
         MC.control.pc = 3; // 11 1100 0011 1101 // subtract 61
-        MC.alu.wReg.writeReg(new int[] {0,0,1,1,1,1,0,1});
+        MC.alu.wReg.write(new int[] {0,0,1,1,1,1,0,1});
         MC.control.exe();
-        assertArrayEquals(new int[] {0,0,0,0,0,0,0,0}, MC.alu.wReg.readReg());
+        assertArrayEquals(new int[] {0,0,0,0,0,0,0,0}, MC.alu.wReg.read());
         assertEquals(1, MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); // Z-Flag
         assertEquals(1,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 7)); //C-Flag
         assertEquals(1,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 6)); //DC-Flag

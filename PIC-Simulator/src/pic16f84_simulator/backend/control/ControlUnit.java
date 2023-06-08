@@ -25,12 +25,12 @@ public class ControlUnit {
 
     
     public void exe() {        
-        instrReg.writeReg(MC.pm.readDataCell(pc)); // load instrReg
-        Instruction instruct = instrDecoder.extractOpC(instrReg.readReg()); // load OpCode
+        instrReg.write(MC.pm.readDataCell(pc)); // load instrReg
+        Instruction instruct = instrDecoder.extractOpC(instrReg.read()); // load OpCode
 
         if(instruct instanceof ByteOps instr) {            
             int dBit = instrReg.readBit(instr.indexDbit)  ;
-            int indexFile = Utils.binaryToDec(Arrays.copyOfRange(instrReg.readReg(), instr.fileStart, instrReg.readReg().length));    
+            int indexFile = Utils.binaryToDec(Arrays.copyOfRange(instrReg.read(), instr.fileStart, instrReg.read().length));    
             if(indexFile == 0)
             {
                 indexFile = Utils.binaryToDec(MC.ram.readDataCell(SFR.FSR.asIndex()));
@@ -38,9 +38,9 @@ public class ControlUnit {
             instr.exe(dBit, indexFile);
         }
         if(instruct instanceof BitOps instr) {            
-            int indexBit = Utils.binaryToDec(Arrays.copyOfRange(instrReg.readReg(), instr.dBitStart, instr.dBitEnd+1));
+            int indexBit = Utils.binaryToDec(Arrays.copyOfRange(instrReg.read(), instr.dBitStart, instr.dBitEnd+1));
             indexBit = 7 - indexBit;
-            int indexFile = Utils.binaryToDec(Arrays.copyOfRange(instrReg.readReg(), instr.fileStart, instrReg.readReg().length));
+            int indexFile = Utils.binaryToDec(Arrays.copyOfRange(instrReg.read(), instr.fileStart, instrReg.read().length));
             if(indexFile == 0)
             {
                 indexFile = Utils.binaryToDec(MC.ram.readDataCell(SFR.FSR.asIndex()));
@@ -49,7 +49,7 @@ public class ControlUnit {
         }
         if(instruct instanceof LitConOps instr){
             int[] k = new int[14-instr.kStart()];
-            System.arraycopy(instrReg.readReg(),instr.kStart(),  k, 0, (14-instr.kStart()));
+            System.arraycopy(instrReg.read(),instr.kStart(),  k, 0, (14-instr.kStart()));
             instr.exe(k);
         }
         pcpp();

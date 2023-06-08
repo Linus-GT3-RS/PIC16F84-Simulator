@@ -50,7 +50,7 @@ public class InstructionDecoder {
         }        
         // Sonderfall_3 bis Sonderfall_8 --> ersten 6Bits sind alle 0
         else {             
-            int[] valInstrReg = MC.control.instrReg.readReg();
+            int[] valInstrReg = MC.control.instrReg.read();
             String fullOpC = Utils.cutArray(valInstrReg, 0, valInstrReg.length-1);
             
             if(valInstrReg[6] == 1) { // Sonderfall_3 aus ByteOps
