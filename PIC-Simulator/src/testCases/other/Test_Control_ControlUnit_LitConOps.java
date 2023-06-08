@@ -68,6 +68,57 @@ class Test_Control_ControlUnit_LitConOps {
         MC.control.exe();
         assertArrayEquals(new int[] {0,0,0,1, 0,0,0,1}, MC.alu.wReg.read());
     }
+        
+    @Test //Eduard
+    void testRETURN() {
+        MC.pm.loadTestProgram(TP.s2);
+        
+        // Case tos is 0
+        MC.control.pc = 7;
+        MC.control.exe();
+        assertEquals(1,MC.control.pc);
+        
+        // Case tos is 2
+        MC.stack.push();
+        MC.control.pc = 7;
+        MC.control.exe();
+        assertEquals(3,MC.control.pc);
+    }
+    
+    @Test //Eduard
+    void testRETFIE() {
+        MC.pm.loadTestProgram(TP.s8);
+        
+        MC.control.pc = 27;
+        MC.stack.push();
+        
+        MC.control.exe();
+        
+        assertEquals(28,MC.control.pc);
+        assertEquals(1,MC.ram.readSpecificBit(SFR.INTCON.asIndex(), 0));
+    }
+    
+    @Test
+    void testRETLW() {
+        // setup
+        MC.pm.loadTestProgram(TP.s10);        
+        MC.alu.wReg.write(new int[8]);
+        MC.control.pc = 15;
+        MC.stack.push();
+        
+        SFR.setTOCS(0); // selects intClock
+        SFR.setPSA(1); // psa -> wdog
+        MC.ram.writeDataCell(SFR.TMR0.asIndex(), new int[8]);
+        MC.timer.debug_clearDelay();
+        MC.timer.debug_clearIncrCheck();
+        
+        // test
+        MC.control.pc = 266; // 110100 01100000
+        MC.control.exe();
+        assertArrayEquals(new int[] {0,1,1,0, 0,0,0,0}, MC.alu.wReg.read());
+        assertEquals(16, MC.control.pc);
+        assertArrayEquals(Utils.decToBinary(2, 8), MC.ram.readDataCell(SFR.TMR0.asIndex()));
+    }
     
     @Test // Eduard
     void testSUBLW() {
@@ -98,36 +149,15 @@ class Test_Control_ControlUnit_LitConOps {
         assertArrayEquals(new int[] {0,0,0,0,0,0,0,0}, MC.alu.wReg.read());
         assertEquals(1, MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); // Z-Flag
         assertEquals(1,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 7)); //C-Flag
-        assertEquals(1,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 6)); //DC-Flag
-        
+        assertEquals(1,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 6)); //DC-Flag        
     }
     
-    @Test //Eduard
-    void testRETURN() {
-        MC.pm.loadTestProgram(TP.s2);
-        
-        // Case tos is 0
-        MC.control.pc = 7;
+    @Test
+    void testXORLW() {
+        MC.pm.loadTestProgram(TP.s12);        
+        MC.control.pc = 4; // 111010 11111111
+        MC.alu.wReg.write(new int[] {0,0,1,1, 0,0,1,0});
         MC.control.exe();
-        assertEquals(1,MC.control.pc);
-        
-        // Case tos is 2
-        MC.stack.push();
-        MC.control.pc = 7;
-        MC.control.exe();
-        assertEquals(3,MC.control.pc);
-    }
-    
-    @Test //Eduard
-    void testRETFIE() {
-        MC.pm.loadTestProgram(TP.s8);
-        
-        MC.control.pc = 27;
-        MC.stack.push();
-        
-        MC.control.exe();
-        
-        assertEquals(28,MC.control.pc);
-        assertEquals(1,MC.ram.readSpecificBit(SFR.INTCON.asIndex(), 0));
+        assertArrayEquals(new int[] {1,1,0,0, 1,1,0,1}, MC.alu.wReg.read());
     }
 }

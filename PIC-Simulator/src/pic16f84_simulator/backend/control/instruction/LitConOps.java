@@ -71,12 +71,8 @@ public enum LitConOps implements Instruction { // Linus
         @Override
         public void exe(int[] k) {
             MC.alu.wReg.write(k);
-            
-            
-            
-            
-            
-            
+            MC.stack.pop();
+            MC.control.pc--; // to compensate for pcpp() in exe()
             MC.timer.tryIncrInternalTimer(); // has to be at the end of code !!!
         }
     },
@@ -104,6 +100,11 @@ public enum LitConOps implements Instruction { // Linus
     XORLW { // Linus
         @Override
         public void exe(int[] k) {
+            int w = Utils.binaryToDec(MC.alu.wReg.read());
+            int l = Utils.binaryToDec(k);
+            int[] res = Utils.decToBinary(w ^ l, 8);
+            SFR.updateZflag(res);
+            MC.alu.wReg.write(res);
         }
     };
 
