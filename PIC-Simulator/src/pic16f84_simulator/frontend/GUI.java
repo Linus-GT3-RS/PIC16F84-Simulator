@@ -68,15 +68,17 @@ import javax.swing.border.BevelBorder;
 
 public class GUI extends JFrame {
     
-    private JMenuBar menuBar = new JMenuBar();
-    private JPanel contentPane = new JPanel();
+    public static boolean modus = false; // for testing is default false, otherwise issues
+    
+    public static JMenuBar menuBar = new JMenuBar();
+    public static JPanel contentPane = new JPanel();
+    
     
     /*
      * >>>>> pannel_pm
      */
-    private JPanel testprogrammPanel = new JPanel(new BorderLayout());
-    static private JScrollPane testprogramm_view;
-    static private JTable testprogramm_table;
+    public static JPanel testprogrammPanel = new JPanel(new BorderLayout());
+   
 
     /**
      * Launch the application.
@@ -86,6 +88,7 @@ public class GUI extends JFrame {
             public void run() {
                 try {
                     GUI frame = new GUI();
+                    frame.modus = true;
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -163,6 +166,14 @@ public class GUI extends JFrame {
         panel_controller.add(btnNewButton_4);
 
         JButton btnNewButton_3_1 = new JButton("RUN");
+        btnNewButton_3_1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(ProgrammViewer.loaded) {
+                    MC.control.exe();
+                }
+            }
+        });
         btnNewButton_3_1.setBounds(684, 36, 67, 27);
         btnNewButton_3_1.setFont(new Font("Arial", Font.BOLD, 16));
         panel_controller.add(btnNewButton_3_1);
@@ -229,9 +240,8 @@ public class GUI extends JFrame {
         String[][] line = new String[42][2];
         line[0][0] = "    ";
         line[0][1] = "                                                                                                                                                            ";
-        testprogramm_view = Table(head,line);
-
-        testprogrammPanel.add(testprogramm_view, BorderLayout.CENTER);
+        ProgrammViewer.testprogramm_view = ProgrammViewer.Table(head,line);
+        testprogrammPanel.add(ProgrammViewer.testprogramm_view, BorderLayout.CENTER);
         panel_pm.add(testprogrammPanel, BorderLayout.CENTER);
 
         contentPane.add(panel_pm, BorderLayout.EAST);
@@ -253,8 +263,7 @@ public class GUI extends JFrame {
         tp1.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                MC.pm.loadTestProgram(TP.s1);
-                overrideProgramm(TP.s1);
+                ProgrammViewer.overrideProgramm(TP.s1);
             }
         });
         tp1.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -264,8 +273,7 @@ public class GUI extends JFrame {
         tp2.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                MC.pm.loadTestProgram(TP.s2);
-                overrideProgramm(TP.s2);
+                ProgrammViewer.overrideProgramm(TP.s2);
             }
         });
         tp2.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -275,8 +283,7 @@ public class GUI extends JFrame {
         tp3.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                MC.pm.loadTestProgram(TP.s3);
-                overrideProgramm(TP.s3);
+                ProgrammViewer.overrideProgramm(TP.s3);
             }
         });
         tp3.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -286,8 +293,7 @@ public class GUI extends JFrame {
         tp4.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                MC.pm.loadTestProgram(TP.s4);
-                overrideProgramm(TP.s4);
+                ProgrammViewer.overrideProgramm(TP.s4);
             }
         });
         tp4.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -297,8 +303,7 @@ public class GUI extends JFrame {
         tp5.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                MC.pm.loadTestProgram(TP.s5);
-                overrideProgramm(TP.s5);
+                ProgrammViewer.overrideProgramm(TP.s5);
             }
         });
         tp5.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -308,8 +313,7 @@ public class GUI extends JFrame {
         tp6.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                MC.pm.loadTestProgram(TP.s6);
-                overrideProgramm(TP.s6);
+                ProgrammViewer.overrideProgramm(TP.s6);
             }
         });
         tp6.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -319,8 +323,7 @@ public class GUI extends JFrame {
         tp7.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                MC.pm.loadTestProgram(TP.s7);
-                overrideProgramm(TP.s7);
+                ProgrammViewer.overrideProgramm(TP.s7);
             }
         });
         tp7.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -330,8 +333,7 @@ public class GUI extends JFrame {
         tp8.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                MC.pm.loadTestProgram(TP.s8);
-                overrideProgramm(TP.s8);
+                ProgrammViewer.overrideProgramm(TP.s8);
             }
         });
         tp8.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -341,8 +343,7 @@ public class GUI extends JFrame {
         tp9.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                MC.pm.loadTestProgram(TP.s9);
-                overrideProgramm(TP.s9);
+                ProgrammViewer.overrideProgramm(TP.s9);
             }
         });
         tp9.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -352,8 +353,7 @@ public class GUI extends JFrame {
         tp10.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                MC.pm.loadTestProgram(TP.s10);
-                overrideProgramm(TP.s10);
+                ProgrammViewer.overrideProgramm(TP.s10);
             }
         });
         tp10.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -363,8 +363,7 @@ public class GUI extends JFrame {
         tp101.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                MC.pm.loadTestProgram(TP.s101);
-                overrideProgramm(TP.s101);
+                ProgrammViewer.overrideProgramm(TP.s101);
             }
         });
         tp101.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -374,8 +373,7 @@ public class GUI extends JFrame {
         tp11.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                MC.pm.loadTestProgram(TP.s11);
-                overrideProgramm(TP.s101);
+                ProgrammViewer.overrideProgramm(TP.s11);
             }
         });
         tp11.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -389,8 +387,7 @@ public class GUI extends JFrame {
                     JFileChooser fileChooser = new JFileChooser();
                     int response = fileChooser.showOpenDialog(null); //select file to open -> return 0 for open, else 1 (close)
                     if(response== fileChooser.APPROVE_OPTION) {
-                        MC.pm.loadTestProgram(fileChooser.getSelectedFile().getAbsolutePath());
-                        overrideProgramm(fileChooser.getSelectedFile().getAbsolutePath());
+                        ProgrammViewer.overrideProgramm(fileChooser.getSelectedFile().getAbsolutePath());
                     }
                 }
             }
@@ -411,147 +408,5 @@ public class GUI extends JFrame {
         mnHelp.add(mnNewMenu_1_1);
         
     }
-    
-    private JScrollPane Table(String[] head,String[][] rows) {
-        DefaultTableModel model = new DefaultTableModel(rows,head);
-        testprogramm_table = new JTable(model) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Alle Zellen sind nicht bearbeitbar
-            }
-        };
-        
-        JScrollPane scroll = new JScrollPane(testprogramm_table);
-        
-        testprogramm_table.setGridColor(Color.LIGHT_GRAY);
-        testprogramm_table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        
-     // Breite der Spalten anhand des Inhalts berechnen
-        for (int columnIndex = 0; columnIndex < testprogramm_table.getColumnCount(); columnIndex++) {
-            TableColumn column = testprogramm_table.getColumnModel().getColumn(columnIndex);
-            int preferredWidth = 0;
-            
-            for (int rowIndex = 0; rowIndex < testprogramm_table.getRowCount(); rowIndex++) {
-                TableCellRenderer cellRenderer = testprogramm_table.getCellRenderer(rowIndex, columnIndex);
-                Component cellComponent = testprogramm_table.prepareRenderer(cellRenderer, rowIndex, columnIndex);
-                
-                int cellWidth = cellComponent.getPreferredSize().width;
-                preferredWidth = Math.max(preferredWidth, cellWidth);
-            }
-            
-            column.setPreferredWidth(preferredWidth + testprogramm_table.getIntercellSpacing().width);
-        }
-        testprogramm_table.setFont(new Font("Arial", Font.PLAIN, 12));
-        testprogramm_table.setAutoCreateRowSorter(true);
-        return scroll;
-        
-        
-    }
-    
-    private void overrideProgramm(String path) {
-        String[][] data = loadProgram(path);
-        DefaultTableModel model = (DefaultTableModel) testprogramm_table.getModel();
-        
-        for(int i=0 ; i<data.length; i++) {
-            if(i< model.getRowCount()) {
-                model.setValueAt(data[i][1], i, 1);
-            }else {
-                model.addRow(new String[] {"  ",data[i][1]});
-            }
-        }
-        if(data.length < model.getRowCount()) {
-            for(int i = data.length; i < model.getRowCount(); i++) {
-                model.setValueAt("  ", i, 0);
-                model.setValueAt("                                              ", i, 1);
-            }
-        }
-        
-        // Informiere das TableModel über die Änderungen
-        model.fireTableDataChanged();
 
-        // Aktualisiere die JScrollPane-Ansicht
-        testprogramm_view.setViewportView(testprogramm_table);
-        testprogramm_view.revalidate();
-        testprogramm_view.repaint();
-    }
-    
-    private String[][] loadProgram(String path) {
-        File file = new File(path); // Read File
-        ArrayList<String> list = new ArrayList<>();
-        //If it has problems this code will be executed
-        if (!file.canRead() || !file.isFile())
-        {
-            System.exit(0);
-        }
-        BufferedReader in = null;
-        try {
-            in = new BufferedReader(new FileReader(path));
-            
-            String zeile = null;
-            while ((zeile = in.readLine()) != null) {
-                if(zeile.charAt(0) == ' ') {
-                    list.add("          " + zeile);
-                }else {
-                    list.add(StringSetter("    ",10,removeSpaces(zeile))+"                                   ");
-                }
-            }
-        } 
-        catch (IOException e) {
-            e.printStackTrace();
-        } 
-        finally {
-            if (in != null)
-                try {
-                    in.close();
-                } catch (IOException e) {}
-        }
-        
-        // Store in data-array for table
-        String[][] result = new String[list.size()][2];
-        for(int i = 0; i < list.size();i++) {
-            result[i][0] = " ";
-            result[i][1] = list.get(i);
-        }
-        return result;
-    }
-
-    // remove spaces by number of letter
-    private String removeSpaces(String zeile) {
-        String elem = zeile.substring(0, 9);
-        int count = 0;
-        for(int i = 0; i < 9; i++) {
-            if(checkDigit(elem.charAt(i))) {
-                count++;
-            }
-        }
-        String subA = elem;
-        String subB = zeile.substring(9+((int)(count*0.62)),zeile.length());
-        return subA+subB;
-    }
-
-    // check digit if is a letter
-    private boolean checkDigit(char charAt) {
-        switch (charAt) {
-        case  'A': 
-        case  'B':
-        case  'C':
-        case  'D':
-        case  'F': return true;
-        default: return false;
-          
-        }
-    }
-
-    // Set string in between an other string
-    private String StringSetter(String c, int i, String zeile) {
-        String result = "";
-        for(int j = 0; j < zeile.length(); j++) {
-            if(j == i ) {
-                result += c;
-            }else {
-                result += zeile.charAt(j);
-            }
-        }
-        return result;
-    }
 }

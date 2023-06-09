@@ -31,7 +31,7 @@ class Test_Control_ControlUnit_BitOps {
         MC.control.pc = 3; // 01 0111 1000 1100
         MC.ram.writeDataCell(12, new int[8]);
         MC.control.exe(); 
-        assertArrayEquals(new int[] {0,0,0,0,0,0,0, 1}, MC.ram.readDataCell(12));
+        assertArrayEquals(new int[] {0,0,0,0,0,0,0, 1}, MC.ram.readDataCell(12)); // TODO: @Linus Test schlägt fehl
         assertArrayEquals(new int[] {0,0,0,0,0,0,0, 1}, MC.ram.readDataCell(140));
     }
     
@@ -50,7 +50,7 @@ class Test_Control_ControlUnit_BitOps {
         cu.pc = 16; // 0111 111 0001100
         MC.ram.writeDataCell(140, new int[] {0,0,0,0,0,0,0, 1});
         cu.exe();
-        assertEquals(18, cu.pc);
+        assertEquals(18, cu.pc); // TODO: @Linus Test schlägt fehl
     }
     
     @Test

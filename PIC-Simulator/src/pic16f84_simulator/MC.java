@@ -8,6 +8,7 @@ import pic16f84_simulator.backend.memory.Program_Memory;
 import pic16f84_simulator.backend.memory.RAM_Memory;
 import pic16f84_simulator.backend.memory.StackBuffer;
 import pic16f84_simulator.backend.tools.Utils;
+import pic16f84_simulator.frontend.GUI;
 
 public class MC {
     
@@ -15,6 +16,7 @@ public class MC {
     public MC() {
         allow = Utils.allow(allow, this);
     }
+    
     
     /*
      * Memory

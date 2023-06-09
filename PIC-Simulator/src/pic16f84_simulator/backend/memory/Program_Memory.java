@@ -3,8 +3,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import pic16f84_simulator.backend.tools.Utils;
+import pic16f84_simulator.frontend.ProgrammViewer;
 
 public class Program_Memory extends Template_Memory {// Eduard
 
@@ -32,9 +34,10 @@ public class Program_Memory extends Template_Memory {// Eduard
         super.writeSpecificBit(indexCell, indexBit, bit);
     }
 
-    public void loadTestProgram(String path) {    
+    public String[][] loadTestProgram(String path) {    
         File file = new File(path); // Read File
-
+        ArrayList<String> list = new ArrayList<>();// For Viewer - store lines with Code
+        
         //If it has problems this code will be executed
         if (!file.canRead() || !file.isFile())
         {
@@ -44,14 +47,23 @@ public class Program_Memory extends Template_Memory {// Eduard
         try {
             in = new BufferedReader(new FileReader(path));
             String zeile = null;
+            int count = 0;
+            ProgrammViewer.PCLine = 0;
+            ProgrammViewer.pcLines = new ArrayList<>();
             while ((zeile = in.readLine()) != null) {
                 
                 // Logic Part
                 boolean contain = false;
                 String substring = zeile.substring(0, 9);
                 String result = "";
-
+                
+                if(zeile.charAt(0) == ' ') {
+                    list.add("          " + zeile);
+                }else {
+                    list.add(ProgrammViewer.StringSetter("    ",10,ProgrammViewer.removeSpaces(zeile))+"                                   ");
+                }
                 for(int i = 0; i <substring.length(); i++) {
+                    
                     if(substring.charAt(i) != ' ') {
                         result=result+substring.charAt(i);
                         contain = true;
@@ -59,8 +71,12 @@ public class Program_Memory extends Template_Memory {// Eduard
                 }
                 if(contain) {
                     store(result);
+                    ProgrammViewer.pcLines.add(count);
                 }
+                count++;
             }
+            ProgrammViewer.PCLine = ProgrammViewer.pcLines.get(0);
+            
         } 
         catch (IOException e) {
             e.printStackTrace();
@@ -71,6 +87,14 @@ public class Program_Memory extends Template_Memory {// Eduard
                     in.close();
                 } catch (IOException e) {}
         }
+        // Store in data-array for table
+        String[][] result = new String[list.size()][2];
+        for(int i = 0; i < list.size();i++) {
+            result[i][0] = " ";
+            result[i][1] = list.get(i);
+        }
+        ProgrammViewer.loaded = true;
+        return result;
     }
 
 

@@ -11,6 +11,8 @@ import pic16f84_simulator.backend.control.twv.Prescaler;
 import pic16f84_simulator.backend.memory.Register;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.Utils;
+import pic16f84_simulator.frontend.GUI;
+import pic16f84_simulator.frontend.ProgrammViewer;
 
 public class ControlUnit {
 
@@ -65,7 +67,11 @@ public class ControlUnit {
         int[] pclLatchBinary = new int[8];
         System.arraycopy(pclBinary, 0, pclLatchBinary, 3, 5);
         MC.ram.writeDataCell(SFR.PCLATH.asIndex(),pclLatchBinary);
-    }
+        if(GUI.modus) {
+            ProgrammViewer.highlightPCLine();
+        }
+        }
+        
     
     
 }
