@@ -11,8 +11,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.MouseInputAdapter;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -21,6 +27,7 @@ import pic16f84_simulator.MC;
 
 public class ProgrammViewer {
     
+    public static ArrayList<Integer> BreakPoints = new ArrayList<>() ;
     public static int PCLine; // beinhaltet die Zeile des aktuellen Programmzähler
     public static ArrayList<Integer> pcLines = new ArrayList<>(); // beinhaltet alle Zeilen mit Programmcode
     public static boolean loaded = false;
@@ -28,12 +35,22 @@ public class ProgrammViewer {
     public static  JScrollPane testprogramm_view;
     public static JTable testprogramm_table;
     
+    
     public static void highlightPCLine() {
         if(MC.control.pc!=0 && MC.control.pc < pcLines.size()) {
             PCLine = pcLines.get(MC.control.pc);   
         }
-        testprogramm_table.setSelectionBackground(Color.YELLOW);
-        testprogramm_table.setRowSelectionInterval(PCLine, PCLine);
+        testprogramm_table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer()
+        {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+            {
+                final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                c.setBackground(row == PCLine ? Color.YELLOW : Color.WHITE);
+                return c;
+            }
+        });
+        testprogramm_table.repaint();
     }
  
     static JScrollPane Table(String[] head,String[][] rows) {
@@ -44,7 +61,6 @@ public class ProgrammViewer {
                 return false; // cells are now editable
             }
         };
-        
         JScrollPane scroll = new JScrollPane(testprogramm_table);
         
         testprogramm_table.setGridColor(Color.LIGHT_GRAY);
@@ -74,6 +90,35 @@ public class ProgrammViewer {
     static void overrideProgramm(String path) {
         String[][] data = MC.pm.loadTestProgram(path);
         DefaultTableModel model = (DefaultTableModel) testprogramm_table.getModel();
+        
+        testprogramm_table.addMouseListener(new MouseInputAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON1) {
+                    // Mauslinksklick
+                    int selectedRow = testprogramm_table.getSelectedRow();
+                    toggleBreakpoint(selectedRow);
+                }
+            }
+            
+            private void toggleBreakpoint(int selectedRow) { // store Breakpoints
+                if(testprogramm_table.getValueAt(selectedRow, 0) == "B") {
+                    testprogramm_table.setValueAt("", selectedRow, 0);
+                    for(int i = 0 ; i < BreakPoints.size() ; i++) {
+                        if(BreakPoints.get(i) == selectedRow) {
+                            BreakPoints.remove(i);
+                        }
+                    }
+                } else {
+                    testprogramm_table.setValueAt("B", selectedRow, 0);
+                    BreakPoints.add(selectedRow);
+                }
+                
+            }
+        });
+
+            
+       
         
         for(int i=0 ; i<data.length; i++) {
             if(i< model.getRowCount()) {
@@ -111,7 +156,7 @@ public class ProgrammViewer {
             }
         }
         String subA = elem;
-        String subB = zeile.substring(9+((int)(count*0.62)),zeile.length());
+        String subB = zeile.substring(9+((int)(count*0.72)),zeile.length());
         return subA+subB;
     }
 
