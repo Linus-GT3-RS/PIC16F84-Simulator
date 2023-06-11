@@ -55,6 +55,7 @@ import java.util.Arrays;
 
 import javax.swing.JMenuItem;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
@@ -64,6 +65,8 @@ import java.awt.List;
 import javax.swing.JMenu;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Graphics;
+
 import javax.swing.border.BevelBorder;
 
 public class GUI extends JFrame {
@@ -73,7 +76,10 @@ public class GUI extends JFrame {
     public static JMenuBar menuBar = new JMenuBar();
     public static JPanel contentPane = new JPanel();
     
-    
+    /*
+     * >>>>> pannel_collection
+     */
+    public static JTable stack_table;
     /*
      * >>>>> pannel_pm
      */
@@ -136,9 +142,33 @@ public class GUI extends JFrame {
         panel_stack.setBackground(new Color(166, 222, 247));
         panel_stack.setBounds(0, 513, 481, 267);
         panel_collection.add(panel_stack);
+
+        JPanel center = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JLabel Stacklabel = new JLabel("Stack");
+        center.setBackground(new Color(166, 222, 247));
+        center.add(Stacklabel);
         
-        table = new JTable();
-        panel_stack.add(table);
+        panel_stack.setLayout(new BorderLayout()); // Set BorderLayout for panel_stack
+        panel_stack.add(center, BorderLayout.NORTH); // Add center panel to panel_stack's NORTH
+        
+        panel_stack.setBorder(BorderFactory.createEmptyBorder(10, 200, 104, 200)); // Padding
+        DefaultTableModel model = new DefaultTableModel(MC.stack.loadStack(), new String[] {"        ", "        ", "        "});
+        stack_table = new JTable(model) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // cells are now editable
+            }
+            @Override
+            public TableCellRenderer getCellRenderer(int row, int column) {
+                DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+                renderer.setHorizontalAlignment(SwingConstants.CENTER);
+                return renderer;
+            }        
+        };
+        panel_stack.add(stack_table, BorderLayout.CENTER); // Add stack_table to panel_stack's CENTER
+        stack_table.setShowGrid(false);
+        stack_table.setBackground(new Color(166, 222, 247));
+        stack_table.setBorder(BorderFactory.createLineBorder(Color.black, 2));
         
         JPanel panel_pins = new JPanel();
         panel_pins.setBackground(new Color(35, 175, 235));
@@ -171,6 +201,7 @@ public class GUI extends JFrame {
             public void mousePressed(MouseEvent e) {
                 if(TestprogrammViewer.loaded) {
                     MC.control.exe();
+                    MC.stack.push(1);
                 }
             }
         });
