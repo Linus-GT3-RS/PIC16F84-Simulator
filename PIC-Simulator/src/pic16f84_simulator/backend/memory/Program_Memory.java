@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import pic16f84_simulator.backend.tools.Utils;
-import pic16f84_simulator.frontend.ProgrammViewer;
+import pic16f84_simulator.frontend.TestprogrammViewer;
 
 public class Program_Memory extends Template_Memory {// Eduard
 
@@ -48,8 +48,9 @@ public class Program_Memory extends Template_Memory {// Eduard
             in = new BufferedReader(new FileReader(path));
             String zeile = null;
             int count = 0;
-            ProgrammViewer.PCLine = 0;
-            ProgrammViewer.pcLines = new ArrayList<>();
+            TestprogrammViewer.PCLine = 0;
+            TestprogrammViewer.pcLines = new ArrayList<>();
+            TestprogrammViewer.BreakPoints = new ArrayList<>();
             while ((zeile = in.readLine()) != null) {
                 
                 // Logic Part
@@ -60,7 +61,7 @@ public class Program_Memory extends Template_Memory {// Eduard
                 if(zeile.charAt(0) == ' ') {
                     list.add("          " + zeile);
                 }else {
-                    list.add(ProgrammViewer.StringSetter("    ",10,ProgrammViewer.removeSpaces(zeile))+"                                   ");
+                    list.add(TestprogrammViewer.StringSetter("    ",10,TestprogrammViewer.removeSpaces(zeile)));
                 }
                 for(int i = 0; i <substring.length(); i++) {
                     
@@ -71,11 +72,11 @@ public class Program_Memory extends Template_Memory {// Eduard
                 }
                 if(contain) {
                     store(result);
-                    ProgrammViewer.pcLines.add(count);
+                    TestprogrammViewer.pcLines.add(count);
                 }
                 count++;
             }
-            ProgrammViewer.PCLine = ProgrammViewer.pcLines.get(0);
+            TestprogrammViewer.PCLine = TestprogrammViewer.pcLines.get(0);
             
         } 
         catch (IOException e) {
@@ -93,7 +94,7 @@ public class Program_Memory extends Template_Memory {// Eduard
             result[i][0] = " ";
             result[i][1] = list.get(i);
         }
-        ProgrammViewer.loaded = true;
+        TestprogrammViewer.loaded = true;
         return result;
     }
 
