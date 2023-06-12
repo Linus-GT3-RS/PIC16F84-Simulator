@@ -39,20 +39,20 @@ class Test_Control_TWV_Timer {
     @Test
     void testTMR0Interrupt() {
         setup(0, 1, new int[3], new int[] {1,1,1,1, 1,1,1,1}); // intClock | noPrescaler | irrlv. | 255        
-        MC.control.pc = 15;
+        MC.control.pc(15);
         SFR.setGIE(1); SFR.setTOIE(1);
         MC.timer.tryIncrInternalTimer(); // causes interrupt        
         assertArrayEquals(new int[8], MC.ram.readDataCell(SFR.TMR0.asIndex())); // overflow
-        assertEquals(4, MC.control.pc);
+        assertEquals(4, MC.control.pc());
         MC.stack.pop(); 
-        assertEquals(15, MC.control.pc);
+        assertEquals(15, MC.control.pc());
         
-        MC.control.pc = 15;
+        MC.control.pc(15);
         setup(0, 1, new int[3], new int[] {1,1,1,1, 1,1,1,1}); // intClock | noPrescaler | irrlv. | 255        
         SFR.setGIE(1); SFR.setTOIE(0);
         MC.timer.tryIncrInternalTimer(); // causes no interrupt        
         assertArrayEquals(new int[8], MC.ram.readDataCell(SFR.TMR0.asIndex())); // overflow
-        assertEquals(15, MC.control.pc);
+        assertEquals(15, MC.control.pc());
     }
     
     private void setup(int tocs, int psa, int[] ps2to0, int[] tmr0) {

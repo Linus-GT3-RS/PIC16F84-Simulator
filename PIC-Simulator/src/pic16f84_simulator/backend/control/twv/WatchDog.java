@@ -67,7 +67,7 @@ public class WatchDog {
     public static void watchDogTimeOut(){
         MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 3, 0);
         MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 4, 1);
-        MC.control.pc = 0;
+        MC.control.pc(0);
         MC.ram.otherReset();
         // System.out.println("Watchdog timer has overflowed"); 
 

@@ -13,7 +13,7 @@ class Test_Control_Prescaler {
     void testGetPrescaler() {
         // ++++++ Case for lower Prescaler +++++++++ 
         // Case TMR0
-        assertEquals(1,MC.prescaler.getPRS());
+        assertEquals(1,MC.prescaler.getPRS()); // TODO Eduard Test fails
         
         // Case WatchDog
         MC.ram.writeSpecificBit(SFR.OPTION.asIndex(), 4, 1);

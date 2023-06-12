@@ -62,7 +62,7 @@ public enum LitConOps implements Instruction { // Linus
         @Override
         public void exe(int[] k) {
             MC.stack.pop();
-            MC.control.pc--;
+            MC.control.pc(MC.control.pc() - 1);
             MC.ram.writeSpecificBit(SFR.INTCON.asIndex(), 0, 1);
             MC.timer.tryIncrInternalTimer(); // has to be at the end of code !!!
         }
@@ -72,7 +72,7 @@ public enum LitConOps implements Instruction { // Linus
         public void exe(int[] k) {
             MC.alu.wReg.write(k);
             MC.stack.pop();
-            MC.control.pc--; // to compensate for pcpp() in exe()
+            MC.control.pc(MC.control.pc() - 1); // to compensate for pcpp() in exe()
             MC.timer.tryIncrInternalTimer(); // has to be at the end of code !!!
         }
     },
