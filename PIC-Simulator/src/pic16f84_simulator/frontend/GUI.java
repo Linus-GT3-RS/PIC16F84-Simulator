@@ -9,9 +9,11 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import pic16f84_simulator.MC;
+import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.TP;
 
 import java.awt.Color;
@@ -21,11 +23,13 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.GridLayout;
+import java.awt.Image;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ListModel;
 import javax.swing.SpringLayout;
@@ -41,6 +45,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JMenuBar;
 import javax.swing.JPopupMenu;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
 import java.awt.Component;
@@ -79,6 +84,7 @@ public class GUI extends JFrame {
     /*
      * >>>>> pannel_collection
      */
+    public static JPanel panel_collection = new JPanel();
     public static JTable stack_table;
     /*
      * >>>>> pannel_pm
@@ -132,15 +138,14 @@ public class GUI extends JFrame {
         /*
          *  >>>>>>>>>>>>> panel_collection
          */
-        JPanel panel_collection = new JPanel();
+        
         panel_collection.setPreferredSize(new Dimension(100, 10));
-        panel_collection.setBackground(new Color(100, 149, 237));
         contentPane.add(panel_collection, BorderLayout.CENTER);
         panel_collection.setLayout(null);
         
         JPanel panel_stack = new JPanel();
         panel_stack.setBackground(new Color(166, 222, 247));
-        panel_stack.setBounds(0, 513, 481, 267);
+        panel_stack.setBounds(0, 558, 481, 222);
         panel_collection.add(panel_stack);
 
         JPanel center = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -151,7 +156,7 @@ public class GUI extends JFrame {
         panel_stack.setLayout(new BorderLayout()); // Set BorderLayout for panel_stack
         panel_stack.add(center, BorderLayout.NORTH); // Add center panel to panel_stack's NORTH
         
-        panel_stack.setBorder(BorderFactory.createEmptyBorder(10, 200, 104, 200)); // Padding
+        panel_stack.setBorder(BorderFactory.createEmptyBorder(0, 200, 65, 200)); // Padding
         DefaultTableModel model = new DefaultTableModel(MC.stack.loadStack(), new String[] {"        ", "        ", "        "});
         stack_table = new JTable(model) {
             @Override
@@ -171,19 +176,26 @@ public class GUI extends JFrame {
         stack_table.setBorder(BorderFactory.createLineBorder(Color.black, 2));
         
         JPanel panel_pins = new JPanel();
-        panel_pins.setBackground(new Color(35, 175, 235));
-        panel_pins.setBounds(0, 247, 481, 268);
+        panel_pins.setBounds(0, 296, 481, 215);
+        panel_pins.setBackground(Color.WHITE);
         panel_collection.add(panel_pins);
         
+        ImageIcon icon = new ImageIcon("Pic.png");
+        Image image = icon.getImage().getScaledInstance(470, 215, Image.SCALE_SMOOTH);
+        
+        JLabel Pic_Image = new JLabel(new ImageIcon(image));
+        
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel_pins.add(Pic_Image);
+        PinSelector.Pin_Table();
         JPanel panel_3 = new JPanel();
         panel_3.setBackground(new Color(17, 135, 185));
         panel_3.setBounds(0, 0, 481, 248);
         panel_collection.add(panel_3);
 
-        JLabel lblNewLabel_1 = new JLabel("Pins");
-        lblNewLabel_1.setBounds(354, 0, 118, 635);
-        lblNewLabel_1.setForeground(Color.WHITE);
-        panel_collection.add(lblNewLabel_1);
         JPanel panel_controller = new JPanel();
         panel_controller.setPreferredSize(new Dimension(10, 125));
         panel_controller.setBackground(new Color(218, 112, 214));
@@ -202,6 +214,8 @@ public class GUI extends JFrame {
                 if(TestprogrammViewer.loaded) {
                     MC.control.exe();
                     MC.stack.push(1);
+                    MC.ram.writeSpecificBit(SFR.PORTA.asIndex(), 5, 1);
+                    PinSelector.loadPins();
                 }
             }
         });

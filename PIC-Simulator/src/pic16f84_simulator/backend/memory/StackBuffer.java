@@ -45,13 +45,13 @@ public class StackBuffer {
     public String[][] loadStack() {
         String[][] data = new String [8][3];
         for(int i = 0; i < data.length; i++) {
-            data[i][1] = Integer.toString(this.stack[i]);
+            data[stack.length-i-1][1] = Integer.toString(this.stack[i]);
             if(tos == i) {
-                data[i][0] = "-->";
-                data[i][2] = "<--";
+                data[stack.length-i-1][0] = "-->";
+                data[stack.length-i-1][2] = "<--";
             }else {
-                data[i][0] = "   ";
-                data[i][2] = "   ";
+                data[stack.length-i-1][0] = "   ";
+                data[stack.length-i-1][2] = "   ";
             }
         }
         return data;
