@@ -13,6 +13,9 @@ public class RAM_Memory extends Template_Memory { // Linus
         allow = Utils.allow(allow, this);
     }   
 
+    /*
+     * -------------------------------------------- Resets -----------------------------------------------------------------
+     */
     public void otherReset() { // Eduard
         // ++++++++++++++++ Bank0 +++++++++++++++++++++++++++
         this.writeDataCell(SFR.INDF.asIndex(), new int[8]); 
@@ -37,21 +40,38 @@ public class RAM_Memory extends Template_Memory { // Linus
         this.writeDataCell(SFR.TRISA.asIndex(), new int[] {0,0,0,1, 1,1,1,1});
         this.writeDataCell(SFR.TRISB.asIndex(), new int[] {1,1,1,1, 1,1,1,1});
     }
-
+    
+    
+    
     /*
-     * writes to specific RamAddress --> gets mirrored automatically
+     * -------------------------------------------- Read & Write -----------------------------------------------------------------
+     */
+    
+    /*
+     * writes to specific RamAdress --> gets mirrored automatically
+     * autom. calls checkUp()
      */
     @Override
     public void writeDataCell(int indexCell, int[] data) {
+        writeDataCell(indexCell, data, true);
+    }
+    
+    /*
+     * is used to NOT call checkup()
+     */
+    public void writeDataCell(int indexCell, int[] data, boolean checkUp) {
         checkAddress(indexCell);              
         super.writeDataCell(indexCell, data);
         int indexMirrored = mirrorBank(indexCell);
         if(indexMirrored != indexCell) {
             super.writeDataCell(indexMirrored, data);
         }
-        checkUp(indexCell);
+        if(checkUp)
+        {
+            checkUp(indexCell);
+        }
     }
-
+        
     @Override
     public void writeSpecificBit(int indexCell, int indexBit, int bit) {
         checkAddress(indexCell);        
@@ -73,9 +93,12 @@ public class RAM_Memory extends Template_Memory { // Linus
         checkAddress(indexCell);
         return super.readBit(indexCell, indexBit);
     }
-
-
-
+    
+    
+    /*
+     * -------------------------------------------- Tools -----------------------------------------------------------------
+     */
+    
     /*
      * Checks if given address is unimplemented space
      */
@@ -130,8 +153,9 @@ public class RAM_Memory extends Template_Memory { // Linus
      */
     private void checkUp(int indx) {   
         switch(indx) {
-        case 1 -> { MC.timer.delayBy2Cycles(); MC.timer.clearPRS(); }
-        case 129 -> {MC.prescaler.setPRS();}
+        case 1 -> { MC.timer.delayBy2Cycles(); MC.timer.clearPRS(); } // TMR0
+        case 2 -> { MC.control.updatePC(); } // PCL
+        case 129 -> { MC.prescaler.setPRS(); } // OPTION
         default -> {} // has to be empty !!!
         }
     }

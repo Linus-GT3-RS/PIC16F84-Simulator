@@ -20,7 +20,7 @@ public class StackBuffer {
      * pushes (pc+1 + offset) onto stack
      */
     public void push(int offset) {
-        this.stack[tos] = MC.control.pc + 1 + offset;
+        this.stack[tos] = MC.control.pc() + 1 + offset;
         tos = (tos + 1) % 8; // tos++
         if(GUI.modus) {
             StackViewer.updateStack();
@@ -36,7 +36,7 @@ public class StackBuffer {
      */
     public void pop() {
        tos = (tos + 7) % 8; // tos--
-       MC.control.pc = this.stack[tos];
+       MC.control.pc(this.stack[tos]);
        if(GUI.modus) {
            StackViewer.updateStack();
        }  

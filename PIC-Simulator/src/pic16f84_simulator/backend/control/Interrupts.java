@@ -11,6 +11,6 @@ public abstract class Interrupts {
     public static void stdResponseRoutine() {
         SFR.setGIE(0);
         MC.stack.push(-1);
-        MC.control.pc = 4;
+        MC.control.pc(4);
     }
 }

@@ -21,11 +21,12 @@ public class ControlUnit {
         allow = Utils.allow(allow, this);      
     }
 
-    public int pc = 0;
+    private int pc = 0; // 13bits long
+
     public Register instrReg = new Register(14);
     public InstructionDecoder instrDecoder = new InstructionDecoder();
 
-    
+
     public void exe() {        
         instrReg.write(MC.pm.readDataCell(pc)); // load instrReg
         Instruction instruct = instrDecoder.extractOpC(instrReg.read()); // load OpCode
@@ -57,21 +58,62 @@ public class ControlUnit {
         pcpp();
         MC.timer.tryIncrInternalTimer(); // has to be called after pcpp to insure correct pc is pushed onto stack in case of tmr0Interrupt
     }
-    
-    
-    // Increase the PC-Counter and load in specific register PCL and PCLATH
+
+/*
+ * ----------------------------------------- ProgrammCounter ----------------------------------------------
+ */
+    /*
+     * increments pc while handeling pc-overflow
+     * updates pcl with new val from pc
+     */
     public void pcpp() {
-        pc++;
-        int[] pclBinary = Utils.decToBinary(pc, 13);
-        MC.ram.writeDataCell(SFR.PCL.asIndex(), Arrays.copyOfRange(pclBinary, 5, 13));
-        int[] pclLatchBinary = new int[8];
-        System.arraycopy(pclBinary, 0, pclLatchBinary, 3, 5);
-        MC.ram.writeDataCell(SFR.PCLATH.asIndex(),pclLatchBinary);
+        pc = (pc + 1) % 1024;
+        int[] pc_bin = Utils.decToBinary(pc, 13);
+        int[] newPCL = Arrays.copyOfRange(pc_bin, 5, pc_bin.length);
+        MC.ram.writeDataCell(SFR.PCL.asIndex(), newPCL, false);
         if(GUI.modus) {
             TestprogrammViewer.highlightPCLine();
         }
+    }
+
+    public int pc() {
+        return this.pc;
+    }
+    
+    /*
+     * sets pc 
+     * updates pcl afterwards
+     */
+    public void pc(int val) {
+        this.pc = val;
+        int[] pc_bin = Utils.decToBinary(pc, 13);
+        int[] newPCL = Arrays.copyOfRange(pc_bin, 5, pc_bin.length);
+        MC.ram.writeDataCell(SFR.PCL.asIndex(), newPCL, false);
+        if(GUI.modus) {
+            TestprogrammViewer.highlightPCLine();
         }
+    }
+    
+    /*
+     * is to be called AFTER writing to pcl
+     * 
+     * builds & sets new pc using pclatch and pcl
+     *   - ignores pclatch 4-3, as all PICF8x do !!
+     */
+    public void updatePC() {
+        int[] pclatch = MC.ram.readDataCell(SFR.PCLATH.asIndex());
+        int[] pcl = MC.ram.readDataCell(SFR.PCL.asIndex());
         
-    
-    
+        int[] newPC = new int[13]; // 00_000 0000_0000
+        System.arraycopy(pclatch, 5, newPC, 2, 3); // sets 00_xxx 0000_0000
+        System.arraycopy(pcl, 0, newPC, 5, pcl.length); // sets 00_000 xxxx_xxxx
+        this.pc = Utils.binaryToDec(newPC);
+        
+        if(GUI.modus) {
+            TestprogrammViewer.highlightPCLine();
+        }
+    }
+
+
+
 }

@@ -38,8 +38,8 @@ public class TestprogrammViewer {
     
     
     public static void highlightPCLine() {
-        if(MC.control.pc!=0 && MC.control.pc < pcLines.size()) {
-            PCLine = pcLines.get(MC.control.pc);   
+        if(MC.control.pc() != 0 && MC.control.pc() < pcLines.size()) {
+            PCLine = pcLines.get(MC.control.pc());   
         }
         testprogramm_table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer()
         {
@@ -147,8 +147,8 @@ public class TestprogrammViewer {
         testprogramm_view.setViewportView(testprogramm_table);
         testprogramm_view.revalidate();
         testprogramm_view.repaint();
-        MC.control.pc = 0;
-        TestprogrammViewer.PCLine = TestprogrammViewer.pcLines.get(MC.control.pc);
+        MC.control.pc(0);
+        TestprogrammViewer.PCLine = TestprogrammViewer.pcLines.get(MC.control.pc());
         TestprogrammViewer.highlightPCLine();
     }
 
