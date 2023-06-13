@@ -1,5 +1,6 @@
 package pic16f84_simulator.backend.memory;
 import pic16f84_simulator.MC;
+import pic16f84_simulator.backend.control.Interrupts;
 import pic16f84_simulator.backend.tools.Utils;
 
 /*
@@ -60,7 +61,16 @@ public class RAM_Memory extends Template_Memory { // Linus
      * is used to NOT call checkup()
      */
     public void writeDataCell(int indexCell, int[] data, boolean checkUp) {
-        checkAddress(indexCell);              
+        checkAddress(indexCell);
+        if(indexCell == 6) {
+            boolean unequals = false;
+            for(int i = 0; i < 4;i++) {
+                if(super.readBit(indexCell, i) != data[i]) {
+                    checkRBInterupt(i);
+                    break;
+                }
+            }
+        }
         super.writeDataCell(indexCell, data);
         int indexMirrored = mirrorBank(indexCell);
         if(indexMirrored != indexCell) {
@@ -74,7 +84,10 @@ public class RAM_Memory extends Template_Memory { // Linus
         
     @Override
     public void writeSpecificBit(int indexCell, int indexBit, int bit) {
-        checkAddress(indexCell);        
+        checkAddress(indexCell);
+        if(super.readCell(indexCell)[indexBit] != bit && indexCell == 6) {
+            checkRBInterupt(indexBit);
+        }
         super.writeSpecificBit(indexCell, indexBit, bit);
 
         int indxMirrored = mirrorBank(indexCell);
@@ -83,6 +96,8 @@ public class RAM_Memory extends Template_Memory { // Linus
         }      
         checkUp(indexCell);
     }
+
+    
 
     public int[] readDataCell(int indexCell) {
         checkAddress(indexCell);
@@ -159,6 +174,29 @@ public class RAM_Memory extends Template_Memory { // Linus
         default -> {} // has to be empty !!!
         }
     }
-
-
+    
+    private void checkRBInterupt(int indexBit) {
+        boolean trisIn = false;
+        switch(indexBit) {
+        case 0 -> {
+                    if(MC.ram.readSpecificBit(SFR.TRISB.asIndex(), 0) == 1) {
+                    trisIn = true;
+                    }
+                  }
+        case 1 -> { if(MC.ram.readSpecificBit(SFR.TRISB.asIndex(), 1) == 1) {
+                    trisIn = true;}
+                  }
+        case 2 -> { if(MC.ram.readSpecificBit(SFR.TRISB.asIndex(), 2) == 1) {
+                    trisIn = true;}
+                  }
+        case 3 -> { if(MC.ram.readSpecificBit(SFR.TRISB.asIndex(), 3) == 1) {
+                    trisIn = true;}
+                  }
+        default -> {}
+        }
+        if(trisIn) {
+            SFR.setRBIF(1);
+            Interrupts.stdResponseRoutine();
+        }
+}
 }

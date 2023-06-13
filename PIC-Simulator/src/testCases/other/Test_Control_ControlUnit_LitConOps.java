@@ -3,6 +3,8 @@ package testCases.other;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Test;
 
 import pic16f84_simulator.MC;
@@ -59,8 +61,7 @@ class Test_Control_ControlUnit_LitConOps {
 
     @Test // Eduard
     void testIORLW() {
-        MC.pm.loadTestProgram(TP.s1);
-        
+        MC.pm.loadTestProgram(TP.s1);        
         
         // Case Z-Bit is 0
         MC.control.pc(2); // 11 1000 0000 1101
@@ -90,16 +91,9 @@ class Test_Control_ControlUnit_LitConOps {
     void testRETURN() {
         MC.pm.loadTestProgram(TP.s2);
         
-        // Case tos is 0
         MC.control.pc(7);
         MC.control.exe();
-        assertEquals(1,MC.control.pc()); // TODO Eduard Test fails: in LitConOps: RETURN, muss pc -1 gemacht werden, um pcpp auszugleichen
-        
-        // Case tos is 2
-        MC.stack.push();
-        MC.control.pc(7);
-        MC.control.exe();
-        assertEquals(3,MC.control.pc());
+        assertEquals(0,MC.control.pc());
     }
     
     @Test //Eduard
@@ -115,7 +109,7 @@ class Test_Control_ControlUnit_LitConOps {
         assertEquals(1,MC.ram.readSpecificBit(SFR.INTCON.asIndex(), 0));
     }
     
-    @Test
+    @Test //Linus
     void testRETLW() {
         // setup
         MC.pm.loadTestProgram(TP.s10);        

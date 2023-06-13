@@ -177,5 +177,20 @@ public enum SFR {
     public static int getTOIE() {
         return MC.ram.readSpecificBit(SFR.INTCON.asIndex(), 2);
     }
-
+    
+    public static int getRBIE() {
+        return MC.ram.readSpecificBit(SFR.INTCON.asIndex(), 4);
+    }
+    
+    public static void setRBIE(int value) {
+        MC.ram.writeSpecificBit(SFR.INTCON.asIndex(), 4, value);
+    }
+    
+    public static void setRBIF(int value) {
+        MC.ram.writeSpecificBit(SFR.INTCON.asIndex(), 7, value);
+    }
+    
+    public static int getRBIF() {
+        return MC.ram.readSpecificBit(SFR.INTCON.asIndex(), 7);
+    }
 }
