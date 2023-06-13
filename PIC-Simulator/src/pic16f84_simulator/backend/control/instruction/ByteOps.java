@@ -124,7 +124,6 @@ public enum ByteOps implements Instruction { // Linus
     NOP { // Eduard
         @Override
         public void exe(int d, int indexFile) {
-            MC.control.pcpp(); // dont remove
             MC.timer.tryIncrInternalTimer();
         }
     },

@@ -39,7 +39,7 @@ public enum LitConOps implements Instruction { // Linus
             // Not implemented
         }
     },
-    GOTO { // Linus
+    GOTO { // Linus FIXME GOTO
         @Override
         public void exe(int[] k) {
             int k_dec = Utils.binaryToDec(k) - 1; // -1 to counteract pcpp() after this instruction
