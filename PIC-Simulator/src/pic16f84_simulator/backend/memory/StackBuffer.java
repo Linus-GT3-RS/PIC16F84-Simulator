@@ -50,8 +50,8 @@ public class StackBuffer {
         for(int i = 0; i < data.length; i++) {
             data[stack.length-i-1][1] = Integer.toString(this.stack[i]);
             if(tos == i) {
-                data[stack.length-i-1][0] = "-->";
-                data[stack.length-i-1][2] = "<--";
+                data[stack.length-i-1][0] = "next free slot -->";
+                data[stack.length-i-1][2] = "<-- next free slot";
             }else {
                 data[stack.length-i-1][0] = "   ";
                 data[stack.length-i-1][2] = "   ";

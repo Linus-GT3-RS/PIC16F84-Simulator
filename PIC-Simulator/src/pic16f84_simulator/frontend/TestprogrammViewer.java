@@ -30,7 +30,7 @@ public class TestprogrammViewer {
     
     public static ArrayList<Integer> BreakPoints = new ArrayList<>() ; // include BreakPoints -> PC
     public static int PCLine; // beinhaltet die Zeile des aktuellen Programmzähler
-    public static ArrayList<Integer> pcLines = new ArrayList<>(); // beinhaltet alle Zeilennummern mit Programmcode PCLine -> PC (index()): z.B. Index 0 (PC = 0) beihaltet Zeile 18 im Testprogramm
+    public static ArrayList<Integer> pcLines = new ArrayList<>(); // beinhaltet alle Zeilennummern mit Programmcode PCLine -> PC (index von PCLines): z.B. Index 0 (PC = 0) beihaltet Zeile 18 im Testprogramm
     public static boolean loaded = false;
     
     public static  JScrollPane testprogramm_view;
@@ -116,6 +116,8 @@ public class TestprogrammViewer {
     
     // When you like to use another programm
     static void overrideProgramm(String path) {
+        MC.ram.powerOnReset();
+        // stack Reset + TOS -> Stackpointer
         String[][] data = MC.pm.loadTestProgram(path);
         DefaultTableModel model = new DefaultTableModel(data,new String[] {"", ""});
         testprogramm_table.setModel(model);
