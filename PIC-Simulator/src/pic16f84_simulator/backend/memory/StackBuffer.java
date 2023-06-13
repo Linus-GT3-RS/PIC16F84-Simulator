@@ -56,4 +56,15 @@ public class StackBuffer {
         }
         return data;
     }
+    
+    /*
+     * only for testing
+     */
+    public int getTOSValue() {
+        return this.stack[tos];
+    }
+    
+    public int[] getStack() {
+        return this.stack;
+    }
 }

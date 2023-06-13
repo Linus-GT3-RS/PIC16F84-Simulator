@@ -39,6 +39,7 @@ public class ControlUnit {
                 indexFile = Utils.binaryToDec(MC.ram.readDataCell(SFR.FSR.asIndex()));
             }
             instr.exe(dBit, indexFile);
+            pcpp();
         }
         if(instruct instanceof BitOps instr) {            
             int indexBit = Utils.binaryToDec(Arrays.copyOfRange(instrReg.read(), instr.dBitStart, instr.dBitEnd+1));
@@ -48,14 +49,18 @@ public class ControlUnit {
             {
                 indexFile = Utils.binaryToDec(MC.ram.readDataCell(SFR.FSR.asIndex()));
             }
-            instr.exe(indexBit, indexFile);            
+            instr.exe(indexBit, indexFile); 
+            pcpp();
         }
         if(instruct instanceof LitConOps instr){
             int[] k = new int[14-instr.kStart()];
             System.arraycopy(instrReg.read(),instr.kStart(),  k, 0, (14-instr.kStart()));
             instr.exe(k);
+            if(instr != LitConOps.RETURN) {
+                pcpp();
+            }
         }
-        pcpp();
+        
         MC.timer.tryIncrInternalTimer(); // has to be called after pcpp to insure correct pc is pushed onto stack in case of tmr0Interrupt
     }
 

@@ -13,11 +13,15 @@ class Test_Control_Prescaler {
     void testGetPrescaler() {
         // ++++++ Case for lower Prescaler +++++++++ 
         // Case TMR0
-        assertEquals(1,MC.prescaler.getPRS()); // TODO Eduard Test fails
+        MC.ram.writeSpecificBit(SFR.OPTION.asIndex(), 4, 0);
+        MC.ram.writeSpecificBit(SFR.OPTION.asIndex(), 5, 0);
+        MC.ram.writeSpecificBit(SFR.OPTION.asIndex(), 6, 0);
+        MC.ram.writeSpecificBit(SFR.OPTION.asIndex(), 7, 0);
+        assertEquals(2,MC.timer.getPRS()); // TODO Eduard Test fails
         
         // Case WatchDog
         MC.ram.writeSpecificBit(SFR.OPTION.asIndex(), 4, 1);
-        assertEquals(1,MC.prescaler.getPRS());
+        assertEquals(1,MC.wdog.getPRS());
         
         // ++++++ Case for higher Prescaler  +++++++++
         MC.ram.writeSpecificBit(SFR.OPTION.asIndex(), 5, 1);

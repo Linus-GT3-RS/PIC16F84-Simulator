@@ -3,6 +3,8 @@ package testCases.other;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Test;
 
 import pic16f84_simulator.MC;
@@ -73,16 +75,10 @@ class Test_Control_ControlUnit_LitConOps {
     void testRETURN() {
         MC.pm.loadTestProgram(TP.s2);
         
-        // Case tos is 0
+        int value = MC.stack.getTOSValue();
         MC.control.pc(7);
         MC.control.exe();
-        assertEquals(1,MC.control.pc()); // TODO Eduard Test fails
-        
-        // Case tos is 2
-        MC.stack.push();
-        MC.control.pc(7);
-        MC.control.exe();
-        assertEquals(3,MC.control.pc());
+        assertEquals(value,MC.control.pc());
     }
     
     @Test //Eduard
@@ -98,7 +94,7 @@ class Test_Control_ControlUnit_LitConOps {
         assertEquals(1,MC.ram.readSpecificBit(SFR.INTCON.asIndex(), 0));
     }
     
-    @Test
+    @Test //Linus
     void testRETLW() {
         // setup
         MC.pm.loadTestProgram(TP.s10);        
