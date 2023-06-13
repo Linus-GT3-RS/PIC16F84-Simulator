@@ -61,6 +61,7 @@ public enum Ports {
         }
     }
     
+    // method is used in GUI for pin switching
     public void toggle(int selectedRow) {
         if(selectedRow == 1) {
             switch (this) {
@@ -100,6 +101,7 @@ public enum Ports {
         
         
  }
+
     private int inverse(int value) {
         if(value == 0) {
             return 1;

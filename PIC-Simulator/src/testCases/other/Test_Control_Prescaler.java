@@ -17,7 +17,7 @@ class Test_Control_Prescaler {
         MC.ram.writeSpecificBit(SFR.OPTION.asIndex(), 5, 0);
         MC.ram.writeSpecificBit(SFR.OPTION.asIndex(), 6, 0);
         MC.ram.writeSpecificBit(SFR.OPTION.asIndex(), 7, 0);
-        assertEquals(2,MC.timer.getPRS()); // TODO Eduard Test fails
+        assertEquals(2,MC.timer.getPRS()); 
         
         // Case WatchDog
         MC.ram.writeSpecificBit(SFR.OPTION.asIndex(), 4, 1);

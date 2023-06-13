@@ -32,7 +32,7 @@ public class StackBuffer {
     }
     
     /*
-     * pops newest entry from stack into the pc
+     * pops newest entry from stack into the pc 
      */
     public void pop() {
        tos = (tos + 7) % 8; // tos--
@@ -42,6 +42,9 @@ public class StackBuffer {
        }  
     }
 
+    /*
+     * for GUI
+     */
     public String[][] loadStack() {
         String[][] data = new String [8][3];
         for(int i = 0; i < data.length; i++) {
@@ -61,10 +64,19 @@ public class StackBuffer {
      * only for testing
      */
     public int getTOSValue() {
-        return this.stack[tos];
+        if(((tos + 7) % 8) >= 0) {
+            return this.stack[(tos + 7) % 8];
+        }else {
+            throw new IndexOutOfBoundsException("Stack is empty");
+        }
+        
     }
     
     public int[] getStack() {
         return this.stack;
+    }
+
+    public int getTOS() {
+        return this.tos;
     }
 }

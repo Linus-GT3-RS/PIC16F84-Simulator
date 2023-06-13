@@ -13,4 +13,11 @@ public abstract class Interrupts {
         MC.stack.push(-1);
         MC.control.pc(4);
     }
+    
+    public static void RB47Interrupt() {
+        if(SFR.getGIE() == 1 && SFR.getRBIE() == 1) {
+            stdResponseRoutine();
+        }
+        
+    }
 }

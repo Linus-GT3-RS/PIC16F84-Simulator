@@ -75,10 +75,9 @@ class Test_Control_ControlUnit_LitConOps {
     void testRETURN() {
         MC.pm.loadTestProgram(TP.s2);
         
-        int value = MC.stack.getTOSValue();
         MC.control.pc(7);
         MC.control.exe();
-        assertEquals(value,MC.control.pc());
+        assertEquals(0,MC.control.pc());
     }
     
     @Test //Eduard
