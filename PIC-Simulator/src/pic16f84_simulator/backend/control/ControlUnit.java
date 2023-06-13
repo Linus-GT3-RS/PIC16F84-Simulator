@@ -12,7 +12,7 @@ import pic16f84_simulator.backend.memory.Register;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.Utils;
 import pic16f84_simulator.frontend.GUI;
-import pic16f84_simulator.frontend.ProgrammViewer;
+import pic16f84_simulator.frontend.TestprogrammViewer;
 
 public class ControlUnit {
 
@@ -72,7 +72,7 @@ public class ControlUnit {
         int[] newPCL = Arrays.copyOfRange(pc_bin, 5, pc_bin.length);
         MC.ram.writeDataCell(SFR.PCL.asIndex(), newPCL, false);
         if(GUI.modus) {
-            ProgrammViewer.highlightPCLine();
+            TestprogrammViewer.highlightPCLine();
         }
     }
 
@@ -90,7 +90,7 @@ public class ControlUnit {
         int[] newPCL = Arrays.copyOfRange(pc_bin, 5, pc_bin.length);
         MC.ram.writeDataCell(SFR.PCL.asIndex(), newPCL, false);
         if(GUI.modus) {
-            ProgrammViewer.highlightPCLine();
+            TestprogrammViewer.highlightPCLine();
         }
     }
     
@@ -110,7 +110,7 @@ public class ControlUnit {
         this.pc = Utils.binaryToDec(newPC);
         
         if(GUI.modus) {
-            ProgrammViewer.highlightPCLine();
+            TestprogrammViewer.highlightPCLine();
         }
     }
 

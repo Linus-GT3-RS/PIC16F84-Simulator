@@ -55,6 +55,7 @@ import java.util.Arrays;
 
 import javax.swing.JMenuItem;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
@@ -64,6 +65,8 @@ import java.awt.List;
 import javax.swing.JMenu;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Graphics;
+
 import javax.swing.border.BevelBorder;
 
 public class GUI extends JFrame {
@@ -73,11 +76,15 @@ public class GUI extends JFrame {
     public static JMenuBar menuBar = new JMenuBar();
     public static JPanel contentPane = new JPanel();
     
-    
+    /*
+     * >>>>> pannel_collection
+     */
+    public static JTable stack_table;
     /*
      * >>>>> pannel_pm
      */
     public static JPanel testprogrammPanel = new JPanel(new BorderLayout());
+    private JTable table;
    
 
     /**
@@ -130,30 +137,53 @@ public class GUI extends JFrame {
         panel_collection.setBackground(new Color(100, 149, 237));
         contentPane.add(panel_collection, BorderLayout.CENTER);
         panel_collection.setLayout(null);
+        
+        JPanel panel_stack = new JPanel();
+        panel_stack.setBackground(new Color(166, 222, 247));
+        panel_stack.setBounds(0, 513, 481, 267);
+        panel_collection.add(panel_stack);
 
-        JLabel lblWatchdog_1 = new JLabel("WatchDog");
-        lblWatchdog_1.setBounds(0, 0, 118, 635);
-        lblWatchdog_1.setForeground(Color.WHITE);
-        panel_collection.add(lblWatchdog_1);
-
-        JCheckBoxMenuItem chckbxmntmNewCheckItem_1 = new JCheckBoxMenuItem("WatchDog");
-        chckbxmntmNewCheckItem_1.setBounds(102, 154, 118, 174);
-        panel_collection.add(chckbxmntmNewCheckItem_1);
-
-        JLabel lblTimer_1 = new JLabel("Timer");
-        lblTimer_1.setBounds(236, 0, 118, 635);
-        lblTimer_1.setForeground(Color.WHITE);
-        panel_collection.add(lblTimer_1);
+        JPanel center = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JLabel Stacklabel = new JLabel("Stack");
+        center.setBackground(new Color(166, 222, 247));
+        center.add(Stacklabel);
+        
+        panel_stack.setLayout(new BorderLayout()); // Set BorderLayout for panel_stack
+        panel_stack.add(center, BorderLayout.NORTH); // Add center panel to panel_stack's NORTH
+        
+        panel_stack.setBorder(BorderFactory.createEmptyBorder(10, 200, 104, 200)); // Padding
+        DefaultTableModel model = new DefaultTableModel(MC.stack.loadStack(), new String[] {"        ", "        ", "        "});
+        stack_table = new JTable(model) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // cells are now editable
+            }
+            @Override
+            public TableCellRenderer getCellRenderer(int row, int column) {
+                DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+                renderer.setHorizontalAlignment(SwingConstants.CENTER);
+                return renderer;
+            }        
+        };
+        panel_stack.add(stack_table, BorderLayout.CENTER); // Add stack_table to panel_stack's CENTER
+        stack_table.setShowGrid(false);
+        stack_table.setBackground(new Color(166, 222, 247));
+        stack_table.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+        
+        JPanel panel_pins = new JPanel();
+        panel_pins.setBackground(new Color(35, 175, 235));
+        panel_pins.setBounds(0, 247, 481, 268);
+        panel_collection.add(panel_pins);
+        
+        JPanel panel_3 = new JPanel();
+        panel_3.setBackground(new Color(17, 135, 185));
+        panel_3.setBounds(0, 0, 481, 248);
+        panel_collection.add(panel_3);
 
         JLabel lblNewLabel_1 = new JLabel("Pins");
         lblNewLabel_1.setBounds(354, 0, 118, 635);
         lblNewLabel_1.setForeground(Color.WHITE);
         panel_collection.add(lblNewLabel_1);
-
-        
-        /*
-         *  >>>>>>>>>>>>> panel_controller
-         */
         JPanel panel_controller = new JPanel();
         panel_controller.setPreferredSize(new Dimension(10, 125));
         panel_controller.setBackground(new Color(218, 112, 214));
@@ -169,8 +199,9 @@ public class GUI extends JFrame {
         btnNewButton_3_1.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(ProgrammViewer.loaded) {
+                if(TestprogrammViewer.loaded) {
                     MC.control.exe();
+                    MC.stack.push(1);
                 }
             }
         });
@@ -240,8 +271,8 @@ public class GUI extends JFrame {
         String[][] line = new String[42][2];
         line[0][0] = "    ";
         line[0][1] = "                                                                                                                                                            ";
-        ProgrammViewer.testprogramm_view = ProgrammViewer.Table(head,line);
-        testprogrammPanel.add(ProgrammViewer.testprogramm_view, BorderLayout.CENTER);
+        TestprogrammViewer.testprogramm_view = TestprogrammViewer.Table(head,line);
+        testprogrammPanel.add(TestprogrammViewer.testprogramm_view, BorderLayout.CENTER);
         panel_pm.add(testprogrammPanel, BorderLayout.CENTER);
 
         contentPane.add(panel_pm, BorderLayout.EAST);
@@ -263,7 +294,7 @@ public class GUI extends JFrame {
         tp1.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                ProgrammViewer.overrideProgramm(TP.s1);
+                TestprogrammViewer.overrideProgramm(TP.s1);
             }
         });
         tp1.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -273,7 +304,7 @@ public class GUI extends JFrame {
         tp2.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                ProgrammViewer.overrideProgramm(TP.s2);
+                TestprogrammViewer.overrideProgramm(TP.s2);
             }
         });
         tp2.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -283,7 +314,7 @@ public class GUI extends JFrame {
         tp3.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                ProgrammViewer.overrideProgramm(TP.s3);
+                TestprogrammViewer.overrideProgramm(TP.s3);
             }
         });
         tp3.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -293,7 +324,7 @@ public class GUI extends JFrame {
         tp4.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                ProgrammViewer.overrideProgramm(TP.s4);
+                TestprogrammViewer.overrideProgramm(TP.s4);
             }
         });
         tp4.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -303,7 +334,7 @@ public class GUI extends JFrame {
         tp5.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                ProgrammViewer.overrideProgramm(TP.s5);
+                TestprogrammViewer.overrideProgramm(TP.s5);
             }
         });
         tp5.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -313,7 +344,7 @@ public class GUI extends JFrame {
         tp6.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                ProgrammViewer.overrideProgramm(TP.s6);
+                TestprogrammViewer.overrideProgramm(TP.s6);
             }
         });
         tp6.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -323,7 +354,7 @@ public class GUI extends JFrame {
         tp7.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                ProgrammViewer.overrideProgramm(TP.s7);
+                TestprogrammViewer.overrideProgramm(TP.s7);
             }
         });
         tp7.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -333,7 +364,7 @@ public class GUI extends JFrame {
         tp8.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                ProgrammViewer.overrideProgramm(TP.s8);
+                TestprogrammViewer.overrideProgramm(TP.s8);
             }
         });
         tp8.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -343,7 +374,7 @@ public class GUI extends JFrame {
         tp9.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                ProgrammViewer.overrideProgramm(TP.s9);
+                TestprogrammViewer.overrideProgramm(TP.s9);
             }
         });
         tp9.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -353,7 +384,7 @@ public class GUI extends JFrame {
         tp10.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                ProgrammViewer.overrideProgramm(TP.s10);
+                TestprogrammViewer.overrideProgramm(TP.s10);
             }
         });
         tp10.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -363,7 +394,7 @@ public class GUI extends JFrame {
         tp101.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                ProgrammViewer.overrideProgramm(TP.s101);
+                TestprogrammViewer.overrideProgramm(TP.s101);
             }
         });
         tp101.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -373,7 +404,7 @@ public class GUI extends JFrame {
         tp11.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                ProgrammViewer.overrideProgramm(TP.s11);
+                TestprogrammViewer.overrideProgramm(TP.s11);
             }
         });
         tp11.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -387,7 +418,7 @@ public class GUI extends JFrame {
                     JFileChooser fileChooser = new JFileChooser();
                     int response = fileChooser.showOpenDialog(null); //select file to open -> return 0 for open, else 1 (close)
                     if(response== fileChooser.APPROVE_OPTION) {
-                        ProgrammViewer.overrideProgramm(fileChooser.getSelectedFile().getAbsolutePath());
+                        TestprogrammViewer.overrideProgramm(fileChooser.getSelectedFile().getAbsolutePath());
                     }
                 }
             }
@@ -408,5 +439,4 @@ public class GUI extends JFrame {
         mnHelp.add(mnNewMenu_1_1);
         
     }
-
 }
