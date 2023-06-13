@@ -29,7 +29,7 @@ public enum LitConOps implements Instruction { // Linus
         public void exe(int[] k) {
             MC.stack.push();
             int k_dec = Utils.binaryToDec(k) - 1; // -1 to counteract pcpp() after this instruction
-            MC.control.pc(k_dec);
+            MC.control.pc(k_dec); // pclatch 4-3 is ignored in PIC16F8x
             MC.timer.tryIncrInternalTimer();
         }
     },
@@ -42,6 +42,8 @@ public enum LitConOps implements Instruction { // Linus
     GOTO { // Linus
         @Override
         public void exe(int[] k) {
+            int k_dec = Utils.binaryToDec(k) - 1; // -1 to counteract pcpp() after this instruction
+            MC.control.pc(k_dec); // pclatch 4-3 is ignored in PIC16F8x
             MC.timer.tryIncrInternalTimer();
         }
     },

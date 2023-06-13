@@ -49,6 +49,13 @@ class Test_Control_ControlUnit_LitConOps {
         MC.stack.pop();
         assertEquals(10, MC.control.pc());
     }
+    
+    @Test
+    void testGOTO() {
+        MC.control.pc(14); // 101 00000000110=6
+        MC.control.exe();
+        assertEquals(6, MC.control.pc());
+    }
 
     @Test // Eduard
     void testIORLW() {
@@ -86,7 +93,7 @@ class Test_Control_ControlUnit_LitConOps {
         // Case tos is 0
         MC.control.pc(7);
         MC.control.exe();
-        assertEquals(1,MC.control.pc()); // TODO Eduard Test fails
+        assertEquals(1,MC.control.pc()); // TODO Eduard Test fails: in LitConOps: RETURN, muss pc -1 gemacht werden, um pcpp auszugleichen
         
         // Case tos is 2
         MC.stack.push();
