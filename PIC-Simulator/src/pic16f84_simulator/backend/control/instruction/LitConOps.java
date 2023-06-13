@@ -27,6 +27,9 @@ public enum LitConOps implements Instruction { // Linus
     CALL { // Linus
         @Override
         public void exe(int[] k) {
+            MC.stack.push();
+            int k_dec = Utils.binaryToDec(k) - 1; // -1 to counteract pcpp() after this instruction
+            MC.control.pc(k_dec);
             MC.timer.tryIncrInternalTimer();
         }
     },

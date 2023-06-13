@@ -39,6 +39,16 @@ class Test_Control_ControlUnit_LitConOps {
         assertArrayEquals(new int[] { 0, 0, 0, 0, 0, 0, 0, 0 }, MC.alu.wReg.read());
         assertEquals(1, MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); // Z-Flag
     }
+    
+    @Test
+    void testCALL() {
+        MC.pm.loadTestProgram(TP.s10);
+        MC.control.pc(9); // 100 00100001001=265
+        MC.control.exe();
+        assertEquals(265, MC.control.pc());
+        MC.stack.pop();
+        assertEquals(10, MC.control.pc());
+    }
 
     @Test // Eduard
     void testIORLW() {
