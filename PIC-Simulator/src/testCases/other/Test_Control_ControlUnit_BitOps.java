@@ -24,16 +24,17 @@ class Test_Control_ControlUnit_BitOps {
     @Test
     void testBSF() { // Linus
         MC.pm.loadTestProgram(TP.s7);
-        MC.control.pc(1);
+        MC.control.pc(1); // 0101 101=5 0000011=3
+        MC.ram.writeDataCell(3, new int[8]);
         MC.control.exe();
-        assertArrayEquals(new int[] {0,0,1,0,0,0,0,0}, MC.ram.readDataCell(3)); // 01 0110 1000 0011
+        assertArrayEquals(new int[] {0,0,1,0, 0,0,0,0}, MC.ram.readDataCell(3));
         
         MC.pm.loadTestProgram(TP.s5);
-        MC.control.pc(3); // 01 0111 1000 1100
+        MC.control.pc(3); // 0101 111=7 0001100=12
         MC.ram.writeDataCell(12, new int[8]);
-        MC.control.exe(); 
-        assertArrayEquals(new int[] {0,0,0,0,0,0,0, 1}, MC.ram.readDataCell(12)); // TODO: @Linus Test schlägt fehl
-        assertArrayEquals(new int[] {0,0,0,0,0,0,0, 1}, MC.ram.readDataCell(140));
+        MC.control.exe();
+        assertArrayEquals(new int[] {1,0,0,0, 0,0,0,0}, MC.ram.readDataCell(12));
+        assertArrayEquals(new int[] {1,0,0,0, 0,0,0,0}, MC.ram.readDataCell(140));
     }
     
     @Test
