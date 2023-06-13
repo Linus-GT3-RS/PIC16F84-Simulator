@@ -63,7 +63,6 @@ public class RAM_Memory extends Template_Memory { // Linus
     public void writeDataCell(int indexCell, int[] data, boolean checkUp) {
         checkAddress(indexCell);
         if(indexCell == 6) {
-            boolean unequals = false;
             for(int i = 0; i < 4;i++) {
                 if(super.readBit(indexCell, i) != data[i]) {
                     checkRBInterupt(i);
@@ -180,8 +179,7 @@ public class RAM_Memory extends Template_Memory { // Linus
         switch(indexBit) {
         case 0 -> {
                     if(MC.ram.readSpecificBit(SFR.TRISB.asIndex(), 0) == 1) {
-                    trisIn = true;
-                    }
+                    trisIn = true;}
                   }
         case 1 -> { if(MC.ram.readSpecificBit(SFR.TRISB.asIndex(), 1) == 1) {
                     trisIn = true;}

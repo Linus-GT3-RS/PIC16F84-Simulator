@@ -156,7 +156,7 @@ public class GUI extends JFrame {
         panel_stack.setLayout(new BorderLayout()); // Set BorderLayout for panel_stack
         panel_stack.add(center, BorderLayout.NORTH); // Add center panel to panel_stack's NORTH
         
-        panel_stack.setBorder(BorderFactory.createEmptyBorder(0, 200, 65, 200)); // Padding
+        panel_stack.setBorder(BorderFactory.createEmptyBorder(0, 100, 65, 100)); // Padding
         DefaultTableModel model = new DefaultTableModel(MC.stack.loadStack(), new String[] {"        ", "        ", "        "});
         stack_table = new JTable(model) {
             @Override
@@ -202,7 +202,7 @@ public class GUI extends JFrame {
         contentPane.add(panel_controller, BorderLayout.SOUTH);
         panel_controller.setLayout(null);
 
-        JButton btnNewButton_4 = new JButton("Reset");
+        JButton btnNewButton_4 = new JButton("Restart");
         btnNewButton_4.setBounds(564, 71, 75, 27);
         btnNewButton_4.setFont(new Font("Arial", Font.PLAIN, 16));
         panel_controller.add(btnNewButton_4);
@@ -213,8 +213,6 @@ public class GUI extends JFrame {
             public void mousePressed(MouseEvent e) {
                 if(TestprogrammViewer.loaded) {
                     MC.control.exe();
-                    MC.stack.push(1);
-                    MC.ram.writeSpecificBit(SFR.PORTA.asIndex(), 5, 1);
                     PinSelector.loadPins();
                 }
             }
