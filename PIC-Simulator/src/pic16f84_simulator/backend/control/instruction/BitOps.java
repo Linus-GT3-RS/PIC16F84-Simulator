@@ -15,7 +15,7 @@ public enum BitOps implements Instruction { // Eduard
             MC.ram.writeSpecificBit(indexFile, indexBit, 1);
         }
     },
-    BTFSC { // Eduard
+    BTFSC { // Eduard TODO timerTrypp
         @Override
         public void exe(int indexBit, int indexFile) {
             if(MC.ram.readSpecificBit(indexFile, indexBit) == 0) {
@@ -23,7 +23,7 @@ public enum BitOps implements Instruction { // Eduard
             }
         }
     }, 
-    BTFSS { // Linus
+    BTFSS { // Linus TODO timerTrypp
         @Override
         public void exe(int indexBit, int indexCell) {  
             int valOfb = MC.ram.readSpecificBit(indexCell, indexBit);

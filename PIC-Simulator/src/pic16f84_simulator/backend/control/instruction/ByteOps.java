@@ -62,7 +62,7 @@ public enum ByteOps implements Instruction { // Linus
             storeResult(d, indexFile, res);
         }
     },
-    DECFSZ { // Eduard
+    DECFSZ { // Eduard TODO timerTrypp
         @Override
         public void exe(int d, int indexFile) {
             int result = Utils.binaryToDec(MC.ram.readDataCell(indexFile));
@@ -86,7 +86,7 @@ public enum ByteOps implements Instruction { // Linus
             storeResult(d, indexFile, res);
         }
     },
-    INCFSZ { // Eduard
+    INCFSZ { // Eduard TODO timerTrypp
         @Override
         public void exe(int d, int indexFile) {
             int result = Utils.binaryToDec(MC.ram.readDataCell(indexFile));

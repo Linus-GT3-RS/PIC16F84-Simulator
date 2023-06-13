@@ -12,7 +12,7 @@ public class StackBuffer {
         this.stack = new int[8];
     }
     
-    private int tos = 0; // = Stackpointer --> points to TopOfStack
+    private int tos = 0; // = Stackpointer --> points to TopOfStack == next cell to be written (== 1 above last written cell)
     private int[] stack;
     
     

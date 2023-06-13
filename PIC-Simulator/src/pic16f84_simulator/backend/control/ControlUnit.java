@@ -85,6 +85,9 @@ public class ControlUnit {
      * updates pcl afterwards
      */
     public void pc(int val) {
+        if(val >= 1024 || val < 0) {
+            throw new IllegalArgumentException("newVal for pc cannot be: " + val);
+        }
         this.pc = val;
         int[] pc_bin = Utils.decToBinary(pc, 13);
         int[] newPCL = Arrays.copyOfRange(pc_bin, 5, pc_bin.length);
@@ -112,6 +115,11 @@ public class ControlUnit {
         if(GUI.modus) {
             TestprogrammViewer.highlightPCLine();
         }
+    }
+    
+    
+    public void danger_setPC(int val) {
+        this.pc = val;
     }
 
 
