@@ -25,6 +25,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import pic16f84_simulator.MC;
+import pic16f84_simulator.backend.tools.Utils;
 
 public class TestprogrammViewer {
     
@@ -117,6 +118,11 @@ public class TestprogrammViewer {
     // When you like to use another programm
     static void overrideProgramm(String path) {
         MC.ram.powerOnReset();
+        MC.stack.resetStack();
+        MC.stack.resetTOS();
+        StackViewer.updateStack();
+        MC.alu.resetwReg();
+        GUI.table_w.setModel(new DefaultTableModel(new Object[][] {{"W-Reg",Utils.binaryToHex(MC.alu.wReg.read())}},new String[] {"",""}));
         // stack Reset + TOS -> Stackpointer
         String[][] data = MC.pm.loadTestProgram(path);
         DefaultTableModel model = new DefaultTableModel(data,new String[] {"", ""});

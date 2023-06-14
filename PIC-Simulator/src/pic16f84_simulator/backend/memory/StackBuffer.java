@@ -49,9 +49,9 @@ public class StackBuffer {
         String[][] data = new String [8][3];
         for(int i = 0; i < data.length; i++) {
             data[stack.length-i-1][1] = Integer.toString(this.stack[i]);
-            if(tos == i) {
-                data[stack.length-i-1][0] = "next free slot -->";
-                data[stack.length-i-1][2] = "<-- next free slot";
+            if(((tos + 7) % 8) == i) {
+                data[stack.length-i-1][0] = "-->";
+                data[stack.length-i-1][2] = "<--";
             }else {
                 data[stack.length-i-1][0] = "   ";
                 data[stack.length-i-1][2] = "   ";
@@ -75,7 +75,15 @@ public class StackBuffer {
     public int[] getStack() {
         return this.stack;
     }
-
+    
+    public void resetStack() {
+        this.stack = new int[8];
+    }
+    
+    public void resetTOS() {
+        this.tos = 0;
+    }
+    
     public int getTOS() {
         return this.tos;
     }
