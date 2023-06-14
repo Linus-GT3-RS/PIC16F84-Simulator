@@ -136,19 +136,19 @@ class Test_Control_ControlUnit_LitConOps {
         MC.pm.loadTestProgram(TP.s1);
         
         // Case normal Subtraction
-        MC.control.pc(3); // 11 1100 0011 1101 // subtract 61
-        MC.alu.wReg.write(new int[] {1,1,1,1,1,1,1,1});
+        MC.control.pc(3); // 11 1100 0011 1101 // subtract 61 - 29 =  32
+        MC.alu.wReg.write(new int[] {0,0,0,1,1,1,0,1});
         MC.control.exe();
-        assertArrayEquals(new int[] {1,1,0,0,0,0,1,0}, MC.alu.wReg.read());
+        assertArrayEquals(new int[] {0,0,1,0,0,0,0,0}, MC.alu.wReg.read());
         assertEquals(0, MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); // Z-Flag
         assertEquals(1,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 7)); //C-Flag
         assertEquals(1,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 6)); //DC-Flag
         
         // Case Overflow
         MC.control.pc(3); // 11 1100 0011 1101 // subtract 61
-        MC.alu.wReg.write(new int[] {0,0,1,1,1,1,0,0});
+        MC.alu.wReg.write(new int[] {0,1,1,1,1,1,1,1}); // 61 - 127 = -66
         MC.control.exe();
-        assertArrayEquals(new int[] {1,1,1,1,1,1,1,1}, MC.alu.wReg.read());
+        assertArrayEquals(new int[] {1,0,1,1,1,1,1,0}, MC.alu.wReg.read());
         assertEquals(0, MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 5)); // Z-Flag
         assertEquals(0,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 7)); //C-Flag
         assertEquals(0,MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 6)); //DC-Flag

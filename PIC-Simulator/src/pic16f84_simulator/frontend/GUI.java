@@ -15,6 +15,7 @@ import javax.swing.table.TableModel;
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.TP;
+import pic16f84_simulator.backend.tools.Utils;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -80,6 +81,7 @@ import java.awt.ScrollPane;
 import java.awt.Label;
 import java.awt.Point;
 import java.awt.Rectangle;
+import javax.swing.BoxLayout;
 
 public class GUI extends JFrame {
 
@@ -93,6 +95,7 @@ public class GUI extends JFrame {
      */
     public static JPanel panel_collection = new JPanel();
     public static JTable stack_table;
+    public static JTable table_w;
     /*
      * >>>>> pannel_pm
      */
@@ -151,21 +154,65 @@ public class GUI extends JFrame {
         panel_collection.setPreferredSize(new Dimension(100, 10));
         contentPane.add(panel_collection, BorderLayout.CENTER);
         panel_collection.setLayout(null);
+        
+        JPanel panel_register = new JPanel();
+        panel_register.setBackground(new Color(17, 135, 185));
+        panel_register.setBounds(0, 0, 481, 248);
+        panel_collection.add(panel_register);
+        
+        
+        DefaultTableModel registermodel = new DefaultTableModel(loadData(),new String[] {"","","","","","","","",""});
+        JTable table_register = new JTable(registermodel) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // cells are now editable
+            }
+            @Override
+            public TableCellRenderer getCellRenderer(int row, int column) {
+                DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+                renderer.setHorizontalAlignment(SwingConstants.CENTER);
+                return renderer;
+            } 
+        };
+        table_register.setFont(new Font("Arial", Font.PLAIN, 8));
+        for(int i = 0; i < table_register.getColumnCount();i++) {
+            TableColumn column = table_register.getColumnModel().getColumn(i);
+            if(i == 0) {
+                column.setPreferredWidth(25);
+            }else {
+                column.setPreferredWidth(12);
+            }
+        }
+        DefaultTableModel wReg_model = new DefaultTableModel(new Object[][] {{"W-Reg",Utils.binaryToHex(MC.alu.wReg.read())}},new String[] {"",""});
+        table_w = new JTable(wReg_model) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // cells are now editable
+            }
+            @Override
+            public TableCellRenderer getCellRenderer(int row, int column) {
+                DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+                renderer.setHorizontalAlignment(SwingConstants.CENTER);
+                return renderer;
+            } 
+        };
+        table_w.setBounds(350, 180, 100, 15);
+        table_w.setBackground(new Color(17, 135, 185));
+        table_w.setShowGrid(false);
+        panel_register.add(table_w);
+        table_register.setRowSelectionAllowed(false);
+        table_register.setBounds(10,100, 332, 48);;
+        panel_register.add(table_register);
+        
+        JPanel labelPanel = new JPanel(new BorderLayout());
+        labelPanel.setBounds(350, 30, 100, 150);
 
-        JPanel panel_stack = new JPanel();
-        panel_stack.setBackground(new Color(166, 222, 247));
-        panel_stack.setBounds(0, 558, 481, 222);
-        panel_collection.add(panel_stack);
-
-        JPanel center = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel Stacklabel = new JLabel("Stack");
-        center.setBackground(new Color(166, 222, 247));
-        center.add(Stacklabel);
+        labelPanel.setBackground(new Color(17, 135, 185));
+        Stacklabel.setHorizontalAlignment(SwingConstants.CENTER);
+        labelPanel.add(Stacklabel,BorderLayout.NORTH); 
 
-        panel_stack.setLayout(new BorderLayout()); // Set BorderLayout for panel_stack
-        panel_stack.add(center, BorderLayout.NORTH); // Add center panel to panel_stack's NORTH
-
-        panel_stack.setBorder(BorderFactory.createEmptyBorder(0, 100, 65, 100)); // Padding
+        panel_register.setBorder(BorderFactory.createEmptyBorder(0, 100, 65, 100)); // Padding
         DefaultTableModel model = new DefaultTableModel(MC.stack.loadStack(), new String[] {"        ", "        ", "        "});
         stack_table = new JTable(model) {
             @Override
@@ -179,9 +226,11 @@ public class GUI extends JFrame {
                 return renderer;
             }        
         };
-        panel_stack.add(stack_table, BorderLayout.CENTER); // Add stack_table to panel_stack's CENTER
+        stack_table.setBounds(100, 0, 281, 183);
+        labelPanel.add(stack_table,BorderLayout.CENTER);
+        panel_register.add(labelPanel);
         stack_table.setShowGrid(false);
-        stack_table.setBackground(new Color(166, 222, 247));
+        stack_table.setBackground(new Color(17, 135, 185));
         stack_table.setBorder(BorderFactory.createLineBorder(Color.black, 2));
 
         JPanel panel_pins = new JPanel();
@@ -200,10 +249,13 @@ public class GUI extends JFrame {
         gbc.anchor = GridBagConstraints.CENTER;
         panel_pins.add(Pic_Image);
         PinSelector.Pin_Table();
-        JPanel panel_3 = new JPanel();
-        panel_3.setBackground(new Color(17, 135, 185));
-        panel_3.setBounds(0, 0, 481, 248);
-        panel_collection.add(panel_3);
+        
+        JPanel panel_stack = new JPanel();
+        panel_stack.setBackground(new Color(166, 222, 247));
+        panel_stack.setBounds(0, 558, 481, 222);
+        panel_collection.add(panel_stack);
+        panel_register.setLayout(null);
+        
 
         JPanel panel_controller = new JPanel();
         panel_controller.setPreferredSize(new Dimension(10, 125));
@@ -223,6 +275,9 @@ public class GUI extends JFrame {
                 if(TestprogrammViewer.loaded) {
                     MC.control.exe();
                     PinSelector.loadPins();
+                    System.out.println(Arrays.toString(MC.alu.wReg.read()) + " in Hex: " + Utils.binaryToHex(MC.alu.wReg.read()));
+                    // update W-Reg
+                    table_w.setModel(new DefaultTableModel(new Object[][] {{"W-Reg",Utils.binaryToHex(MC.alu.wReg.read())}},new String[] {"",""}));
 
                     // update FSR-table
                     table_fsr.setModel(new DefaultTableModel(MC.ram.getsfr(), new String[] {
@@ -237,7 +292,7 @@ public class GUI extends JFrame {
                     table_fsr.getColumnModel().getColumn(7).setPreferredWidth(50);
                     table_fsr.getColumnModel().getColumn(8).setPreferredWidth(50);
 
-                    // update GPR-table
+                 // update GPR-table
                     table_grp.setModel(new DefaultTableModel(MC.ram.getGPR_bank0(), new String[] {
                             "Address", "Bit 7", "Bit 6", "Bit 5", "Bit 4", "Bit 3", "Bit 2", "Bit 1", "Bit 0"}) );
                 }
@@ -465,6 +520,19 @@ public class GUI extends JFrame {
 
 
 
+    }
+
+    private Object[][] loadData() {
+        String[] data = new String[] {"STATUS","IRP","RP1","RP0","TO","PD","Z","DC","C","OPTION","RBPU","INTEDG","TOCS","TOSE","PSA","PS2","PS1","PS0","INTCON","GIE","EEIE","TOIE","INTE","RBIE","TOIF","INTF","RBIF"};
+        int pointer = 0;
+        Object[][] result = new Object[3][9];
+        for(int i = 0; i < result.length;i++) {
+            for(int j = 0; j < result[i].length;j++) {
+                result[i][j] = data[pointer];
+                pointer++;
+            }
+        }
+        return result;
     }
 
     private void setUpMenuBar () {

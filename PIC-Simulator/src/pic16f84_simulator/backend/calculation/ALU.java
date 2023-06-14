@@ -90,7 +90,14 @@ public class ALU {
         return addition(arr1, Utils.decToBinary(zweierkomplement, 8));
     }
 
+    
+    /*
+     * - for GUI
+     */
 
+    public void resetwReg() {
+        this.wReg = new Register(8);
+    }
 
 
 }
