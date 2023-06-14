@@ -26,14 +26,14 @@ public class RAM_Memory extends Template_Memory { // Linus
         this.writeSpecificBit(SFR.STATUS.asIndex(), 2, 0);
         this.writeDataCell(SFR.PCLATH.asIndex(), new int[8]);
         this.writeDataCell(SFR.INTCON.asIndex(), new int[] {0,0,0,0,0,0,0,this.readSpecificBit(SFR.INTCON.asIndex(), 7)});
-        
+
         // ++++++++++++++++ Bank1 +++++++++++++++++++++++++++
         this.writeDataCell(SFR.OPTION.asIndex(), new int[] {1,1,1,1, 1,1,1,1});
         this.writeDataCell(SFR.TRISA.asIndex(), new int[] {0,0,0,1, 1,1,1,1});
         this.writeDataCell(SFR.TRISB.asIndex(), new int[] {1,1,1,1, 1,1,1,1});
         this.writeDataCell(SFR.EECON1.asIndex(), new int[] {0,0,0,0,this.readSpecificBit(SFR.EECON1.asIndex(), 4),0,0,0});
     }
-    
+
     public void powerOnReset() { // Linus
         this.danger_reset();
         this.writeDataCell(SFR.STATUS.asIndex(), new int[] {0,0,0,1, 1,0,0,0}); // Bank0
@@ -41,13 +41,13 @@ public class RAM_Memory extends Template_Memory { // Linus
         this.writeDataCell(SFR.TRISA.asIndex(), new int[] {0,0,0,1, 1,1,1,1});
         this.writeDataCell(SFR.TRISB.asIndex(), new int[] {1,1,1,1, 1,1,1,1});
     }
-    
-    
-    
+
+
+
     /*
      * -------------------------------------------- Read & Write -----------------------------------------------------------------
      */
-    
+
     /*
      * writes to specific RamAdress --> gets mirrored automatically
      * autom. calls checkUp()
@@ -56,7 +56,7 @@ public class RAM_Memory extends Template_Memory { // Linus
     public void writeDataCell(int indexCell, int[] data) {
         writeDataCell(indexCell, data, true);
     }
-    
+
     /*
      * is used to NOT call checkup()
      */
@@ -80,7 +80,7 @@ public class RAM_Memory extends Template_Memory { // Linus
             checkUp(indexCell);
         }
     }
-        
+
     @Override
     public void writeSpecificBit(int indexCell, int indexBit, int bit) {
         checkAddress(indexCell);
@@ -96,7 +96,7 @@ public class RAM_Memory extends Template_Memory { // Linus
         checkUp(indexCell);
     }
 
-    
+
 
     public int[] readDataCell(int indexCell) {
         checkAddress(indexCell);
@@ -107,12 +107,12 @@ public class RAM_Memory extends Template_Memory { // Linus
         checkAddress(indexCell);
         return super.readBit(indexCell, indexBit);
     }
-    
-    
+
+
     /*
      * -------------------------------------------- Tools -----------------------------------------------------------------
      */
-    
+
     /*
      * Checks if given address is unimplemented space
      */
@@ -160,7 +160,7 @@ public class RAM_Memory extends Template_Memory { // Linus
         }
         else return res;
     }
-    
+
     /* 
      * to be used to do certain things, when a specific cell is written
      *      !! if cell is mirrored, both indize have to be checked down here !!
@@ -173,28 +173,96 @@ public class RAM_Memory extends Template_Memory { // Linus
         default -> {} // has to be empty !!!
         }
     }
-    
+
     private void checkRBInterupt(int indexBit) {
         boolean trisIn = false;
         switch(indexBit) {
         case 0 -> {
-                    if(MC.ram.readSpecificBit(SFR.TRISB.asIndex(), 0) == 1) {
-                    trisIn = true;}
-                  }
+            if(MC.ram.readSpecificBit(SFR.TRISB.asIndex(), 0) == 1) {
+                trisIn = true;}
+        }
         case 1 -> { if(MC.ram.readSpecificBit(SFR.TRISB.asIndex(), 1) == 1) {
-                    trisIn = true;}
-                  }
+            trisIn = true;}
+        }
         case 2 -> { if(MC.ram.readSpecificBit(SFR.TRISB.asIndex(), 2) == 1) {
-                    trisIn = true;}
-                  }
+            trisIn = true;}
+        }
         case 3 -> { if(MC.ram.readSpecificBit(SFR.TRISB.asIndex(), 3) == 1) {
-                    trisIn = true;}
-                  }
+            trisIn = true;}
+        }
         default -> {}
         }
         if(trisIn) {
             SFR.setRBIF(1);
             Interrupts.stdResponseRoutine();
         }
-}
+    }
+
+
+    /*
+     * --------------------------------------------- GUI -----------------------------------------------
+     */
+
+    public Object[][] getGPR_bank0(){
+        Object[][] gpr = new Object[68][9];
+        for(int i = 0; i < gpr.length; i++) {
+            String addr = Integer.toHexString(i + 12).toUpperCase();
+            if(addr.length() == 1) {
+                addr = "0" + addr;
+            }
+            gpr[i][0] = "0x" + addr;
+            for(int j = 0; j < 8; j++) {
+                gpr[i][j + 1] = readSpecificBit(i + 12, j);
+            }
+        }
+        return gpr;
+    }
+
+    public Object[][] getsfr(){
+        Object[][] fsr = new Object[16][9];        
+        String[] registerNames = new String[] {
+            "0x00 INDF", "0x01 TMR0", "0x02 PCL", "0x03 STATUS", "0x04 FSR", "0x05 PORTA", 
+            "0x06 PORTB", "0x08 EEDATA", "0x09 EEADR", "0x0A PCLATCH", "0x0B INTCON",
+            
+            // Bank 1
+            "0x81 OPTION", "0x85 TRISA", "0x86 TRISB", "0x88 EECON1", "0x89 EECON2"};
+        for(int i = 0; i < fsr.length; i++) {
+            fsr[i][0] = registerNames[i];
+        }
+        
+        for(int i = 0; i < 7; i++) {                 
+            for(int j = 0; j < 8; j++) {
+                fsr[i][j + 1] = readSpecificBit(i, j);
+            }
+        }
+        for(int i = 7; i < 11; i++) {                 
+            for(int j = 0; j < 8; j++) {
+                fsr[i][j + 1] = readSpecificBit(i + 1, j);
+            }
+        }
+        for(int j = 0; j < 8; j++) {
+            fsr[11][j + 1] = readSpecificBit(129, j);
+        }
+        for(int j = 0; j < 8; j++) {
+            fsr[12][j + 1] = readSpecificBit(133, j);
+        }
+        for(int j = 0; j < 8; j++) {
+            fsr[13][j + 1] = readSpecificBit(134, j);
+        }
+        for(int j = 0; j < 8; j++) {
+            fsr[14][j + 1] = readSpecificBit(136, j);
+        }
+        for(int j = 0; j < 8; j++) {
+            fsr[15][j + 1] = readSpecificBit(137, j);
+        }
+        return fsr;
+    }
+
+
+
+
+
+
+
+
 }

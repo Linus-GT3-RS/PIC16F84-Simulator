@@ -73,14 +73,21 @@ import java.awt.Frame;
 import java.awt.Graphics;
 
 import javax.swing.border.BevelBorder;
+import javax.swing.ScrollPaneConstants;
+import java.awt.ComponentOrientation;
+import java.awt.Scrollbar;
+import java.awt.ScrollPane;
+import java.awt.Label;
+import java.awt.Point;
+import java.awt.Rectangle;
 
 public class GUI extends JFrame {
-    
+
     public static boolean modus = false; // for testing is default false, otherwise issues
-    
+
     public static JMenuBar menuBar = new JMenuBar();
     public static JPanel contentPane = new JPanel();
-    
+
     /*
      * >>>>> pannel_collection
      */
@@ -91,7 +98,9 @@ public class GUI extends JFrame {
      */
     public static JPanel testprogrammPanel = new JPanel(new BorderLayout());
     private JTable table;
-   
+    private JTable table_grp;
+    private JTable table_fsr;
+
 
     /**
      * Launch the application.
@@ -122,10 +131,10 @@ public class GUI extends JFrame {
         // forBackUp: setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH); // Important DO_NOT_DELETE !!!
 
         // --------------------------------------- Menubar ------------------------------------------------------------------------------------
-        
+
         setJMenuBar(menuBar);
         setUpMenuBar();
-        
+
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Content Pane +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         contentPane = new JPanel();
         contentPane.setForeground(new Color(192, 192, 192));
@@ -138,11 +147,11 @@ public class GUI extends JFrame {
         /*
          *  >>>>>>>>>>>>> panel_collection
          */
-        
+
         panel_collection.setPreferredSize(new Dimension(100, 10));
         contentPane.add(panel_collection, BorderLayout.CENTER);
         panel_collection.setLayout(null);
-        
+
         JPanel panel_stack = new JPanel();
         panel_stack.setBackground(new Color(166, 222, 247));
         panel_stack.setBounds(0, 558, 481, 222);
@@ -152,10 +161,10 @@ public class GUI extends JFrame {
         JLabel Stacklabel = new JLabel("Stack");
         center.setBackground(new Color(166, 222, 247));
         center.add(Stacklabel);
-        
+
         panel_stack.setLayout(new BorderLayout()); // Set BorderLayout for panel_stack
         panel_stack.add(center, BorderLayout.NORTH); // Add center panel to panel_stack's NORTH
-        
+
         panel_stack.setBorder(BorderFactory.createEmptyBorder(0, 100, 65, 100)); // Padding
         DefaultTableModel model = new DefaultTableModel(MC.stack.loadStack(), new String[] {"        ", "        ", "        "});
         stack_table = new JTable(model) {
@@ -174,17 +183,17 @@ public class GUI extends JFrame {
         stack_table.setShowGrid(false);
         stack_table.setBackground(new Color(166, 222, 247));
         stack_table.setBorder(BorderFactory.createLineBorder(Color.black, 2));
-        
+
         JPanel panel_pins = new JPanel();
         panel_pins.setBounds(0, 296, 481, 215);
         panel_pins.setBackground(Color.WHITE);
         panel_collection.add(panel_pins);
-        
+
         ImageIcon icon = new ImageIcon("Pic.png");
         Image image = icon.getImage().getScaledInstance(470, 215, Image.SCALE_SMOOTH);
-        
+
         JLabel Pic_Image = new JLabel(new ImageIcon(image));
-        
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -214,6 +223,23 @@ public class GUI extends JFrame {
                 if(TestprogrammViewer.loaded) {
                     MC.control.exe();
                     PinSelector.loadPins();
+
+                    // update FSR-table
+                    table_fsr.setModel(new DefaultTableModel(MC.ram.getsfr(), new String[] {
+                            "Register", "Bit 7", "Bit 6", "Bit 5", "Bit 4", "Bit 3", "Bit 2", "Bit 1", "Bit 0" }));
+                    table_fsr.getColumnModel().getColumn(0).setPreferredWidth(70);
+                    table_fsr.getColumnModel().getColumn(1).setPreferredWidth(50);
+                    table_fsr.getColumnModel().getColumn(2).setPreferredWidth(50);
+                    table_fsr.getColumnModel().getColumn(3).setPreferredWidth(50);
+                    table_fsr.getColumnModel().getColumn(4).setPreferredWidth(50);
+                    table_fsr.getColumnModel().getColumn(5).setPreferredWidth(50);
+                    table_fsr.getColumnModel().getColumn(6).setPreferredWidth(50);
+                    table_fsr.getColumnModel().getColumn(7).setPreferredWidth(50);
+                    table_fsr.getColumnModel().getColumn(8).setPreferredWidth(50);
+
+                    // update GPR-table
+                    table_grp.setModel(new DefaultTableModel(MC.ram.getGPR_bank0(), new String[] {
+                            "Address", "Bit 7", "Bit 6", "Bit 5", "Bit 4", "Bit 3", "Bit 2", "Bit 1", "Bit 0"}) );
                 }
             }
         });
@@ -233,7 +259,7 @@ public class GUI extends JFrame {
         btnNewButton_2_1.setFont(new Font("Arial", Font.PLAIN, 16));
         panel_controller.add(btnNewButton_2_1);
 
-        
+
         /*
          * >>>>>>>>>>>>>> panel_ram
          */
@@ -243,23 +269,171 @@ public class GUI extends JFrame {
         panel_ram.setBackground(new Color(244, 164, 96));
         contentPane.add(panel_ram, BorderLayout.WEST);
         panel_ram.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 7));
-        
-        JPanel panel_1 = new JPanel();
-        panel_1.setPreferredSize(new Dimension(470, 400));
-        panel_ram.add(panel_1);
-        
-        JLabel lblNewLabel = new JLabel("SFR");
-        panel_1.add(lblNewLabel);
-        
-        JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(470, 240));
-        panel_ram.add(panel);
-        panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        
-        JLabel lblNewLabel_2 = new JLabel("GPR");
-        panel.add(lblNewLabel_2);
 
-        
+        JPanel panel_fsr = new JPanel();
+        panel_fsr.setPreferredSize(new Dimension(470, 300));
+        panel_ram.add(panel_fsr);
+        panel_fsr.setLayout(null);
+
+        JScrollPane scrollPane_fsr = new JScrollPane();
+        scrollPane_fsr.setEnabled(false);
+        scrollPane_fsr.setBounds(0, 20, 469, 280);
+        scrollPane_fsr.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane_fsr.setViewportBorder(null);
+        scrollPane_fsr.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane_fsr.setForeground(Color.WHITE);
+        panel_fsr.add(scrollPane_fsr);
+
+        table_fsr = new JTable();
+        table_fsr.setEnabled(false);
+        table_fsr.setFont(new Font("Tahoma", Font.PLAIN, 9));        
+        table_fsr.setModel(new DefaultTableModel(
+                new Object[][] {
+                    {"0x00 INDF", null, null, null, null, null, null, null, null},
+                    {"0x01 TMR0", null, null, null, null, null, null, null, null},
+                    {"0x02 PCL", null, null, null, null, null, null, null, null},
+                    {"0x03 STATUS", null, null, null, null, null, null, null, null},
+                    {"0x04 FSR", null, null, null, null, null, null, null, null},
+                    {"0x05 PORTA", null, null, null, null, null, null, null, null},
+                    {"0x06 PORTB", null, null, null, null, null, null, null, null},
+                    {"0x08 EEDATA", null, null, null, null, null, null, null, null},
+                    {"0x09 EEADR", null, null, null, null, null, null, null, null},
+                    {"0x0A PCLATCH", null, null, null, null, null, null, null, null},
+                    {"0x0B INTCON", null, null, null, null, null, null, null, null},
+
+                    {"0x81 OPTION", null, null, null, null, null, null, null, null},
+                    {"0x85 TRISA", null, null, null, null, null, null, null, null},
+                    {"0x86 TRISB", null, null, null, null, null, null, null, null},
+                    {"0x88 EECON1", null, null, null, null, null, null, null, null},
+                    {"0x89 EECON2", null, null, null, null, null, null, null, null},
+                },
+                new String[] {
+                        "Register", "Bit 7", "Bit 6", "Bit 5", "Bit 4", "Bit 3", "Bit 2", "Bit 1", "Bit 0"
+                }
+                ));
+        table_fsr.getColumnModel().getColumn(0).setPreferredWidth(70);
+        table_fsr.getColumnModel().getColumn(1).setPreferredWidth(50);
+        table_fsr.getColumnModel().getColumn(2).setPreferredWidth(50);
+        table_fsr.getColumnModel().getColumn(3).setPreferredWidth(50);
+        table_fsr.getColumnModel().getColumn(4).setPreferredWidth(50);
+        table_fsr.getColumnModel().getColumn(5).setPreferredWidth(50);
+        table_fsr.getColumnModel().getColumn(6).setPreferredWidth(50);
+        table_fsr.getColumnModel().getColumn(7).setPreferredWidth(50);
+        table_fsr.getColumnModel().getColumn(8).setPreferredWidth(50);
+        scrollPane_fsr.setViewportView(table_fsr);
+
+        JPanel panel_gpr = new JPanel();
+        panel_gpr.setPreferredSize(new Dimension(470, 340));
+        panel_ram.add(panel_gpr);
+        panel_gpr.setLayout(null);
+
+        JLabel lblNewLabel = new JLabel("GPR");
+        lblNewLabel.setBounds(226, 5, 18, 13);
+        panel_gpr.add(lblNewLabel);
+
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBounds(1, 23, 469, 307);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setForeground(new Color(255, 255, 255));
+        scrollPane.setViewportBorder(null);
+        panel_gpr.add(scrollPane);
+
+        table_grp = new JTable();
+        table_grp.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        table_grp.setName("");
+        table_grp.setEnabled(false);
+        table_grp.setRowSelectionAllowed(false);
+        table_grp.setBorder(null);
+        scrollPane.setViewportView(table_grp);
+        table_grp.setModel(new DefaultTableModel(
+                new Object[][] {
+                    {"0x0C", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x0D", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x0E", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x0F", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x10", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x11", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x12", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x13", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x14", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x15", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x16", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x17", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x18", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x19", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x1A", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x1B", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x1C", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x1D", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x1E", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x1F", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x20", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x21", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x22", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x23", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x24", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x25", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x26", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x27", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x28", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x29", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x2A", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x2B", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x2C", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x2D", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x2E", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x2F", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x30", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x31", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x32", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x33", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x34", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x35", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x36", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x37", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x38", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x39", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x3A", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x3B", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x3C", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x3D", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x3E", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x3F", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x40", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x41", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x42", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x43", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x44", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x45", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x46", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x47", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x48", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x49", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x4A", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x4B", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x4C", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x4D", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x4E", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                    {"0x4F", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
+                },
+                new String[] {
+                        "Address", "Bit 7", "Bit 6", "Bit 5", "Bit 4", "Bit 3", "Bit 2", "Bit 1", "Bit 0"
+                } )
+                );
+        table_grp.getColumnModel().getColumn(0).setPreferredWidth(70);
+        table_grp.getColumnModel().getColumn(1).setPreferredWidth(50);
+        table_grp.getColumnModel().getColumn(2).setPreferredWidth(50);
+        table_grp.getColumnModel().getColumn(3).setPreferredWidth(50);
+        table_grp.getColumnModel().getColumn(4).setPreferredWidth(50);
+        table_grp.getColumnModel().getColumn(5).setPreferredWidth(50);
+        table_grp.getColumnModel().getColumn(6).setPreferredWidth(50);
+        table_grp.getColumnModel().getColumn(7).setPreferredWidth(50);
+        table_grp.getColumnModel().getColumn(8).setPreferredWidth(50);
+
+        JLabel lblNewLabel_1 = new JLabel("Bank0 == Bank1");
+        panel_ram.add(lblNewLabel_1);
+
+
         /*
          * >>>>>>>>>>>>>>>> panel_pm
          */
@@ -272,12 +446,12 @@ public class GUI extends JFrame {
         centerPanel.add(label);
 
         panel_pm.add(centerPanel, BorderLayout.NORTH);
-        
-        
-        
+
+
+
         testprogrammPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding von 10 Pixeln
         testprogrammPanel.setBackground(new Color(255, 215, 0));
-        
+
         //Dummy File for first Initializiation
         String[] head = new String[] {"", ""};
         String[][] line = new String[42][2];
@@ -288,11 +462,11 @@ public class GUI extends JFrame {
         panel_pm.add(testprogrammPanel, BorderLayout.CENTER);
 
         contentPane.add(panel_pm, BorderLayout.EAST);
-        
+
 
 
     }
-    
+
     private void setUpMenuBar () {
 
         /*
@@ -341,7 +515,7 @@ public class GUI extends JFrame {
         });
         tp4.setFont(new Font("Arial", Font.PLAIN, 12));
         mnNewMenu.add(tp4);
-        
+
         JMenuItem tp5 = new JMenuItem("Testprogramm 5");
         tp5.addMouseListener(new MouseAdapter() {
             @Override
@@ -351,7 +525,7 @@ public class GUI extends JFrame {
         });
         tp5.setFont(new Font("Arial", Font.PLAIN, 12));
         mnNewMenu.add(tp5);
-        
+
         JMenuItem tp6 = new JMenuItem("Testprogramm 6");
         tp6.addMouseListener(new MouseAdapter() {
             @Override
@@ -361,7 +535,7 @@ public class GUI extends JFrame {
         });
         tp6.setFont(new Font("Arial", Font.PLAIN, 12));
         mnNewMenu.add(tp6);
-        
+
         JMenuItem tp7 = new JMenuItem("Testprogramm 7");
         tp7.addMouseListener(new MouseAdapter() {
             @Override
@@ -371,7 +545,7 @@ public class GUI extends JFrame {
         });
         tp7.setFont(new Font("Arial", Font.PLAIN, 12));
         mnNewMenu.add(tp7);
-        
+
         JMenuItem tp8 = new JMenuItem("Testprogramm 8");
         tp8.addMouseListener(new MouseAdapter() {
             @Override
@@ -381,7 +555,7 @@ public class GUI extends JFrame {
         });
         tp8.setFont(new Font("Arial", Font.PLAIN, 12));
         mnNewMenu.add(tp8);
-        
+
         JMenuItem tp9 = new JMenuItem("Testprogramm 9");
         tp9.addMouseListener(new MouseAdapter() {
             @Override
@@ -391,7 +565,7 @@ public class GUI extends JFrame {
         });
         tp9.setFont(new Font("Arial", Font.PLAIN, 12));
         mnNewMenu.add(tp9);
-        
+
         JMenuItem tp10 = new JMenuItem("Testprogramm 10");
         tp10.addMouseListener(new MouseAdapter() {
             @Override
@@ -401,7 +575,7 @@ public class GUI extends JFrame {
         });
         tp10.setFont(new Font("Arial", Font.PLAIN, 12));
         mnNewMenu.add(tp10);
-        
+
         JMenuItem tp101 = new JMenuItem("Testprogramm 101");
         tp101.addMouseListener(new MouseAdapter() {
             @Override
@@ -411,7 +585,7 @@ public class GUI extends JFrame {
         });
         tp101.setFont(new Font("Arial", Font.PLAIN, 12));
         mnNewMenu.add(tp101);
-        
+
         JMenuItem tp11 = new JMenuItem("Testprogramm 11");
         tp11.addMouseListener(new MouseAdapter() {
             @Override
@@ -421,7 +595,7 @@ public class GUI extends JFrame {
         });
         tp11.setFont(new Font("Arial", Font.PLAIN, 12));
         mnNewMenu.add(tp11);
-        
+
         JMenuItem tpx = new JMenuItem("weitere laden ...");
         tpx.addMouseListener(new MouseAdapter() {
             @Override
@@ -449,6 +623,6 @@ public class GUI extends JFrame {
         JMenuItem mnNewMenu_1_1 = new JMenuItem("Bei uns gibt es keine Hilfe");
         mnNewMenu_1_1.setFont(new Font("Arial", Font.PLAIN, 12));
         mnHelp.add(mnNewMenu_1_1);
-        
+
     }
 }
