@@ -100,9 +100,9 @@ public class GUI extends JFrame {
      * >>>>> pannel_pm
      */
     public static JPanel testprogrammPanel = new JPanel(new BorderLayout());
-    private JTable table;
-    private JTable table_grp;
-    private JTable table_fsr;
+    static JTable table;
+    static JTable table_grp;
+    static JTable table_fsr;
 
 
     /**
@@ -264,55 +264,50 @@ public class GUI extends JFrame {
         panel_controller.setLayout(null);
 
         JButton btnNewButton_4 = new JButton("Restart");
-        btnNewButton_4.setBounds(564, 71, 75, 27);
+        btnNewButton_4.setBounds(491, 71, 148, 27);
         btnNewButton_4.setFont(new Font("Arial", Font.PLAIN, 16));
         panel_controller.add(btnNewButton_4);
 
-        JButton btnNewButton_3_1 = new JButton("RUN");
+        JButton btnNewButton_3_1 = new JButton("Next");
         btnNewButton_3_1.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 if(TestprogrammViewer.loaded) {
-                    MC.control.exe();
-                    PinSelector.loadPins();
-                    System.out.println(Arrays.toString(MC.alu.wReg.read()) + " in Hex: " + Utils.binaryToHex(MC.alu.wReg.read()));
-                    // update W-Reg
-                    table_w.setModel(new DefaultTableModel(new Object[][] {{"W-Reg",Utils.binaryToHex(MC.alu.wReg.read())}},new String[] {"",""}));
-
-                    // update FSR-table
-                    table_fsr.setModel(new DefaultTableModel(MC.ram.getsfr(), new String[] {
-                            "Register", "Bit 7", "Bit 6", "Bit 5", "Bit 4", "Bit 3", "Bit 2", "Bit 1", "Bit 0" }));
-                    table_fsr.getColumnModel().getColumn(0).setPreferredWidth(70);
-                    table_fsr.getColumnModel().getColumn(1).setPreferredWidth(50);
-                    table_fsr.getColumnModel().getColumn(2).setPreferredWidth(50);
-                    table_fsr.getColumnModel().getColumn(3).setPreferredWidth(50);
-                    table_fsr.getColumnModel().getColumn(4).setPreferredWidth(50);
-                    table_fsr.getColumnModel().getColumn(5).setPreferredWidth(50);
-                    table_fsr.getColumnModel().getColumn(6).setPreferredWidth(50);
-                    table_fsr.getColumnModel().getColumn(7).setPreferredWidth(50);
-                    table_fsr.getColumnModel().getColumn(8).setPreferredWidth(50);
-
-                 // update GPR-table
-                    table_grp.setModel(new DefaultTableModel(MC.ram.getGPR_bank0(), new String[] {
-                            "Address", "Bit 7", "Bit 6", "Bit 5", "Bit 4", "Bit 3", "Bit 2", "Bit 1", "Bit 0"}) );
+                    ButtonInteraction.button_next();
                 }
             }
         });
-        btnNewButton_3_1.setBounds(684, 36, 67, 27);
+        btnNewButton_3_1.setBounds(908, 71, 114, 27);
         btnNewButton_3_1.setFont(new Font("Arial", Font.BOLD, 16));
         panel_controller.add(btnNewButton_3_1);
 
         JButton btnNewButton_1_1 = new JButton("Stop");
-        btnNewButton_1_1.setBounds(787, 38, 37, 23);
+        btnNewButton_1_1.setBounds(787, 38, 108, 23);
         btnNewButton_1_1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
         btnNewButton_1_1.setBackground(new Color(95, 158, 160));
         btnNewButton_1_1.setFont(new Font("Arial", Font.PLAIN, 16));
         panel_controller.add(btnNewButton_1_1);
 
-        JButton btnNewButton_2_1 = new JButton("Next");
-        btnNewButton_2_1.setBounds(876, 71, 63, 27);
-        btnNewButton_2_1.setFont(new Font("Arial", Font.PLAIN, 16));
-        panel_controller.add(btnNewButton_2_1);
+        JButton button_run = new JButton("RUN");
+        button_run.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(TestprogrammViewer.loaded) {
+                    
+                    
+                    try {
+                        ButtonInteraction.button_run();
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
+                    
+                    
+                }
+            }
+        });
+        button_run.setBounds(555, 34, 202, 27);
+        button_run.setFont(new Font("Arial", Font.PLAIN, 16));
+        panel_controller.add(button_run);
 
 
         /*
@@ -401,76 +396,7 @@ public class GUI extends JFrame {
         table_grp.setBorder(null);
         scrollPane.setViewportView(table_grp);
         table_grp.setModel(new DefaultTableModel(
-                new Object[][] {
-                    {"0x0C", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x0D", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x0E", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x0F", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x10", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x11", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x12", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x13", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x14", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x15", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x16", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x17", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x18", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x19", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x1A", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x1B", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x1C", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x1D", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x1E", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x1F", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x20", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x21", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x22", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x23", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x24", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x25", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x26", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x27", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x28", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x29", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x2A", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x2B", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x2C", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x2D", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x2E", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x2F", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x30", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x31", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x32", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x33", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x34", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x35", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x36", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x37", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x38", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x39", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x3A", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x3B", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x3C", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x3D", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x3E", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x3F", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x40", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x41", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x42", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x43", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x44", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x45", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x46", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x47", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x48", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x49", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x4A", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x4B", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x4C", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x4D", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x4E", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                    {"0x4F", new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0), new Integer(0)},
-                },
+                new Object[68][9],
                 new String[] {
                         "Address", "Bit 7", "Bit 6", "Bit 5", "Bit 4", "Bit 3", "Bit 2", "Bit 1", "Bit 0"
                 } )
