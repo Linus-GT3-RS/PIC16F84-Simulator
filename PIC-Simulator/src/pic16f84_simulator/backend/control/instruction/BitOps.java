@@ -29,6 +29,7 @@ public enum BitOps implements Instruction { // Eduard
             int valOfb = MC.ram.readSpecificBit(indexCell, indexBit);
             if(valOfb == 1) {
                 ByteOps.NOP.exe(0, 0);
+                MC.control.pcpp();
             }
         }
     };
