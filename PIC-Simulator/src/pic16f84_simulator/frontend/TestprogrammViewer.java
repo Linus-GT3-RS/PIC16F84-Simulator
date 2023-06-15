@@ -3,6 +3,7 @@ package pic16f84_simulator.frontend;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
@@ -104,7 +105,6 @@ public class TestprogrammViewer {
         
         testprogramm_table.setGridColor(Color.LIGHT_GRAY);
         testprogramm_table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        
         TableColumn column = testprogramm_table.getColumnModel().getColumn(0);
         column.setPreferredWidth(10);
         column = testprogramm_table.getColumnModel().getColumn(1);
@@ -131,7 +131,7 @@ public class TestprogrammViewer {
         TableColumn column = testprogramm_table.getColumnModel().getColumn(0);
         column.setPreferredWidth(10);
         column = testprogramm_table.getColumnModel().getColumn(1);
-        column.setPreferredWidth(475);
+        column.setPreferredWidth(650);
         
         for(int i=0 ; i<data.length; i++) {
             if(i< model.getRowCount()) {

@@ -19,7 +19,8 @@ public enum BitOps implements Instruction { // Eduard
         @Override
         public void exe(int indexBit, int indexFile) {
             if(MC.ram.readSpecificBit(indexFile, indexBit) == 0) {
-               ByteOps.NOP.exe(0, 0);
+               ByteOps.NOP.exe(0, 0); // discarded 
+               MC.control.pcpp();
             }
         }
     }, 

@@ -73,6 +73,7 @@ public enum ByteOps implements Instruction { // Linus
             storeResult(d,indexFile,result);
             if (result == 0) {
                 ByteOps.NOP.exe(0, 0);
+                MC.control.pc();
             }
         }
     },

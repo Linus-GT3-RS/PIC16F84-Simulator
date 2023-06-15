@@ -132,7 +132,7 @@ class Test_Control_ControlUnit_ByteOps {
         MC.control.pc(18);
         MC.control.exe();
         assertArrayEquals(new int[] {0,0,0,0,0,0,0,0},MC.ram.readDataCell(12));
-        assertEquals(MC.control.pc(), 20);
+        assertEquals(20, MC.control.pc());
 
         // Case result is -1
         MC.control.pc(18);
