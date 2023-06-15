@@ -39,7 +39,7 @@ public enum LitConOps implements Instruction { // Linus
             // Not implemented
         }
     },
-    GOTO { // Linus FIXME GOTO.. oder liegt des noch an dem einem falschen BitOps??
+    GOTO { // Linus TODO Linus: GOTO eventl. falsch... oder liegt des noch an dem einem falschen BitOps??
         @Override
         public void exe(int[] k) {
             int k_dec = Utils.binaryToDec(k) - 1; // -1 to counteract pcpp() after this instruction

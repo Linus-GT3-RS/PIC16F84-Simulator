@@ -61,15 +61,15 @@ class Test_Memory_RamMemory {
 
     @Test
     void testCheckUp() {        
-        /*
-         * tests for case: 1 == tmr0
-         *  - tmr0Delay is tested int Test_timer
+        /**
+         * tests for "case 1" --> TMR0_REG
+         *  - delayBy2Cycles(): is tested int Test_timer
+         *  - clearPRS(): 
          */
         
-        
-
-        /*
-         *  test for caseX
+        /**
+         * tests for "case 2" --> _REG
+         * - updatePC(): is tested in Test_ControlUnit: testUpdatePC()
          */
     }
 
@@ -127,8 +127,6 @@ class Test_Memory_RamMemory {
         assertArrayEquals(new int[] {1,0,1,0,1,0,0,0}, ram.readDataCell(12));
 
     }
-
-
 
     @Test
     void testCheckMemoryLocation() {

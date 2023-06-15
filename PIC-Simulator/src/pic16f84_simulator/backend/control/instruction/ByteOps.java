@@ -62,7 +62,7 @@ public enum ByteOps implements Instruction { // Linus
             storeResult(d, indexFile, res);
         }
     },
-    DECFSZ { // Eduard TODO timerTrypp
+    DECFSZ { // Eduard 
         @Override
         public void exe(int d, int indexFile) {
             int result = Utils.binaryToDec(MC.ram.readDataCell(indexFile));
@@ -73,6 +73,7 @@ public enum ByteOps implements Instruction { // Linus
             storeResult(d,indexFile,result);
             if (result == 0) {
                 ByteOps.NOP.exe(0, 0);
+                // TODO Eduard: pcpp() hierher??? s. Sheet
             }
         }
     },
@@ -86,7 +87,7 @@ public enum ByteOps implements Instruction { // Linus
             storeResult(d, indexFile, res);
         }
     },
-    INCFSZ { // Eduard TODO timerTrypp
+    INCFSZ { // Eduard
         @Override
         public void exe(int d, int indexFile) {
             int result = Utils.binaryToDec(MC.ram.readDataCell(indexFile));
@@ -94,6 +95,7 @@ public enum ByteOps implements Instruction { // Linus
             storeResult(d,indexFile,result);
             if (result == 0) {
                 ByteOps.NOP.exe(0, 0);
+                // TODO Eduard: selbe Problem mim pc wie bei DECFSZ
             }
         }
     },
