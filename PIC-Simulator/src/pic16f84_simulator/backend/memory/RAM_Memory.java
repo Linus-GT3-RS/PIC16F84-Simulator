@@ -203,7 +203,7 @@ public class RAM_Memory extends Template_Memory { // Linus
      * --------------------------------------------- GUI -----------------------------------------------
      */
 
-    public Object[][] getGPR_bank0(){ // TODO Linus: Tests machen: dann ist gui:panel_ram fertig
+    public Object[][] getGPR_bank0_gui(){
         Object[][] gpr = new Object[68][9];
         for(int i = 0; i < gpr.length; i++) {
             String addr = Integer.toHexString(i + 12).toUpperCase();
@@ -218,7 +218,7 @@ public class RAM_Memory extends Template_Memory { // Linus
         return gpr;
     }
 
-    public Object[][] getsfr(){ // TODO Linus: Tests machen: dann ist gui:panel_ram fertig
+    public Object[][] getAllSingleSFRReg_gui(){
         Object[][] fsr = new Object[16][9];        
         String[] registerNames = new String[] {
             "0x00 INDF", "0x01 TMR0", "0x02 PCL", "0x03 STATUS", "0x04 FSR", "0x05 PORTA", 

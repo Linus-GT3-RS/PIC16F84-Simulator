@@ -1,5 +1,6 @@
 package testCases.other;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -127,6 +128,10 @@ class Test_Memory_RamMemory {
         assertArrayEquals(new int[] {1,0,1,0,1,0,0,0}, ram.readDataCell(12));
 
     }
+    
+    /*
+     * ---------------------------------------- Help methods ---------------------------------------------------
+     */
 
     @Test
     void testCheckMemoryLocation() {
@@ -159,6 +164,83 @@ class Test_Memory_RamMemory {
         assertEquals(10, ram.mirrorBank(138));//        
         assertEquals(207, ram.mirrorBank(79));        
         assertEquals(79, ram.mirrorBank(207));//      
+    }
+    
+    /*
+     * ---------------------------------------- GUI ---------------------------------------------------
+     */
+    
+    @Test
+    void testGetGPR_bank0() {
+        MC.ram.writeDataCell(12, new int[] {1,0,1,1, 0,0,1,1});
+        MC.ram.writeDataCell(45, new int[] {1,1,1,1, 1,1,1,1});
+        MC.ram.writeDataCell(66, new int[] {1,0,0,0, 1,1,0,0});
+        MC.ram.writeDataCell(24, new int[] {0,1,0,0, 0,0,0,1});
+        MC.ram.writeDataCell(79, new int[] {0,0,0,1, 0,0,1,1});
+        
+        Object[][] res = MC.ram.getGPR_bank0_gui();
+        assertEquals(68, res.length);
+        assertEquals(9, res[0].length);
+        assertTrue(assertNoCellIsNull(res));
+        
+        assertArrayEquals(new int[] {1,0,1,1, 0,0,1,1}, getByteFromLine(res[0]));
+        assertArrayEquals(new int[] {1,1,1,1, 1,1,1,1}, getByteFromLine(res[33]));
+        assertArrayEquals(new int[] {1,0,0,0, 1,1,0,0}, getByteFromLine(res[54]));
+        assertArrayEquals(new int[] {0,1,0,0, 0,0,0,1}, getByteFromLine(res[12]));
+        assertArrayEquals(new int[] {0,0,0,1, 0,0,1,1}, getByteFromLine(res[67]));
+    }
+    
+    @Test
+    void testGetAllSingleSFRReg() {
+        MC.ram.writeDataCell(0, new int[] {0,0,0,1, 0,0,1,1});
+        MC.ram.writeDataCell(3, new int[] {1,1,1,1, 0,0,1,1});
+        MC.ram.writeDataCell(6, new int[] {1,1,1,1, 0,0,0,0});
+        MC.ram.writeDataCell(8, new int[] {0,0,0,0, 1,1,1,1});
+        MC.ram.writeDataCell(11, new int[] {0,0,0,1, 1,0,1,0});
+        
+        MC.ram.writeDataCell(129, new int[] {1,0,0,0, 0,0,0,0});
+        MC.ram.writeDataCell(133, new int[] {1,1,1,0, 1,1,0,0});
+        MC.ram.writeDataCell(134, new int[] {0,0,1,0, 0,0,0,0});
+        MC.ram.writeDataCell(136, new int[] {1,0,0,1, 1,1,1,1});
+        MC.ram.writeDataCell(137, new int[] {0,1,0,0, 1,0,0,0});
+        
+        Object[][] res = MC.ram.getAllSingleSFRReg_gui();
+        assertEquals(16, res.length);
+        assertEquals(9, res[0].length);
+        assertTrue(assertNoCellIsNull(res));
+        
+        assertArrayEquals(new int[] {0,0,0,1, 0,0,1,1}, getByteFromLine(res[0]));
+        assertArrayEquals(new int[] {1,1,1,1, 0,0,1,1}, getByteFromLine(res[3]));
+        assertArrayEquals(new int[] {1,1,1,1, 0,0,0,0}, getByteFromLine(res[6]));
+        assertArrayEquals(new int[] {0,0,0,0, 1,1,1,1}, getByteFromLine(res[7]));
+        assertArrayEquals(new int[] {0,0,0,1, 1,0,1,0}, getByteFromLine(res[10]));
+
+        assertArrayEquals(new int[] {1,0,0,0, 0,0,0,0}, getByteFromLine(res[11]));
+        assertArrayEquals(new int[] {1,1,1,0, 1,1,0,0}, getByteFromLine(res[12]));
+        assertArrayEquals(new int[] {0,0,1,0, 0,0,0,0}, getByteFromLine(res[13]));
+        assertArrayEquals(new int[] {1,0,0,1, 1,1,1,1}, getByteFromLine(res[14]));
+        assertArrayEquals(new int[] {0,1,0,0, 1,0,0,0}, getByteFromLine(res[15]));
+    }
+    
+    private int[] getByteFromLine(Object[] line) {
+        int[] res = new int[8];
+        int it = 1;
+        for(int i = 0; i < res.length; i++) {
+            res[i] = (int)line[it];
+            it++;
+        }
+        return res;
+    }
+    
+    private boolean assertNoCellIsNull(Object[][] arr) {
+        for(Object row : arr) {
+            for(Object elem : (Object[])row) {
+                if(elem == null) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
 
