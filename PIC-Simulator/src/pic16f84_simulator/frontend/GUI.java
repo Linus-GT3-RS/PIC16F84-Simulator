@@ -183,6 +183,7 @@ public class GUI extends JFrame {
                 column.setPreferredWidth(12);
             }
         }
+        table_register.setEnabled(false);
         DefaultTableModel wReg_model = new DefaultTableModel(new Object[][] {{"W-Reg",Utils.binaryToHex(MC.alu.wReg.read())}},new String[] {"",""});
         table_w = new JTable(wReg_model) {
             @Override
