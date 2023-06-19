@@ -31,7 +31,7 @@ public class WatchDog {
         setIsRunning(true);
         this.wdogTimerVal = this.std;
         if(SFR.getPSA() == 1){
-            this.wdogTimerVal *= getPRS();
+            this.wdogTimerVal *= MC.prescaler.getPRS(1);
         }  
         debug_start = System.nanoTime();
         startTimerThread();
@@ -81,16 +81,6 @@ public class WatchDog {
      */
     public int getWDogTimerVal() {
         return this.wdogTimerVal;
-    }
-    
-    public int getPRS() {
-        if(MC.ram.readSpecificBit(SFR.OPTION.asIndex(), 4) == 1) { // case 1 -> WDT
-            return MC.prescaler.getPRS();
-        }
-        else
-        {
-            return 1;
-        }
     }
     
     // When SLEEP or CLRWDT

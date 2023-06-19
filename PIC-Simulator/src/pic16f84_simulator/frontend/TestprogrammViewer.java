@@ -40,8 +40,8 @@ public class TestprogrammViewer {
     
     
     public static void highlightPCLine() {
-        if(MC.control.pc() != 0 && MC.control.pc() < pcLines.size()) {
-            PCLine = pcLines.get(MC.control.pc());   
+        if(MC.control.pc() >= 0 && MC.control.pc() < pcLines.size()) {
+            PCLine = pcLines.get(MC.control.pc());  
         }
         testprogramm_table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer()
         {
@@ -123,7 +123,8 @@ public class TestprogrammViewer {
         StackViewer.updateStack();
         MC.alu.resetwReg();
         GUI.table_w.setModel(new DefaultTableModel(new Object[][] {{"W-Reg",Utils.binaryToHex(MC.alu.wReg.read())}},new String[] {"",""}));
-        // stack Reset + TOS -> Stackpointer
+        MC.prescaler.clearPRS();
+        GUI.table_prs.setModel(new DefaultTableModel(new Object[][] {{"VT (T)",MC.prescaler.getPRS(0)},{"VT (W)",MC.prescaler.getPRS(1)}},new String[] {"",""}));
         String[][] data = MC.pm.loadTestProgram(path);
         DefaultTableModel model = new DefaultTableModel(data,new String[] {"", ""});
         testprogramm_table.setModel(model);

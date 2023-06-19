@@ -56,11 +56,10 @@ public class ControlUnit {
             int[] k = new int[14-instr.kStart()];
             System.arraycopy(instrReg.read(),instr.kStart(),  k, 0, (14-instr.kStart()));
             instr.exe(k);
-            if(instr != LitConOps.RETURN) {
+            if(instr != LitConOps.RETURN && instr != LitConOps.GOTO) {
                 pcpp();
             }
         }
-        
         MC.timer.tryIncrInternalTimer(); // has to be called after pcpp to insure correct pc is pushed onto stack in case of tmr0Interrupt
     }
 

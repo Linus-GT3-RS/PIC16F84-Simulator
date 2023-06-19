@@ -65,13 +65,15 @@ class Test_Memory_RamMemory {
         /**
          * tests for "case 1" --> TMR0_REG
          *  - delayBy2Cycles(): is tested int Test_timer
-         *  - clearPRS(): 
+         *  - clearPRS(): is tested in Test_prescaler
          */
         
         /**
          * tests for "case 2" --> _REG
          * - updatePC(): is tested in Test_ControlUnit: testUpdatePC()
          */
+        
+        
     }
 
 

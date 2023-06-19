@@ -8,14 +8,16 @@ import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.tools.Utils;
 
 public class ButtonInteraction {
+    static public Thread t;
+    
     
     static void button_next() {
         MC.control.exe();
         PinSelector.loadPins();
-        System.out.println(Arrays.toString(MC.alu.wReg.read()) + " in Hex: " + Utils.binaryToHex(MC.alu.wReg.read()));
         
         // update W-Reg
         GUI.table_w.setModel(new DefaultTableModel(new Object[][] {{"W-Reg",Utils.binaryToHex(MC.alu.wReg.read())}},new String[] {"",""}));
+        GUI.table_prs.setModel(new DefaultTableModel(new Object[][] {{"VT (T)",MC.prescaler.getPRS(0)},{"VT (W)",MC.prescaler.getPRS(1)}},new String[] {"",""}));
 
         // update FSR-table
         GUI.table_fsr.setModel(new DefaultTableModel(MC.ram.getAllSingleSFRReg_gui(), new String[] {
@@ -37,7 +39,7 @@ public class ButtonInteraction {
     }
     
     static void button_run() throws InterruptedException {
-        Thread t = new Thread() {
+        t = new Thread() {
             @Override
             public void run() {
 
@@ -48,10 +50,12 @@ public class ButtonInteraction {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                }
-                    
+                }   
             }
         };
+        t.start();
+        
+        
     }
 
 }

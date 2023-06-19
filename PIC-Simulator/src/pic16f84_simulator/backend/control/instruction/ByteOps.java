@@ -9,7 +9,9 @@ public enum ByteOps implements Instruction { // Linus
         @Override
         public void exe(int d, int indexFile) {
             int[] operand = MC.ram.readDataCell(indexFile);
-            int[] result = MC.alu.AdditionWF(operand);
+            //int[] result = MC.alu.AdditionWF(operand);
+            
+            int[] result = MC.alu.addition(operand, MC.alu.wReg.read());
             storeResult(d,indexFile,result);
             SFR.updateZflag(result);
         }
@@ -62,7 +64,7 @@ public enum ByteOps implements Instruction { // Linus
             storeResult(d, indexFile, res);
         }
     },
-    DECFSZ { // Eduard TODO timerTrypp
+    DECFSZ { // Eduard
         @Override
         public void exe(int d, int indexFile) {
             int result = Utils.binaryToDec(MC.ram.readDataCell(indexFile));
@@ -73,7 +75,7 @@ public enum ByteOps implements Instruction { // Linus
             storeResult(d,indexFile,result);
             if (result == 0) {
                 ByteOps.NOP.exe(0, 0);
-                MC.control.pc();
+                MC.control.pcpp();
             }
         }
     },
@@ -92,10 +94,11 @@ public enum ByteOps implements Instruction { // Linus
         public void exe(int d, int indexFile) {
             int result = Utils.binaryToDec(MC.ram.readDataCell(indexFile));
             result++;
+            result = fixScope(result);
             storeResult(d,indexFile,result);
             if (result == 0) {
                 ByteOps.NOP.exe(0, 0);
-                MC.control.pc();
+                MC.control.pcpp();
             }
         }
     },

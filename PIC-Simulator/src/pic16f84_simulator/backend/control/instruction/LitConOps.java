@@ -39,10 +39,10 @@ public enum LitConOps implements Instruction { // Linus
             // Not implemented
         }
     },
-    GOTO { // Linus TODO Linus: GOTO eventl. falsch... oder liegt des noch an dem einem falschen BitOps??
+    GOTO { // Linus 
         @Override
         public void exe(int[] k) {
-            int k_dec = Utils.binaryToDec(k) - 1; // -1 to counteract pcpp() after this instruction
+            int k_dec = Utils.binaryToDec(k); // -1 to counteract pcpp() after this instruction
             MC.control.pc(k_dec); // pclatch 4-3 is ignored in PIC16F8x
             MC.timer.tryIncrInternalTimer();
         }

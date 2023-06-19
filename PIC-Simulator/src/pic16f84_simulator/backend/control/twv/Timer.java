@@ -44,7 +44,7 @@ public class Timer {
     private int incrTimer() {
         int tmr0 = Utils.binaryToDec(MC.ram.readDataCell(SFR.TMR0.asIndex()));
         if(SFR.getPSA() == 0) { // Prescaler is assigned to Timer
-            this.incrCheck += 1.0 / (double)MC.timer.getPRS();
+            this.incrCheck += 1.0 / (double)MC.prescaler.getPRS(0);
             if((int)this.incrCheck != 1) {
                 return tmr0;               
             }
@@ -60,10 +60,7 @@ public class Timer {
         }
     }
     
-    public int getPRS() {
-        return 2*MC.prescaler.getPRS();
-
-    }
+    
 
     // when writing in timer
     public void clearPRS() {

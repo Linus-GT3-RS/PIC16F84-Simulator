@@ -167,9 +167,9 @@ public class RAM_Memory extends Template_Memory { // Linus
      */
     private void checkUp(int indx) {   
         switch(indx) {
-        case 1 -> { MC.timer.delayBy2Cycles(); MC.timer.clearPRS(); } // TMR0 // TODO Eduard: is clearPRS() getestet? wenn ja in Test_RAM testCheckUp() vermerken
+        case 1 -> { MC.timer.delayBy2Cycles(); MC.timer.clearPRS(); } // TMR0
         case 2 -> { MC.control.updatePC(); } // PCL
-        case 129 -> { MC.prescaler.setPRS(); } // OPTION // TODO Eduard: is setPRS() getestet? wenn ja in Test_RAM testCheckUp() vermerken
+        case 129 -> { MC.prescaler.setPRS(); } // OPTION 
         default -> {} // has to be empty !!!
         }
     }

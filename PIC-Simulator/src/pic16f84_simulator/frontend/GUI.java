@@ -96,6 +96,7 @@ public class GUI extends JFrame {
     public static JPanel panel_collection = new JPanel();
     public static JTable stack_table;
     public static JTable table_w;
+    public static JTable table_prs;
     /*
      * >>>>> pannel_pm
      */
@@ -200,7 +201,27 @@ public class GUI extends JFrame {
         table_w.setBounds(350, 180, 100, 15);
         table_w.setBackground(new Color(17, 135, 185));
         table_w.setShowGrid(false);
+        DefaultTableModel prs_model = new DefaultTableModel(new Object[][] {{"VT (T)",MC.prescaler.getPRS(0)},{"VT (W)",MC.prescaler.getPRS(1)}},new String[] {"",""}  );
+        table_prs = new JTable(prs_model) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // cells are now editable
+            }
+            @Override
+            public TableCellRenderer getCellRenderer(int row, int column) {
+                DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+                renderer.setHorizontalAlignment(SwingConstants.CENTER);
+                return renderer;
+            }
+        };
+        table_prs.getColumnModel().getColumn(0).setPreferredWidth(0);
+        table_prs.getColumnModel().getColumn(1).setPreferredWidth(5);
+        table_prs.setBounds(350,200,100,37);
+        table_prs.setBackground(new Color(17, 135, 185));
+        table_prs.setShowGrid(false);
+        table_prs.setRowSelectionAllowed(false);
         panel_register.add(table_w);
+        panel_register.add(table_prs);
         table_register.setRowSelectionAllowed(false);
         table_register.setBounds(10,100, 332, 48);;
         panel_register.add(table_register);
@@ -590,6 +611,16 @@ public class GUI extends JFrame {
         });
         tp11.setFont(new Font("Arial", Font.PLAIN, 12));
         mnNewMenu.add(tp11);
+        
+        JMenuItem tp12 = new JMenuItem("Testprogramm 12");
+        tp11.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                TestprogrammViewer.overrideProgramm(TP.s12);
+            }
+        });
+        tp12.setFont(new Font("Arial", Font.PLAIN, 12));
+        mnNewMenu.add(tp12);
 
         JMenuItem tpx = new JMenuItem("weitere laden ...");
         tpx.addMouseListener(new MouseAdapter() {
