@@ -6,6 +6,7 @@ public class TP { // alle bereits bekannten Testprogramme
     
     public static String s1 = ordnerName + "\\TPicSim1.LST";
     public static String s2 = ordnerName + "\\TPicSim2.LST";
+    public static String s21 = ordnerName + "\\TPicSim21.LST";
     public static String s3 = ordnerName + "\\TPicSim3.LST";
     public static String s4 = ordnerName + "\\TPicSim4.LST";
     public static String s5 = ordnerName + "\\TPicSim5.LST";

@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JScrollPane;
@@ -24,6 +25,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.text.Utilities;
 
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.tools.Utils;
@@ -95,6 +97,9 @@ public class TestprogrammViewer {
                     for(int i = 0; i < pcLines.size();i++) {
                         if(pcLines.get(i) == selectedRow) {
                             BreakPoints.add(i);
+                            System.out.println(BreakPoints);
+                            Collections.sort(BreakPoints);
+                            System.out.println(BreakPoints);
                         }
                     }
                 }
