@@ -283,6 +283,20 @@ public class GUI extends JFrame {
         programmtime.setBounds(201, 5, 80, 19);
         programmtime.setFont(new Font("Arial",Font.PLAIN,16));
         programmtime.setHorizontalAlignment(SwingConstants.CENTER);
+        JButton timer_button = new JButton();
+        timer_button.setText("Laufzeit zurücksetzen");
+        timer_button.setBounds(155, 30, 170, 24);
+        timer_button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                ButtonInteraction.timer = 0;
+                programmtime.setText("0 µs");
+            }
+        });
+       
+        panel_programmtimer.add(timer_button);
+        
+        
         panel_programmtimer.add(programmtime);
         panel_collection.add(panel_programmtimer);
         panel_register.setLayout(null);
