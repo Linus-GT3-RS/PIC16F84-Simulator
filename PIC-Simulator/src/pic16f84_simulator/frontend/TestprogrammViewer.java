@@ -122,9 +122,14 @@ public class TestprogrammViewer {
     
     // When you like to use another programm
     static void overrideProgramm(String path) {
+        if(ButtonInteraction.nothread == false) {
+            ButtonInteraction.t.stop();
+        }
         MC.ram.powerOnReset();
         MC.stack.resetStack();
         MC.stack.resetTOS();
+        ButtonInteraction.timer = 0;
+        GUI.programmtime.setText(Integer.toString(ButtonInteraction.timer++) + " µs");
         StackViewer.updateStack();
         MC.alu.resetwReg();
         GUI.table_w.setModel(new DefaultTableModel(new Object[][] {{"W-Reg",Utils.binaryToHex(MC.alu.wReg.read())}},new String[] {"",""}));

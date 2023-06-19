@@ -10,7 +10,9 @@ import pic16f84_simulator.backend.tools.Utils;
 public class ButtonInteraction {
     static public Thread t;
     static private boolean runnable = true;
-    static private boolean nothread = true;
+    static public boolean nothread = true;
+    
+    static public int timer;
     
     /*
      * for Help Methods
@@ -53,12 +55,12 @@ public class ButtonInteraction {
                 @Override
                 public void run() {
                     boolean greater = MC.control.pc() > -1;
-                    boolean smaller = MC.control.pc() < TestprogrammViewer.pcLines.get(TestprogrammViewer.pcLines.size()-1);
+                    boolean smaller = MC.control.pc() < TestprogrammViewer.pcLines.size()-1;
                     
                     while(runnable && greater && smaller) {
                         button_next();
                         try {
-                            Thread.sleep(750);
+                            Thread.sleep(200);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }

@@ -1,5 +1,6 @@
 package pic16f84_simulator.backend.control.instruction;
 import pic16f84_simulator.MC;
+import pic16f84_simulator.frontend.ButtonInteraction;
 
 public enum BitOps implements Instruction { // Eduard
     
@@ -21,6 +22,7 @@ public enum BitOps implements Instruction { // Eduard
             if(MC.ram.readSpecificBit(indexFile, indexBit) == 0) {
                ByteOps.NOP.exe(0, 0); // discarded 
                MC.control.pcpp();
+               ButtonInteraction.timer++;
             }
         }
     }, 
@@ -31,6 +33,7 @@ public enum BitOps implements Instruction { // Eduard
             if(valOfBInF == 1) {
                 ByteOps.NOP.exe(0, 0);
                 MC.control.pcpp();
+                ButtonInteraction.timer++;
             }
         }
     };

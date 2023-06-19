@@ -97,6 +97,7 @@ public class GUI extends JFrame {
     public static JTable stack_table;
     public static JTable table_w;
     public static JTable table_prs;
+    public static JLabel programmtime;
     /*
      * >>>>> pannel_pm
      */
@@ -214,6 +215,8 @@ public class GUI extends JFrame {
                 return renderer;
             }
         };
+        
+        
         table_prs.getColumnModel().getColumn(0).setPreferredWidth(0);
         table_prs.getColumnModel().getColumn(1).setPreferredWidth(5);
         table_prs.setBounds(350,200,100,37);
@@ -272,13 +275,24 @@ public class GUI extends JFrame {
         panel_pins.add(Pic_Image);
         PinSelector.Pin_Table();
         
-        JPanel panel_stack = new JPanel();
-        panel_stack.setBackground(new Color(166, 222, 247));
-        panel_stack.setBounds(0, 558, 481, 222);
-        panel_collection.add(panel_stack);
+        JPanel panel_programmtimer = new JPanel();
+        panel_programmtimer.setBackground(new Color(166, 222, 247));
+        panel_programmtimer.setBounds(0, 558, 481, 222);
+        panel_programmtimer.setLayout(null);
+        programmtime = new JLabel("0 µs");
+        programmtime.setBounds(201, 5, 80, 19);
+        programmtime.setFont(new Font("Arial",Font.PLAIN,16));
+        programmtime.setHorizontalAlignment(SwingConstants.CENTER);
+        panel_programmtimer.add(programmtime);
+        panel_collection.add(panel_programmtimer);
         panel_register.setLayout(null);
+ 
         
 
+        /*
+         * >>>>>>>>>>>> Panel_Controller
+         */
+        
         JPanel panel_controller = new JPanel();
         panel_controller.setPreferredSize(new Dimension(10, 125));
         panel_controller.setBackground(new Color(218, 112, 214));
@@ -303,20 +317,19 @@ public class GUI extends JFrame {
         btnNewButton_3_1.setFont(new Font("Arial", Font.BOLD, 16));
         panel_controller.add(btnNewButton_3_1);
 
-        JButton btnNewButton_1_1 = new JButton("Stop");
-        btnNewButton_1_1.setBounds(787, 38, 108, 23);
-        btnNewButton_1_1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-        btnNewButton_1_1.setBackground(new Color(95, 158, 160));
-        btnNewButton_1_1.setFont(new Font("Arial", Font.PLAIN, 16));
-        panel_controller.add(btnNewButton_1_1);
+        JButton button_stop = new JButton("Stop");
+        button_stop.setBounds(787, 38, 108, 23);
+        button_stop.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+        button_stop.setBackground(new Color(95, 158, 160));
+        button_stop.setFont(new Font("Arial", Font.PLAIN, 16));
+        panel_controller.add(button_stop);
 
         JButton button_run = new JButton("RUN");
         button_run.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 if(TestprogrammViewer.loaded) {
-                    
-                    
+
                     try {
                         ButtonInteraction.button_run();
                     } catch (InterruptedException e1) {

@@ -2,6 +2,7 @@ package pic16f84_simulator.backend.control.instruction;
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.Utils;
+import pic16f84_simulator.frontend.ButtonInteraction;
 
 public enum ByteOps implements Instruction { // Linus
 
@@ -76,6 +77,7 @@ public enum ByteOps implements Instruction { // Linus
             if (result == 0) {
                 ByteOps.NOP.exe(0, 0);
                 MC.control.pcpp();
+                ButtonInteraction.timer++;
             }
         }
     },
