@@ -9,7 +9,14 @@ import pic16f84_simulator.backend.tools.Utils;
 
 public class ButtonInteraction {
     static public Thread t;
+    static private boolean runnable = true;
+    static private boolean nothread = true;
     
+    /*
+     * for Help Methods
+     */
+    static int counter = 0; // counter for Breakpoints
+    static int breakpoint = -1; // next Breakpoint
     
     static void button_next() {
         MC.control.exe();
@@ -39,22 +46,45 @@ public class ButtonInteraction {
     }
     
     static void button_run() throws InterruptedException {
-        t = new Thread() {
-            @Override
-            public void run() {
-
-                while(true) {
-                    button_next();
-                    try {
-                        Thread.sleep(750);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+        if(nothread) {
+            nothread = false;
+            runnable = true;
+            t = new Thread() {
+                @Override
+                public void run() {
+                    boolean greater = MC.control.pc() > -1;
+                    boolean smaller = MC.control.pc() < TestprogrammViewer.pcLines.get(TestprogrammViewer.pcLines.size()-1);
+                    
+                    while(runnable && greater && smaller) {
+                        button_next();
+                        try {
+                            Thread.sleep(750);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        runnable();
+                        greater = MC.control.pc() > -1;
+                        smaller = MC.control.pc() < TestprogrammViewer.pcLines.get(TestprogrammViewer.pcLines.size()-1);
                     }
-                }   
-            }
-        };
-        t.start();
+                    nothread =  true;
+                }
+            };
+            t.start();
+        }
+    }
+    
+    private static void runnable() {
         
+        
+        if(TestprogrammViewer.BreakPoints.size()>counter) {
+            breakpoint = TestprogrammViewer.BreakPoints.get(counter);
+            counter++;
+        }
+        if(MC.control.pc() == breakpoint) {
+            runnable = false;
+        }else {
+            runnable =  true;
+        }
         
     }
 

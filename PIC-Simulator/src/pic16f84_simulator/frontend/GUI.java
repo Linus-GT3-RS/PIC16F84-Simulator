@@ -511,6 +511,16 @@ public class GUI extends JFrame {
         });
         tp2.setFont(new Font("Arial", Font.PLAIN, 12));
         mnNewMenu.add(tp2);
+        
+        JMenuItem tp21 = new JMenuItem("Testprogramm 2.1");
+        tp21.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                TestprogrammViewer.overrideProgramm(TP.s21);
+            }
+        });
+        tp21.setFont(new Font("Arial", Font.PLAIN, 12));
+        mnNewMenu.add(tp21);
 
         JMenuItem tp3 = new JMenuItem("Testprogramm 3");
         tp3.addMouseListener(new MouseAdapter() {
@@ -592,7 +602,7 @@ public class GUI extends JFrame {
         tp10.setFont(new Font("Arial", Font.PLAIN, 12));
         mnNewMenu.add(tp10);
 
-        JMenuItem tp101 = new JMenuItem("Testprogramm 101");
+        JMenuItem tp101 = new JMenuItem("Testprogramm 10.1");
         tp101.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -613,7 +623,7 @@ public class GUI extends JFrame {
         mnNewMenu.add(tp11);
         
         JMenuItem tp12 = new JMenuItem("Testprogramm 12");
-        tp11.addMouseListener(new MouseAdapter() {
+        tp12.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 TestprogrammViewer.overrideProgramm(TP.s12);
@@ -621,6 +631,36 @@ public class GUI extends JFrame {
         });
         tp12.setFont(new Font("Arial", Font.PLAIN, 12));
         mnNewMenu.add(tp12);
+        
+        JMenuItem tp13 = new JMenuItem("Testprogramm 13");
+        tp13.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                TestprogrammViewer.overrideProgramm(TP.s13);
+            }
+        });
+        tp13.setFont(new Font("Arial", Font.PLAIN, 12));
+        mnNewMenu.add(tp13);
+        
+        JMenuItem tp14 = new JMenuItem("Testprogramm 14");
+        tp14.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                TestprogrammViewer.overrideProgramm(TP.s14);
+            }
+        });
+        tp14.setFont(new Font("Arial", Font.PLAIN, 12));
+        mnNewMenu.add(tp14);
+        
+        JMenuItem tp15 = new JMenuItem("Testprogramm 15");
+        tp15.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                TestprogrammViewer.overrideProgramm(TP.s15);
+            }
+        });
+        tp15.setFont(new Font("Arial", Font.PLAIN, 12));
+        mnNewMenu.add(tp15);
 
         JMenuItem tpx = new JMenuItem("weitere laden ...");
         tpx.addMouseListener(new MouseAdapter() {
