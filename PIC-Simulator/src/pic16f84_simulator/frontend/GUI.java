@@ -256,6 +256,8 @@ public class GUI extends JFrame {
         programmtime.setFont(new Font("Arial",Font.PLAIN,16));
         programmtime.setHorizontalAlignment(SwingConstants.CENTER);
         JButton btn_resetRuntimeCounter = new JButton();
+        btn_resetRuntimeCounter.setBorderPainted(false);
+        btn_resetRuntimeCounter.setBackground(new Color(0, 255, 0));
         btn_resetRuntimeCounter.setText("Reset Runtime Counter");
         btn_resetRuntimeCounter.setBounds(71, 4, 144, 24);
         btn_resetRuntimeCounter.addMouseListener(new MouseAdapter() {
