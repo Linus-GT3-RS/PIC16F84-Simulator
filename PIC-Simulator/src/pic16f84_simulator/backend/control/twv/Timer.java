@@ -23,11 +23,13 @@ public class Timer {
         if(SFR.getTOCS() == 1) {
             return; // external clock is currently selected --> no implementation in this project
         }
+        System.out.println("after getTOCS");
         if(this.delay > 0) {
             this.delay--;
             return; // waiting cycles are not over yet --> cant increase TMR0
         }
         int tmr0New = incrTimer(); // overflow is not yet corrected !!
+        System.out.println("timer" + tmr0New);
         MC.ram.writeDataCell(SFR.TMR0.asIndex(), Utils.decToBinary(RAM_Memory.fixScope(tmr0New), 8));
         this.delay -= 2; // has to be done to compensate for autom. delay +=2 caused by writeRam()
 

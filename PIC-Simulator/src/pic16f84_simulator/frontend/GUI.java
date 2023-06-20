@@ -38,9 +38,11 @@ import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.tools.TP;
 import pic16f84_simulator.backend.tools.Utils;
 import pic16f84_simulator.frontend.collections.PinSelector;
+import pic16f84_simulator.frontend.collections.StackViewer;
 import pic16f84_simulator.frontend.controller.ButtonInteraction;
 import pic16f84_simulator.frontend.pm.TestprogrammViewer;
 import pic16f84_simulator.frontend.ram.Ram_gui;
+import javax.swing.JToggleButton;
 
 public class GUI extends JFrame {
 
@@ -273,9 +275,9 @@ public class GUI extends JFrame {
         
         panel_programmtimer.add(programmtime);
         panel_collection.add(panel_programmtimer);
-
-        JButton btn_toggleWDog = new JButton("Toggle WDog");
-        btn_toggleWDog.setBounds(160, 66, 160, 21);
+        
+        JToggleButton btn_toggleWDog = new JToggleButton("WatchDog");
+        btn_toggleWDog.setBounds(201, 62, 115, 21);
         panel_programmtimer.add(btn_toggleWDog);
         panel_register.setLayout(null);
 
@@ -521,14 +523,13 @@ public class GUI extends JFrame {
      * - pins
      * - w_reg
      */
-    public static void updateGUI() {        
-        // stack_gui gets updated autom. after any method call on it FIXME does not work when using btn_restart()
+    public static void updateGUI() {
         
-        // pc_gui gets updated autom. after any method call on it
+        // pc_gui gets updated where
         
-        // prescaler_gui gets updated autom. after any method call on it
+        StackViewer.updateStack();
         
-        // runtimeCounter_gui gets updated autom. after any method call on it
+        GUI.programmtime.setText(Integer.toString(ButtonInteraction.timer) + " µs");
         
         Ram_gui.update();
 
@@ -538,9 +539,11 @@ public class GUI extends JFrame {
         // update W-Reg
         GUI.table_w.setModel(new DefaultTableModel(
                 new Object[][] {{"W-Reg",Utils.binaryToHex(MC.alu.wReg.read())}},new String[] {"",""}));
-        GUI.table_prs.setModel(
-                new DefaultTableModel(new Object[][] {{"VT (T)", 
-                    MC.prescaler.getPRS(0)},{"VT (W)", MC.prescaler.getPRS(1)}}, new String[] {"",""}));
+        
+        // update prescaler
+        MC.prescaler.clearPRS();
+        GUI.table_prs.setModel(new DefaultTableModel(new Object[][] {{"VT (T)", MC.prescaler.getPRS(0)}, 
+            {"VT (W)", MC.prescaler.getPRS(1)}}, new String[] {"",""}));
     }
 
     private Object[][] loadData() {

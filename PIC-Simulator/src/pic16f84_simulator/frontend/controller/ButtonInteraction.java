@@ -13,12 +13,12 @@ import pic16f84_simulator.frontend.ram.Ram_gui;
 
 public class ButtonInteraction {
     
-    static public Thread t;
-    static public boolean nothread = true;
-    static private boolean runnable = true;
+    public static Thread t;
+    public static boolean nothread = true;
+    private static boolean runnable = true;
     private static boolean isStopped = true;
     
-    static public int timer;
+    public static int timer;
     
     /**
      * for Help Methods
@@ -40,8 +40,7 @@ public class ButtonInteraction {
         MC.control.pc(0);
         MC.stack.full_resetStack();
         MC.alu.resetW_Reg();
-        // TODO Laufzeitzähler reset
-        // TODO Breakpoints reset? --> breakpoints würd ich lassen, frage is nur, ob man da irwas refreshen muss oder so.. warsch den zähler oder
+        ButtonInteraction.timer = 0;
         
         // has to be last !!!
         GUI.updateGUI();
@@ -69,7 +68,7 @@ public class ButtonInteraction {
                     
                     while(runnable && greater && smaller && isStopped == false) {
                         button_next();
-                        try { Thread.sleep(400); } catch (InterruptedException e) { e.printStackTrace(); }
+                        try { Thread.sleep(300); } catch (InterruptedException e) { e.printStackTrace(); }
                         runnable();
                         greater = MC.control.pc() > - 1;
                         smaller = MC.control.pc() < TestprogrammViewer.pcLines.get(TestprogrammViewer.pcLines.size() -1);

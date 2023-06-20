@@ -20,11 +20,9 @@ public class WatchDog {
 
     private static long debug_start;
     private static long debug_lastRuntime; // in ns
-
-    // private boolean on = false; // for toggle function in gui
     
     
-    public void start() { // this.on = true;
+    public void start() {
         if(this.isRunning == true) {
             throw new IllegalArgumentException("WDog is already running.. cannot start a second one");
         }
@@ -57,7 +55,7 @@ public class WatchDog {
     }
 
 
-    public void stop() { // this.on = false;
+    public void stop() {
         if(isRunning()) {
             timer.cancel();
             setIsRunning(false);   
@@ -70,8 +68,6 @@ public class WatchDog {
         MC.control.pc(0);
         MC.ram.otherReset();
         // System.out.println("Watchdog timer has overflowed"); 
-
-        
     }
     
     
@@ -101,10 +97,6 @@ public class WatchDog {
 
     public long debug_lastRuntime() {
         return debug_lastRuntime;
-    }
-
-    //    public void toggle() {
-    //        // this.executor.wait();
-    //    }    
+    }    
 
 }
