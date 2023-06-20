@@ -255,10 +255,10 @@ public class GUI extends JFrame {
         programmtime.setBounds(201, 5, 80, 19);
         programmtime.setFont(new Font("Arial",Font.PLAIN,16));
         programmtime.setHorizontalAlignment(SwingConstants.CENTER);
-        JButton timer_button = new JButton();
-        timer_button.setText("Laufzeit zurücksetzen");
-        timer_button.setBounds(155, 30, 170, 24);
-        timer_button.addMouseListener(new MouseAdapter() {
+        JButton btn_resetRuntimeCounter = new JButton();
+        btn_resetRuntimeCounter.setText("Reset Runtime Counter");
+        btn_resetRuntimeCounter.setBounds(71, 4, 144, 24);
+        btn_resetRuntimeCounter.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 ButtonInteraction.timer = 0;
@@ -266,15 +266,11 @@ public class GUI extends JFrame {
             }
         });
        
-        panel_programmtimer.add(timer_button);
+        panel_programmtimer.add(btn_resetRuntimeCounter);
         
         
         panel_programmtimer.add(programmtime);
         panel_collection.add(panel_programmtimer);
-
-        JButton btn_resetRuntimeCounter = new JButton("Reset Runtime Counter");
-        btn_resetRuntimeCounter.setBounds(62, 6, 139, 21);
-        panel_programmtimer.add(btn_resetRuntimeCounter);
 
         JButton btn_toggleWDog = new JButton("Toggle WDog");
         btn_toggleWDog.setBounds(160, 66, 160, 21);
