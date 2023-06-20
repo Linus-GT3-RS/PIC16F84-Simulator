@@ -126,6 +126,7 @@ public class TestprogrammViewer {
     public static void overrideProgramm(String path) {
         if(ButtonInteraction.nothread == false) {
             ButtonInteraction.t.stop();
+            ButtonInteraction.nothread = true;
         }
         MC.ram.powerOnReset();
         MC.stack.resetStack();
