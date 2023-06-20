@@ -125,7 +125,7 @@ public class RAM_Memory extends Template_Memory { // Linus
     // Hilfsmethode
     public int mirrorBank(int indexCell) {        
         int result = 0;
-
+        
         switch(indexCell) {
         case 1: // fall-through is correct
         case 5: // fall-through is correct

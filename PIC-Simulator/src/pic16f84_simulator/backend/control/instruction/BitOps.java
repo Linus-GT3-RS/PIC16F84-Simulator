@@ -23,6 +23,7 @@ public enum BitOps implements Instruction { // Eduard
                ByteOps.NOP.exe(0, 0); // discarded 
                MC.control.pcpp();
                ButtonInteraction.timer++;
+               MC.timer.tryIncrInternalTimer();
             }
         }
     }, 
@@ -34,6 +35,7 @@ public enum BitOps implements Instruction { // Eduard
                 ByteOps.NOP.exe(0, 0);
                 MC.control.pcpp();
                 ButtonInteraction.timer++;
+                MC.timer.tryIncrInternalTimer();
             }
         }
     };
