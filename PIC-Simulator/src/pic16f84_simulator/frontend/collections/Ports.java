@@ -1,4 +1,4 @@
-package pic16f84_simulator.frontend;
+package pic16f84_simulator.frontend.collections;
 
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.SFR;

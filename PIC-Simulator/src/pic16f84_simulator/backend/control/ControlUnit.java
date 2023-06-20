@@ -11,9 +11,9 @@ import pic16f84_simulator.backend.control.twv.Prescaler;
 import pic16f84_simulator.backend.memory.Register;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.Utils;
-import pic16f84_simulator.frontend.ButtonInteraction;
 import pic16f84_simulator.frontend.GUI;
-import pic16f84_simulator.frontend.TestprogrammViewer;
+import pic16f84_simulator.frontend.controller.ButtonInteraction;
+import pic16f84_simulator.frontend.pm.TestprogrammViewer;
 
 public class ControlUnit {
 

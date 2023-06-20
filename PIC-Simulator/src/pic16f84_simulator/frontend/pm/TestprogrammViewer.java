@@ -1,5 +1,4 @@
-package pic16f84_simulator.frontend;
-
+package pic16f84_simulator.frontend.pm;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -29,6 +28,9 @@ import javax.swing.text.Utilities;
 
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.tools.Utils;
+import pic16f84_simulator.frontend.GUI;
+import pic16f84_simulator.frontend.collections.StackViewer;
+import pic16f84_simulator.frontend.controller.ButtonInteraction;
 
 public class TestprogrammViewer {
     
@@ -58,7 +60,7 @@ public class TestprogrammViewer {
         testprogramm_table.repaint();
     }
  
-    static JScrollPane Table(String[] head,String[][] rows) {
+    public static JScrollPane Table(String[] head,String[][] rows) {
         DefaultTableModel model = new DefaultTableModel(rows,head);
         testprogramm_table = new JTable(model) {
             @Override
@@ -121,7 +123,7 @@ public class TestprogrammViewer {
     }
     
     // When you like to use another programm
-    static void overrideProgramm(String path) {
+    public static void overrideProgramm(String path) {
         if(ButtonInteraction.nothread == false) {
             ButtonInteraction.t.stop();
         }
@@ -131,7 +133,7 @@ public class TestprogrammViewer {
         ButtonInteraction.timer = 0;
         GUI.programmtime.setText(Integer.toString(ButtonInteraction.timer++) + " µs");
         StackViewer.updateStack();
-        MC.alu.resetwReg();
+        MC.alu.resetW_Reg();
         GUI.table_w.setModel(new DefaultTableModel(new Object[][] {{"W-Reg",Utils.binaryToHex(MC.alu.wReg.read())}},new String[] {"",""}));
         MC.prescaler.clearPRS();
         GUI.table_prs.setModel(new DefaultTableModel(new Object[][] {{"VT (T)",MC.prescaler.getPRS(0)},{"VT (W)",MC.prescaler.getPRS(1)}},new String[] {"",""}));

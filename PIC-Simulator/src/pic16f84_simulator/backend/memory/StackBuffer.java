@@ -2,7 +2,7 @@ package pic16f84_simulator.backend.memory;
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.tools.Utils;
 import pic16f84_simulator.frontend.GUI;
-import pic16f84_simulator.frontend.StackViewer;
+import pic16f84_simulator.frontend.collections.StackViewer;
 
 public class StackBuffer {
     
@@ -76,6 +76,15 @@ public class StackBuffer {
         return this.stack;
     }
     
+    public int getTOS() {
+        return this.tos;
+    }
+    
+    
+    /**
+     * --------------------------------------- danger resets ---------------------------------------------------
+     */
+    
     public void resetStack() {
         this.stack = new int[8];
     }
@@ -84,7 +93,9 @@ public class StackBuffer {
         this.tos = 0;
     }
     
-    public int getTOS() {
-        return this.tos;
+    public void full_resetStack() {
+        resetStack();
+        resetTOS();
     }
+    
 }

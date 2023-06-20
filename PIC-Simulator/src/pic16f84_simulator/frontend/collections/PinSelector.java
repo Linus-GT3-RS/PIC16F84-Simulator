@@ -1,4 +1,4 @@
-package pic16f84_simulator.frontend;
+package pic16f84_simulator.frontend.collections;
 
 import java.awt.event.MouseEvent;
 
@@ -14,6 +14,7 @@ import javax.swing.table.TableColumn;
 
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.SFR;
+import pic16f84_simulator.frontend.GUI;
 import pic16f84_simulator.backend.*;
 
 

@@ -91,11 +91,11 @@ public class ALU {
     }
 
     
-    /*
-     * - for GUI
+    /**
+     * - for GUI ---------------------------------- reset -------------------------------------------
      */
 
-    public void resetwReg() {
+    public void resetW_Reg() {
         this.wReg = new Register(8);
     }
 

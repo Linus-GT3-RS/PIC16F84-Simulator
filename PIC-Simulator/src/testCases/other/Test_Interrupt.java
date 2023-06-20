@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.SFR;
-import pic16f84_simulator.frontend.Ports;
+import pic16f84_simulator.frontend.collections.Ports;
 
 class Test_Interrupt {
 

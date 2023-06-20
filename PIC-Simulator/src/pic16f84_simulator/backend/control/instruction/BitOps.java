@@ -1,6 +1,6 @@
 package pic16f84_simulator.backend.control.instruction;
 import pic16f84_simulator.MC;
-import pic16f84_simulator.frontend.ButtonInteraction;
+import pic16f84_simulator.frontend.controller.ButtonInteraction;
 
 public enum BitOps implements Instruction { // Eduard
     

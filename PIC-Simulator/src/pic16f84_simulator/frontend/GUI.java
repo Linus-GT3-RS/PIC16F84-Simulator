@@ -1,87 +1,46 @@
 package pic16f84_simulator.frontend;
-
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.ComponentOrientation;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
 
 import pic16f84_simulator.MC;
-import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.TP;
 import pic16f84_simulator.backend.tools.Utils;
-
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.BorderLayout;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.GridLayout;
-import java.awt.Image;
-
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.ImageIcon;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.ListModel;
-import javax.swing.SpringLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.SwingConstants;
-import java.awt.Font;
-import javax.swing.JToolBar;
-import javax.swing.JDesktopPane;
-import javax.swing.JFileChooser;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.JMenuBar;
-import javax.swing.JPopupMenu;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-
-import java.awt.Component;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import javax.swing.JMenuItem;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComponent;
-import javax.swing.JSeparator;
-import javax.swing.JTextArea;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JTable;
-import java.awt.List;
-import javax.swing.JMenu;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Graphics;
-
-import javax.swing.border.BevelBorder;
-import javax.swing.ScrollPaneConstants;
-import java.awt.ComponentOrientation;
-import java.awt.Scrollbar;
-import java.awt.ScrollPane;
-import java.awt.Label;
-import java.awt.Point;
-import java.awt.Rectangle;
-import javax.swing.BoxLayout;
+import pic16f84_simulator.frontend.collections.PinSelector;
+import pic16f84_simulator.frontend.controller.ButtonInteraction;
+import pic16f84_simulator.frontend.pm.TestprogrammViewer;
+import pic16f84_simulator.frontend.ram.Ram_gui;
 
 public class GUI extends JFrame {
 
@@ -98,17 +57,28 @@ public class GUI extends JFrame {
     public static JTable table_w;
     public static JTable table_prs;
     public static JLabel programmtime;
+
     /*
      * >>>>> pannel_pm
      */
     public static JPanel testprogrammPanel = new JPanel(new BorderLayout());
-    static JTable table;
-    static JTable table_grp;
-    static JTable table_fsr;
+    public static JTable table;
+    public static JTable table_grp;
+    public static JTable table_fsr;
+
+    /**
+     * >>>>> panel_controller
+     */
+    public static JButton btn_run;
+    public static JButton btn_stop;
+    public static JButton btn_restart;
+    public static JButton btn_next;
+    public static JButton btn_ignore;
+
 
 
     /**
-     * Launch the application.
+     * Launch the application
      */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -135,6 +105,8 @@ public class GUI extends JFrame {
         setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH); // Important DO_NOT_DELETE !!!
         // forBackUp: setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH); // Important DO_NOT_DELETE !!!
 
+
+
         // --------------------------------------- Menubar ------------------------------------------------------------------------------------
 
         setJMenuBar(menuBar);
@@ -156,13 +128,13 @@ public class GUI extends JFrame {
         panel_collection.setPreferredSize(new Dimension(100, 10));
         contentPane.add(panel_collection, BorderLayout.CENTER);
         panel_collection.setLayout(null);
-        
+
         JPanel panel_register = new JPanel();
         panel_register.setBackground(new Color(17, 135, 185));
         panel_register.setBounds(0, 0, 481, 248);
         panel_collection.add(panel_register);
-        
-        
+
+
         DefaultTableModel registermodel = new DefaultTableModel(loadData(),new String[] {"","","","","","","","",""});
         JTable table_register = new JTable(registermodel) {
             @Override
@@ -215,8 +187,8 @@ public class GUI extends JFrame {
                 return renderer;
             }
         };
-        
-        
+
+
         table_prs.getColumnModel().getColumn(0).setPreferredWidth(0);
         table_prs.getColumnModel().getColumn(1).setPreferredWidth(5);
         table_prs.setBounds(350,200,100,37);
@@ -228,7 +200,7 @@ public class GUI extends JFrame {
         table_register.setRowSelectionAllowed(false);
         table_register.setBounds(10,100, 332, 48);;
         panel_register.add(table_register);
-        
+
         JPanel labelPanel = new JPanel(new BorderLayout());
         labelPanel.setBounds(350, 30, 100, 150);
 
@@ -274,7 +246,7 @@ public class GUI extends JFrame {
         gbc.anchor = GridBagConstraints.CENTER;
         panel_pins.add(Pic_Image);
         PinSelector.Pin_Table();
-        
+
         JPanel panel_programmtimer = new JPanel();
         panel_programmtimer.setBackground(new Color(166, 222, 247));
         panel_programmtimer.setBounds(0, 558, 481, 222);
@@ -285,27 +257,49 @@ public class GUI extends JFrame {
         programmtime.setHorizontalAlignment(SwingConstants.CENTER);
         panel_programmtimer.add(programmtime);
         panel_collection.add(panel_programmtimer);
+
+        JButton btn_resetRuntimeCounter = new JButton("Reset Runtime Counter");
+        btn_resetRuntimeCounter.setBounds(62, 6, 139, 21);
+        panel_programmtimer.add(btn_resetRuntimeCounter);
+
+        JButton btn_toggleWDog = new JButton("Toggle WDog");
+        btn_toggleWDog.setBounds(160, 66, 160, 21);
+        panel_programmtimer.add(btn_toggleWDog);
         panel_register.setLayout(null);
- 
-        
+
+
 
         /*
          * >>>>>>>>>>>> Panel_Controller
          */
-        
+
         JPanel panel_controller = new JPanel();
         panel_controller.setPreferredSize(new Dimension(10, 125));
         panel_controller.setBackground(new Color(218, 112, 214));
         contentPane.add(panel_controller, BorderLayout.SOUTH);
         panel_controller.setLayout(null);
 
-        JButton btnNewButton_4 = new JButton("Restart");
-        btnNewButton_4.setBounds(491, 71, 148, 27);
-        btnNewButton_4.setFont(new Font("Arial", Font.PLAIN, 16));
-        panel_controller.add(btnNewButton_4);
+        btn_restart = new JButton("Restart");
+        btn_restart.setBorderPainted(false);
+        btn_restart.setBackground(new Color(0, 255, 0));
+        btn_restart.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(TestprogrammViewer.loaded) {
+                    ButtonInteraction.button_restart();
+                }
+            }
+        });
+        btn_restart.setBounds(386, 71, 148, 27);
+        btn_restart.setFont(new Font("Arial", Font.PLAIN, 16));
+        panel_controller.add(btn_restart);
 
-        JButton btnNewButton_3_1 = new JButton("Next");
-        btnNewButton_3_1.addMouseListener(new MouseAdapter() {
+        btn_next = new JButton("Next");
+        btn_next.setBorderPainted(false);
+        btn_next.setBorder(null);
+        btn_next.setBackground(new Color(0, 255, 0));
+        btn_next.setEnabled(true);
+        btn_next.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 if(TestprogrammViewer.loaded) {
@@ -313,36 +307,62 @@ public class GUI extends JFrame {
                 }
             }
         });
-        btnNewButton_3_1.setBounds(908, 71, 114, 27);
-        btnNewButton_3_1.setFont(new Font("Arial", Font.BOLD, 16));
-        panel_controller.add(btnNewButton_3_1);
+        btn_next.setBounds(911, 52, 114, 27);
+        btn_next.setFont(new Font("Arial", Font.BOLD, 16));
+        panel_controller.add(btn_next);
 
-        JButton button_stop = new JButton("Stop");
-        button_stop.setBounds(787, 38, 108, 23);
-        button_stop.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-        button_stop.setBackground(new Color(95, 158, 160));
-        button_stop.setFont(new Font("Arial", Font.PLAIN, 16));
-        panel_controller.add(button_stop);
-
-        JButton button_run = new JButton("RUN");
-        button_run.addMouseListener(new MouseAdapter() {
+        btn_stop = new JButton("Stop");
+        btn_stop.setBorderPainted(false);
+        btn_stop.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 if(TestprogrammViewer.loaded) {
+                    ButtonInteraction.button_stop();
+                }
+            }
+        });
+        btn_stop.setBounds(558, 54, 108, 23);
+        btn_stop.setBackground(new Color(0, 255, 0));
+        btn_stop.setFont(new Font("Arial", Font.PLAIN, 16));
+        panel_controller.add(btn_stop);
 
+        btn_run = new JButton("RUN");
+        btn_run.setBorder(null);
+        btn_run.setBackground(new Color(0, 255, 0));
+        btn_run.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(TestprogrammViewer.loaded) {
                     try {
                         ButtonInteraction.button_run();
                     } catch (InterruptedException e1) {
                         e1.printStackTrace();
                     }
-                    
-                    
                 }
             }
         });
-        button_run.setBounds(555, 34, 202, 27);
-        button_run.setFont(new Font("Arial", Font.PLAIN, 16));
-        panel_controller.add(button_run);
+        btn_run.setBounds(702, 36, 156, 27);
+        btn_run.setFont(new Font("Arial", Font.PLAIN, 16));
+        panel_controller.add(btn_run);
+
+        btn_ignore = new JButton("Ignore");
+        btn_ignore.setBorderPainted(false);
+        btn_ignore.setBackground(new Color(0, 255, 0));
+        btn_ignore.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(TestprogrammViewer.loaded) {
+                    ButtonInteraction.button_ignore();
+                }
+            }
+        });
+        btn_ignore.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
+        btn_ignore.setBounds(1050, 76, 85, 21);
+        panel_controller.add(btn_ignore);
+
 
 
         /*
@@ -483,8 +503,36 @@ public class GUI extends JFrame {
 
     }
 
+    /**
+     * visually updates following gui components:
+     * - ram
+     * - pins
+     * - w_reg
+     */
+    public static void updateGUI() {        
+        // stack_gui gets updated autom. after any method call on it FIXME does not work when using btn_restart()
+        
+        // pc_gui gets updated autom. after any method call on it
+        
+        // prescaler_gui gets updated autom. after any method call on it
+        
+        // runtimeCounter_gui gets updated autom. after any method call on it
+        
+        Ram_gui.update();
+
+        // update pins
+        PinSelector.loadPins();
+        
+        // update W-Reg
+        GUI.table_w.setModel(new DefaultTableModel(
+                new Object[][] {{"W-Reg",Utils.binaryToHex(MC.alu.wReg.read())}},new String[] {"",""}));
+        GUI.table_prs.setModel(
+                new DefaultTableModel(new Object[][] {{"VT (T)", 
+                    MC.prescaler.getPRS(0)},{"VT (W)", MC.prescaler.getPRS(1)}}, new String[] {"",""}));
+    }
+
     private Object[][] loadData() {
-        String[] data = new String[] {"STATUS","IRP","RP1","RP0","TO","PD","Z","DC","C","OPTION","RBPU","INTEDG","TOCS","TOSE","PSA","PS2","PS1","PS0","INTCON","GIE","EEIE","TOIE","INTE","RBIE","TOIF","INTF","RBIF"};
+        String[] data = new String[] {"STATUS","IRP","RP1","RP0", "TO","PD","Z","DC","C","OPTION","RBPU","INTEDG","TOCS","TOSE","PSA","PS2","PS1","PS0","INTCON","GIE","EEIE","TOIE","INTE","RBIE","TOIF","INTF","RBIF"};
         int pointer = 0;
         Object[][] result = new Object[3][9];
         for(int i = 0; i < result.length;i++) {
@@ -524,7 +572,7 @@ public class GUI extends JFrame {
         });
         tp2.setFont(new Font("Arial", Font.PLAIN, 12));
         mnNewMenu.add(tp2);
-        
+
         JMenuItem tp21 = new JMenuItem("Testprogramm 2.1");
         tp21.addMouseListener(new MouseAdapter() {
             @Override
@@ -634,7 +682,7 @@ public class GUI extends JFrame {
         });
         tp11.setFont(new Font("Arial", Font.PLAIN, 12));
         mnNewMenu.add(tp11);
-        
+
         JMenuItem tp12 = new JMenuItem("Testprogramm 12");
         tp12.addMouseListener(new MouseAdapter() {
             @Override
@@ -644,7 +692,7 @@ public class GUI extends JFrame {
         });
         tp12.setFont(new Font("Arial", Font.PLAIN, 12));
         mnNewMenu.add(tp12);
-        
+
         JMenuItem tp13 = new JMenuItem("Testprogramm 13");
         tp13.addMouseListener(new MouseAdapter() {
             @Override
@@ -654,7 +702,7 @@ public class GUI extends JFrame {
         });
         tp13.setFont(new Font("Arial", Font.PLAIN, 12));
         mnNewMenu.add(tp13);
-        
+
         JMenuItem tp14 = new JMenuItem("Testprogramm 14");
         tp14.addMouseListener(new MouseAdapter() {
             @Override
@@ -664,7 +712,7 @@ public class GUI extends JFrame {
         });
         tp14.setFont(new Font("Arial", Font.PLAIN, 12));
         mnNewMenu.add(tp14);
-        
+
         JMenuItem tp15 = new JMenuItem("Testprogramm 15");
         tp15.addMouseListener(new MouseAdapter() {
             @Override

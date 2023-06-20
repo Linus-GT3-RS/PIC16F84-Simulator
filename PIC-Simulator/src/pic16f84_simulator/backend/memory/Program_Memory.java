@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import pic16f84_simulator.backend.tools.Utils;
-import pic16f84_simulator.frontend.TestprogrammViewer;
+import pic16f84_simulator.frontend.pm.TestprogrammViewer;
 
 public class Program_Memory extends Template_Memory {// Eduard
 
