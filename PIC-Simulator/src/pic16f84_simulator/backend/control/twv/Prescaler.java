@@ -37,7 +37,7 @@ public class Prescaler {
         
     }
     
-    // When write in timer you've to clear or Prescaler == 0
+    // When write in timer you've to clear
     // only accessible via timer
     public void clearPRS() {
         setPRS();

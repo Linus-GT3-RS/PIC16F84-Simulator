@@ -33,16 +33,16 @@ import pic16f84_simulator.frontend.collections.StackViewer;
 import pic16f84_simulator.frontend.controller.ButtonInteraction;
 
 public class TestprogrammViewer {
-    
+
     public static ArrayList<Integer> BreakPoints = new ArrayList<>() ; // include BreakPoints -> PC
     public static int PCLine; // beinhaltet die Zeile des aktuellen Programmzähler
     public static ArrayList<Integer> pcLines = new ArrayList<>(); // beinhaltet alle Zeilennummern mit Programmcode PCLine -> PC (index von PCLines): z.B. Index 0 (PC = 0) beihaltet Zeile 18 im Testprogramm
     public static boolean loaded = false;
-    
+
     public static  JScrollPane testprogramm_view;
     public static JTable testprogramm_table;
-    
-    
+
+
     public static void highlightPCLine() {
         if(MC.control.pc() >= 0 && MC.control.pc() < pcLines.size()) {
             PCLine = pcLines.get(MC.control.pc());  
@@ -59,7 +59,7 @@ public class TestprogrammViewer {
         });
         testprogramm_table.repaint();
     }
- 
+
     public static JScrollPane Table(String[] head,String[][] rows) {
         DefaultTableModel model = new DefaultTableModel(rows,head);
         testprogramm_table = new JTable(model) {
@@ -80,19 +80,19 @@ public class TestprogrammViewer {
                     }
                 }
             }
-            
+
             private void toggleBreakpoint(int selectedRow) { // store Breakpoints
                 if(testprogramm_table.getValueAt(selectedRow, 0) == "B") {
                     testprogramm_table.setValueAt("", selectedRow, 0);
                     for(int i = 0 ; i < pcLines.size() ; i++) {
-                       if(selectedRow == pcLines.get(i)) { 
-                           for(int j = 0; j < BreakPoints.size(); j++) {
-                               if(i == BreakPoints.get(j)) {
-                                   BreakPoints.remove(j);
-                               }
-                           }
-                            
-                       } 
+                        if(selectedRow == pcLines.get(i)) { 
+                            for(int j = 0; j < BreakPoints.size(); j++) {
+                                if(i == BreakPoints.get(j)) {
+                                    BreakPoints.remove(j);
+                                }
+                            }
+
+                        } 
                     }
                 } else {
                     testprogramm_table.setValueAt("B", selectedRow, 0);
@@ -105,11 +105,11 @@ public class TestprogrammViewer {
                         }
                     }
                 }
-                
+
             }
         });
         JScrollPane scroll = new JScrollPane(testprogramm_table);
-        
+
         testprogramm_table.setGridColor(Color.LIGHT_GRAY);
         testprogramm_table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         TableColumn column = testprogramm_table.getColumnModel().getColumn(0);
@@ -118,35 +118,27 @@ public class TestprogrammViewer {
         column.setPreferredWidth(475);
         testprogramm_table.setFont(new Font("Arial", Font.PLAIN, 12));
         testprogramm_table.setAutoCreateRowSorter(true);
-        
+
         return scroll;
     }
-    
+
     // When you like to use another programm
     public static void overrideProgramm(String path) {
         if(ButtonInteraction.nothread == false) {
             ButtonInteraction.t.stop();
             ButtonInteraction.nothread = true;
         }
-        MC.ram.powerOnReset();
-        MC.stack.resetStack();
-        MC.stack.resetTOS();
-        ButtonInteraction.timer = 0;
-        GUI.programmtime.setText(Integer.toString(ButtonInteraction.timer++) + " µs");
-        StackViewer.updateStack();
-        MC.alu.resetW_Reg();
-        GUI.table_w.setModel(new DefaultTableModel(new Object[][] {{"W-Reg",Utils.binaryToHex(MC.alu.wReg.read())}},new String[] {"",""}));
-        MC.prescaler.clearPRS();
-        GUI.table_prs.setModel(new DefaultTableModel(new Object[][] {{"VT (T)",MC.prescaler.getPRS(0)},{"VT (W)",MC.prescaler.getPRS(1)}},new String[] {"",""}));
+        ButtonInteraction.button_restart();
+        
         String[][] data = MC.pm.loadTestProgram(path);
         DefaultTableModel model = new DefaultTableModel(data,new String[] {"", ""});
         testprogramm_table.setModel(model);
-        
+
         TableColumn column = testprogramm_table.getColumnModel().getColumn(0);
         column.setPreferredWidth(10);
         column = testprogramm_table.getColumnModel().getColumn(1);
         column.setPreferredWidth(650);
-        
+
         for(int i=0 ; i<data.length; i++) {
             if(i< model.getRowCount()) {
                 model.setValueAt(data[i][0], i, 0);
@@ -161,7 +153,7 @@ public class TestprogrammViewer {
                 model.setValueAt("                                              ", i, 1);
             }
         }
-        
+
         // Inform the TableModel about the changes
         model.fireTableDataChanged();
 
@@ -197,7 +189,7 @@ public class TestprogrammViewer {
         case  'D':
         case  'F': return true;
         default: return false;
-          
+
         }
     }
 

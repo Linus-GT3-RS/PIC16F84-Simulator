@@ -13,8 +13,10 @@ import pic16f84_simulator.frontend.GUI;
 public class MC {
     
     private static boolean allow = true; // secures the creation of ONLY ONE instance of this class
-    public MC() {
-        allow = Utils.allow(allow, this);
+     public MC() {
+         synchronized(this) {
+             allow = Utils.allow(allow, this);             
+         }
     }
     
     

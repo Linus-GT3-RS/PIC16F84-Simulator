@@ -22,15 +22,19 @@ public class WatchDog {
 
     private static long debug_start;
     private static long debug_lastRuntime; // in ns
-
-    // private boolean on = false; // for toggle function in gui
     
     
+<<<<<<< HEAD
     public void start() { // this.on = true;
         if(noThread) {
             noThread = false;
             this.wdogTimerVal = this.std * MC.prescaler.getPRS(1);;
             startTimerThread();
+=======
+    public void start() {
+        if(this.isRunning == true) {
+            throw new IllegalArgumentException("WDog is already running.. cannot start a second one");
+>>>>>>> branch 'main' of https://edugit.hs-offenburg.de/lbruestl1/pic-simulator.git
         }
     }
 
@@ -54,10 +58,17 @@ public class WatchDog {
     }
 
 
+<<<<<<< HEAD
     public void stop() { // this.on = false;
         if(noThread == false) {
             t.stop();
             noThread = true;
+=======
+    public void stop() {
+        if(isRunning()) {
+            timer.cancel();
+            setIsRunning(false);   
+>>>>>>> branch 'main' of https://edugit.hs-offenburg.de/lbruestl1/pic-simulator.git
         } 
     }
     
@@ -65,7 +76,12 @@ public class WatchDog {
         MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 3, 0);
         MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 4, 1);
         MC.control.pc(0);
+<<<<<<< HEAD
         MC.ram.otherReset(); 
+=======
+        MC.ram.otherReset();
+        // System.out.println("Watchdog timer has overflowed"); 
+>>>>>>> branch 'main' of https://edugit.hs-offenburg.de/lbruestl1/pic-simulator.git
     }
     
     
@@ -87,6 +103,10 @@ public class WatchDog {
 
     public long debug_lastRuntime() {
         return debug_lastRuntime;
+<<<<<<< HEAD
     }   
+=======
+    }    
+>>>>>>> branch 'main' of https://edugit.hs-offenburg.de/lbruestl1/pic-simulator.git
 
 }

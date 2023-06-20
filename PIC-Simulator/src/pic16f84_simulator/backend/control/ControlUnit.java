@@ -60,7 +60,7 @@ public class ControlUnit {
             pcpp();
         }
         if(instruct instanceof LitConOps instr){
-            int[] k = new int[14-instr.kStart()];
+            int[] k = new int[14 - instr.kStart()];
             System.arraycopy(instrReg.read(),instr.kStart(),  k, 0, (14-instr.kStart()));
             instr.exe(k);
             if(instr != LitConOps.RETURN && instr != LitConOps.GOTO) {
@@ -68,6 +68,7 @@ public class ControlUnit {
             }
         }
         MC.timer.tryIncrInternalTimer(); // has to be called after pcpp to insure correct pc is pushed onto stack in case of tmr0Interrupt
+        
         ButtonInteraction.timer++;
         if(GUI.modus) {
             GUI.programmtime.setText(Integer.toString(ButtonInteraction.timer) + " µs");
