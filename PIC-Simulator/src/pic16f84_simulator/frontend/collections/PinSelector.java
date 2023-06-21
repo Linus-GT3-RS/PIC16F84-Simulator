@@ -1,5 +1,6 @@
 package pic16f84_simulator.frontend.collections;
 
+import java.awt.Color;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
@@ -26,7 +27,8 @@ public class PinSelector {
     static public void Pin_Table() {
         
         JPanel panel_table_upper = new JPanel();
-        panel_table_upper.setBounds(10,10,200,70);
+        panel_table_upper.setBounds(-85,255,600,70);
+        panel_table_upper.setBackground(new Color(25, 25, 25));
         DefaultTableModel pin_upper_mode = new DefaultTableModel(new String[][] {{"I/O","","","", "", "", "", "", "", "","","","","","","",""}, {"PIN","","", "", "", "", "", "", "","","","","","","",""}},new String[] {"","","","","","","","","",""});
         table_pin_upper = new JTable(pin_upper_mode) {
             @Override
@@ -76,7 +78,8 @@ public class PinSelector {
         
         
         JPanel panel_table_under = new JPanel();
-        panel_table_under.setBounds(200, 510, 200, 50);
+        panel_table_under.setBounds(-86, 510, 600, 50);
+        panel_table_under.setBackground(new Color(25, 25, 25));
         
         DefaultTableModel pin_under_mode = new DefaultTableModel(new String[][] {{"I/O","","","", "", "", "", "", "", "","","","","","","",""}, {"PIN","","", "", "", "", "", "", "","","","","","","",""}},new String[] {"","","","","","","","","",""});
         table_pin_under = new JTable(pin_under_mode) {

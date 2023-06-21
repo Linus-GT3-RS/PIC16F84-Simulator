@@ -112,6 +112,7 @@ public class GUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(0, 0, 1920, 1080);
         setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        menuBar.setForeground(new Color(255, 255, 255));
         menuBar.setBorderPainted(false);
         menuBar.setBackground(new Color(47, 47, 47));
         // forBackUp: setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH); // Important DO_NOT_DELETE !!!
@@ -277,16 +278,10 @@ public class GUI extends JFrame {
         panel_programmtimer.setForeground(new Color(254, 252, 253));
         panel_programmtimer.setBackground(new Color(25, 25, 25));
         panel_programmtimer.setLayout(null);
-        programmtime = new JLabel("0 µs");
-        programmtime.setBackground(new Color(47, 47, 47));
-        programmtime.setForeground(new Color(254, 252, 253));
-        programmtime.setBounds(201, 5, 80, 19);
-        programmtime.setFont(new Font("Arial",Font.PLAIN,16));
-        programmtime.setHorizontalAlignment(SwingConstants.CENTER);
         
         JButton btn_resetRuntimeCounter = new JButton();
         btn_resetRuntimeCounter.setBorderPainted(false);
-        btn_resetRuntimeCounter.setBounds(172, 27, 145, 42);
+        btn_resetRuntimeCounter.setBounds(158, 28, 145, 42);
         btn_resetRuntimeCounter.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -304,13 +299,11 @@ public class GUI extends JFrame {
         btn_resetRuntimeCounter.setBorderPainted(false);
         
         panel_programmtimer.add(btn_resetRuntimeCounter);
-        
-        
-        panel_programmtimer.add(programmtime);
         panel_collection.add(panel_programmtimer);
         
         JToggleButton btn_toggleWDog = new JToggleButton("WatchDog");
-        btn_toggleWDog.setBounds(184, 117, 115, 21);
+        btn_toggleWDog.setForeground(new Color(255, 255, 255));
+        btn_toggleWDog.setBackground(new Color(52, 61, 103));
         btn_toggleWDog.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -331,8 +324,16 @@ public class GUI extends JFrame {
                 
             }
         });
-        btn_toggleWDog.setBounds(186, 122, 115, 21);
+        btn_toggleWDog.setBounds(158, 122, 145, 42);
+        btn_toggleWDog.setFont(new Font("Yu Gothic UI Light",Font.PLAIN,14));
         panel_programmtimer.add(btn_toggleWDog);
+        programmtime = new JLabel("0 µs");
+        programmtime.setBounds(188, 11, 80, 19);
+        panel_programmtimer.add(programmtime);
+        programmtime.setBackground(new Color(47, 47, 47));
+        programmtime.setForeground(new Color(254, 252, 253));
+        programmtime.setFont(new Font("Arial",Font.PLAIN,16));
+        programmtime.setHorizontalAlignment(SwingConstants.CENTER);
         panel_register.setLayout(null);
 
 
@@ -361,7 +362,7 @@ public class GUI extends JFrame {
                 }
             }
         });        
-        btn_restart.setBounds(386, 71, 145, 42);
+        btn_restart.setBounds(311, 60, 145, 42);
         btn_restart.setHorizontalTextPosition(SwingConstants.CENTER);
         btn_restart.setFont(new Font("Yu Gothic UI Light", Font.BOLD, 16));
         btn_restart.setBorderPainted(false);
@@ -383,7 +384,7 @@ public class GUI extends JFrame {
                 }
             }
         });
-        btn_next.setBounds(911, 52, 145, 42);
+        btn_next.setBounds(886, 39, 145, 42);
         btn_next.setHorizontalTextPosition(SwingConstants.CENTER);
         btn_next.setFont(new Font("Yu Gothic UI Light", Font.BOLD, 16));
         btn_next.setBorderPainted(false);
@@ -403,7 +404,7 @@ public class GUI extends JFrame {
                 }
             }
         });        
-        btn_stop.setBounds(558, 54, 145, 42);
+        btn_stop.setBounds(477, 39, 145, 42);
         btn_stop.setHorizontalTextPosition(SwingConstants.CENTER);
         btn_stop.setFont(new Font("Yu Gothic UI Light", Font.BOLD, 16));
         btn_stop.setBorderPainted(false);
@@ -428,7 +429,7 @@ public class GUI extends JFrame {
                 }
             }
         });        
-        btn_run.setBounds(702, 36, 145, 42);
+        btn_run.setBounds(680, 26, 145, 42);
         btn_run.setHorizontalTextPosition(SwingConstants.CENTER);
         btn_run.setFont(new Font("Yu Gothic UI Light", Font.BOLD, 16));
         btn_run.setBorderPainted(false);                
@@ -452,7 +453,7 @@ public class GUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
             }
         });        
-        btn_ignore.setBounds(1050, 76, 145, 42);
+        btn_ignore.setBounds(1058, 60, 145, 42);
         btn_ignore.setHorizontalTextPosition(SwingConstants.CENTER);
         btn_ignore.setFont(new Font("Yu Gothic UI Light", Font.BOLD, 16));
         btn_ignore.setBorderPainted(false);
@@ -654,7 +655,10 @@ public class GUI extends JFrame {
          * ++++++++++++++++ Programm laden ++++++++++++++++++++
          */
         JMenu mnNewMenu = new JMenu("Programm laden...");
+        mnNewMenu.setForeground(new Color(255, 255, 255));
+        mnNewMenu.setBackground(new Color(240, 240, 240));
         mnNewMenu.setFont(new Font("Arial", Font.PLAIN, 12));
+        
         menuBar.add(mnNewMenu);
 
         JMenuItem tp1 = new JMenuItem("Testprogramm 1");
@@ -848,6 +852,7 @@ public class GUI extends JFrame {
          *  +++++++++++ Help +++++++++++
          */
         JMenu mnHelp = new JMenu("Help");
+        mnHelp.setForeground(new Color(255, 255, 255));
         mnHelp.setFont(new Font("Arial", Font.PLAIN, 12));
         menuBar.add(mnHelp);
 
