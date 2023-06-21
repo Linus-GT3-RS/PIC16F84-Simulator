@@ -3,6 +3,7 @@ package pic16f84_simulator.backend.control.instruction;
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.Utils;
+import pic16f84_simulator.frontend.GUI;
 import pic16f84_simulator.frontend.controller.ButtonInteraction;
 
 public enum LitConOps implements Instruction { // Linus
@@ -97,7 +98,7 @@ public enum LitConOps implements Instruction { // Linus
     SLEEP {
         @Override
         public void exe(int[] k) {
-            // Not implemented
+          //Not implemented 
         }
     },
     SUBLW { // Eduard

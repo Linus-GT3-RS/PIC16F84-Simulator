@@ -48,24 +48,23 @@ public class WatchDog {
             @Override
             public void run() {
                 while(runnable && notimeout) {
-                    System.out.println("running timer:" + ButtonInteraction.timer + " wDog " + getWDogTimerVal());
                     if(ButtonInteraction.timer >= getWDogTimerVal()) {
                         notimeout = false;
                     }
                 }
                 if(notimeout == false) {
                     ButtonInteraction.button_stop();
-                    watchDogTimeOut();
-                    GUI.updateGUI();
+                    System.out.println("WatchDog Timeout!");
                     JFrame wdogFrame = new JFrame();
                     wdogFrame.setVisible(true);
                     wdogFrame.setTitle("WatchDog");
-                    wdogFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     wdogFrame.setBounds(600, 350, 300, 200);
                     JLabel text = new JLabel("WatchDog Timeout!");
                     text.setHorizontalAlignment(SwingConstants.CENTER);
                     wdogFrame.add(text);
-                    System.out.println("WatchDog Timeout!");
+                    watchDogTimeOut();
+                    GUI.updateGUI();
+                    
                 }
             }
         };

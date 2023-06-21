@@ -309,13 +309,13 @@ public class GUI extends JFrame {
 
         JPanel panel_controller = new JPanel();
         panel_controller.setPreferredSize(new Dimension(10, 125));
-        panel_controller.setBackground(new Color(218, 112, 214));
+        panel_controller.setBackground(new Color(54, 54, 54));//panel_controller.setBackground(new Color(218, 112, 214));
         contentPane.add(panel_controller, BorderLayout.SOUTH);
         panel_controller.setLayout(null);
 
         btn_restart = new JButton("Restart");
         btn_restart.setBorderPainted(false);
-        btn_restart.setBackground(new Color(0, 255, 0));
+        btn_restart.setBackground(Color.WHITE);//btn_restart.setBackground(new Color(0, 255, 0));
         btn_restart.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -331,7 +331,7 @@ public class GUI extends JFrame {
         btn_next = new JButton("Next");
         btn_next.setBorderPainted(false);
         btn_next.setBorder(null);
-        btn_next.setBackground(new Color(0, 255, 0));
+        btn_next.setBackground(Color.WHITE);//btn_next.setBackground(new Color(0, 255, 0));
         btn_next.setEnabled(true);
         btn_next.addMouseListener(new MouseAdapter() {
             @Override
@@ -342,7 +342,7 @@ public class GUI extends JFrame {
             }
         });
         btn_next.setBounds(911, 52, 114, 27);
-        btn_next.setFont(new Font("Arial", Font.BOLD, 16));
+        btn_next.setFont(new Font("Arial", Font.PLAIN, 16));
         panel_controller.add(btn_next);
 
         btn_stop = new JButton("Stop");
@@ -356,13 +356,13 @@ public class GUI extends JFrame {
             }
         });
         btn_stop.setBounds(558, 54, 108, 23);
-        btn_stop.setBackground(new Color(0, 255, 0));
+        btn_stop.setBackground(Color.WHITE);//btn_stop.setBackground(new Color(0, 255, 0));
         btn_stop.setFont(new Font("Arial", Font.PLAIN, 16));
         panel_controller.add(btn_stop);
 
         btn_run = new JButton("RUN");
         btn_run.setBorder(null);
-        btn_run.setBackground(new Color(0, 255, 0));
+        btn_run.setBackground(Color.WHITE);//btn_run.setBackground(new Color(0, 255, 0));
         btn_run.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -376,12 +376,13 @@ public class GUI extends JFrame {
             }
         });
         btn_run.setBounds(702, 36, 156, 27);
-        btn_run.setFont(new Font("Arial", Font.PLAIN, 16));
+        btn_run.setFont(new Font("Arial", Font.BOLD, 16));
         panel_controller.add(btn_run);
 
         btn_ignore = new JButton("Ignore");
         btn_ignore.setBorderPainted(false);
-        btn_ignore.setBackground(new Color(0, 255, 0));
+        btn_ignore.setFont(new Font("Arial",Font.PLAIN,16));
+        btn_ignore.setBackground(Color.WHITE);//btn_ignore.setBackground(new Color(0, 255, 0));
         btn_ignore.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -533,8 +534,7 @@ public class GUI extends JFrame {
 
         contentPane.add(panel_pm, BorderLayout.EAST);
 
-
-
+        GUI.updateGUI();
     }
 
     /**

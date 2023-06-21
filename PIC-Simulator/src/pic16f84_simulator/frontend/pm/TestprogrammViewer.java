@@ -164,6 +164,8 @@ public class TestprogrammViewer {
         MC.control.pc(0);
         TestprogrammViewer.PCLine = TestprogrammViewer.pcLines.get(MC.control.pc());
         TestprogrammViewer.highlightPCLine();
+
+        GUI.updateGUI();
     }
 
     // remove spaces by number of letter
