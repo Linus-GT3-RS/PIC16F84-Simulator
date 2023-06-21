@@ -69,11 +69,7 @@ public class ButtonInteraction {
                     
                     while(runnable && greater && smaller && isStopped == false) {
                         button_next();
-<<<<<<< HEAD
-                        try { Thread.sleep(100); } catch (InterruptedException e) { e.printStackTrace(); }
-=======
-                        try { Thread.sleep(300); } catch (InterruptedException e) { e.printStackTrace(); }
->>>>>>> branch 'main' of https://edugit.hs-offenburg.de/lbruestl1/pic-simulator.git
+                        try { Thread.sleep(10); } catch (InterruptedException e) { e.printStackTrace(); }
                         runnable();
                         greater = MC.control.pc() > - 1;
                         smaller = MC.control.pc() < TestprogrammViewer.pcLines.get(TestprogrammViewer.pcLines.size() -1);

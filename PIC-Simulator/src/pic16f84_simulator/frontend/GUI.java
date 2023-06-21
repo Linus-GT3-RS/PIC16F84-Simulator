@@ -261,7 +261,7 @@ public class GUI extends JFrame {
         btn_resetRuntimeCounter.setBorderPainted(false);
         btn_resetRuntimeCounter.setBackground(new Color(0, 255, 0));
         btn_resetRuntimeCounter.setText("Reset Runtime Counter");
-        btn_resetRuntimeCounter.setBounds(71, 4, 144, 24);
+        btn_resetRuntimeCounter.setBounds(172, 27, 144, 24);
         btn_resetRuntimeCounter.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -277,7 +277,27 @@ public class GUI extends JFrame {
         panel_collection.add(panel_programmtimer);
         
         JToggleButton btn_toggleWDog = new JToggleButton("WatchDog");
-        btn_toggleWDog.setBounds(201, 62, 115, 21);
+        btn_toggleWDog.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(TestprogrammViewer.loaded) {
+                 // Fügen Sie hier den Code hinzu, der ausgeführt werden soll, wenn der Button gedrückt wird
+                    if (btn_toggleWDog.isSelected()) {
+                        // Der Button wurde aktiviert
+                        MC.wdog.start();
+                        System.out.println("WatchDog aktiviert");
+                    } else {
+                        // Der Button wurde deaktiviert
+                        MC.wdog.stop();
+                        System.out.println("WatchDog deaktiviert");
+                    }
+                }else {
+                    
+                }
+                
+            }
+        });
+        btn_toggleWDog.setBounds(186, 122, 115, 21);
         panel_programmtimer.add(btn_toggleWDog);
         panel_register.setLayout(null);
 

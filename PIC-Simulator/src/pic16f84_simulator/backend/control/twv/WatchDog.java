@@ -1,9 +1,15 @@
 package pic16f84_simulator.backend.control.twv;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.Utils;
+import pic16f84_simulator.frontend.GUI;
 import pic16f84_simulator.frontend.controller.ButtonInteraction;
 
 public class WatchDog {
@@ -16,72 +22,71 @@ public class WatchDog {
     private Thread t;
     //private java.util.Timer timer;
 
-    private int std = 18; // standardVal in ms
-    private int wdogTimerVal; // timer val to be counted to
+    private int std = 18000; // standardVal in µs
     private boolean noThread = true; // ensures that only one WDog is running 
+    private boolean runnable = false;
+    private boolean notimeout = true;
+    
 
-    private static long debug_start;
-    private static long debug_lastRuntime; // in ns
-    
-    
-<<<<<<< HEAD
     public void start() { // this.on = true;
         if(noThread) {
             noThread = false;
-            this.wdogTimerVal = this.std * MC.prescaler.getPRS(1);;
-            startTimerThread();
-=======
-    public void start() {
-        if(this.isRunning == true) {
-            throw new IllegalArgumentException("WDog is already running.. cannot start a second one");
->>>>>>> branch 'main' of https://edugit.hs-offenburg.de/lbruestl1/pic-simulator.git
+            runnable = true;
+            notimeout = true;
+            startWDThread();
         }
+        
     }
 
     /*
      * creates a new Timer in background
      *  - after set time(= getTimer()) the run() is executed --> entering means WDog overflowed
      */
-    private void startTimerThread() {
+    private void startWDThread() {
         
         t = new Thread() {
             @Override
             public void run() {
-                while(ButtonInteraction.timer < getWDogTimerVal()) {
+                while(runnable && notimeout) {
+                    System.out.println("running timer:" + ButtonInteraction.timer + " wDog " + getWDogTimerVal());
+                    if(ButtonInteraction.timer >= getWDogTimerVal()) {
+                        notimeout = false;
+                    }
                 }
-                watchDogTimeOut();
-             // EXCEPTION // NEW WINDOW
-                System.out.println("WatchDog Timeout!");
-                t.stop();
+                if(notimeout == false) {
+                    ButtonInteraction.button_stop();
+                    watchDogTimeOut();
+                    GUI.updateGUI();
+                    JFrame wdogFrame = new JFrame();
+                    wdogFrame.setVisible(true);
+                    wdogFrame.setTitle("WatchDog");
+                    wdogFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    wdogFrame.setBounds(600, 350, 300, 200);
+                    JLabel text = new JLabel("WatchDog Timeout!");
+                    text.setHorizontalAlignment(SwingConstants.CENTER);
+                    wdogFrame.add(text);
+                    System.out.println("WatchDog Timeout!");
+                }
             }
         };
+        t.start();
     }
 
 
-<<<<<<< HEAD
+
     public void stop() { // this.on = false;
         if(noThread == false) {
-            t.stop();
+            runnable = false;
             noThread = true;
-=======
-    public void stop() {
-        if(isRunning()) {
-            timer.cancel();
-            setIsRunning(false);   
->>>>>>> branch 'main' of https://edugit.hs-offenburg.de/lbruestl1/pic-simulator.git
-        } 
+        }
     }
     
     public static void watchDogTimeOut(){
         MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 3, 0);
         MC.ram.writeSpecificBit(SFR.STATUS.asIndex(), 4, 1);
         MC.control.pc(0);
-<<<<<<< HEAD
-        MC.ram.otherReset(); 
-=======
         MC.ram.otherReset();
         // System.out.println("Watchdog timer has overflowed"); 
->>>>>>> branch 'main' of https://edugit.hs-offenburg.de/lbruestl1/pic-simulator.git
     }
     
     
@@ -90,7 +95,7 @@ public class WatchDog {
      * ------------------------------ Getter & Setter -------------------------------------
      */
     public int getWDogTimerVal() {
-        return this.wdogTimerVal;
+        return this.std * MC.prescaler.getPRS(1);
     }
     
     // When SLEEP or CLRWDT
@@ -101,12 +106,6 @@ public class WatchDog {
          
     }
 
-    public long debug_lastRuntime() {
-        return debug_lastRuntime;
-<<<<<<< HEAD
-    }   
-=======
-    }    
->>>>>>> branch 'main' of https://edugit.hs-offenburg.de/lbruestl1/pic-simulator.git
+    
 
 }
