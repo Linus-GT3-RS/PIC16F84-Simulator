@@ -43,6 +43,12 @@ import pic16f84_simulator.frontend.controller.ButtonInteraction;
 import pic16f84_simulator.frontend.pm.TestprogrammViewer;
 import pic16f84_simulator.frontend.ram.Ram_gui;
 import javax.swing.JToggleButton;
+import javax.swing.border.LineBorder;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.TitledBorder;
+import java.awt.Component;
+import java.awt.Rectangle;
+import java.awt.Insets;
 
 public class GUI extends JFrame {
 
@@ -63,7 +69,7 @@ public class GUI extends JFrame {
     /*
      * >>>>> pannel_pm
      */
-    public static JPanel testprogrammPanel = new JPanel(new BorderLayout());
+    public static JPanel testprogrammPanel = new JPanel();
     public static JTable table;
     public static JTable table_grp;
     public static JTable table_fsr;
@@ -100,11 +106,14 @@ public class GUI extends JFrame {
      * Create the frame.
      */
     public GUI() {
+        setBackground(new Color(25, 25, 25));
         setVisible(true);
         setTitle("PIC16F84 Simulator");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(0, 0, 1920, 1080);
-        setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH); // Important DO_NOT_DELETE !!!
+        setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        menuBar.setBorderPainted(false);
+        menuBar.setBackground(new Color(47, 47, 47));
         // forBackUp: setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH); // Important DO_NOT_DELETE !!!
 
 
@@ -117,25 +126,26 @@ public class GUI extends JFrame {
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Content Pane +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         contentPane = new JPanel();
         contentPane.setForeground(new Color(192, 192, 192));
-        contentPane.setBackground(new Color(54, 54, 54));
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        contentPane.setBackground(new Color(25, 25, 25));
+        contentPane.setBorder(null);
 
         setContentPane(contentPane);
         contentPane.setLayout(new BorderLayout(4, 4));
 
+        
+        
         /*
          *  >>>>>>>>>>>>> panel_collection
          */
-
+        panel_collection.setBackground(new Color(25, 25, 25));
         panel_collection.setPreferredSize(new Dimension(100, 10));
         contentPane.add(panel_collection, BorderLayout.CENTER);
-        panel_collection.setLayout(null);
+        panel_collection.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
         JPanel panel_register = new JPanel();
-        panel_register.setBackground(new Color(17, 135, 185));
-        panel_register.setBounds(0, 0, 481, 248);
+        panel_register.setPreferredSize(new Dimension(570, 250));
+        panel_register.setBackground(new Color(25, 25, 25));
         panel_collection.add(panel_register);
-
 
         DefaultTableModel registermodel = new DefaultTableModel(loadData(),new String[] {"","","","","","","","",""});
         JTable table_register = new JTable(registermodel) {
@@ -150,6 +160,8 @@ public class GUI extends JFrame {
                 return renderer;
             } 
         };
+        table_register.setBackground(new Color(47, 47, 47));
+        table_register.setForeground(new Color(254, 252, 253));
         table_register.setFont(new Font("Arial", Font.PLAIN, 8));
         for(int i = 0; i < table_register.getColumnCount();i++) {
             TableColumn column = table_register.getColumnModel().getColumn(i);
@@ -161,6 +173,7 @@ public class GUI extends JFrame {
         }
         table_register.setEnabled(false);
         DefaultTableModel wReg_model = new DefaultTableModel(new Object[][] {{"W-Reg",Utils.binaryToHex(MC.alu.wReg.read())}},new String[] {"",""});
+        
         table_w = new JTable(wReg_model) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -173,10 +186,12 @@ public class GUI extends JFrame {
                 return renderer;
             } 
         };
+        table_w.setForeground(new Color(254, 252, 253));
         table_w.setBounds(350, 180, 100, 15);
-        table_w.setBackground(new Color(17, 135, 185));
+        table_w.setBackground(new Color(47, 47, 47));
         table_w.setShowGrid(false);
         DefaultTableModel prs_model = new DefaultTableModel(new Object[][] {{"VT (T)",MC.prescaler.getPRS(0)},{"VT (W)",MC.prescaler.getPRS(1)}},new String[] {"",""}  );
+        
         table_prs = new JTable(prs_model) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -189,14 +204,14 @@ public class GUI extends JFrame {
                 return renderer;
             }
         };
-
-
+        table_prs.setForeground(new Color(254, 252, 253));
         table_prs.getColumnModel().getColumn(0).setPreferredWidth(0);
         table_prs.getColumnModel().getColumn(1).setPreferredWidth(5);
         table_prs.setBounds(350,200,100,37);
-        table_prs.setBackground(new Color(17, 135, 185));
+        table_prs.setBackground(new Color(47, 47, 47));
         table_prs.setShowGrid(false);
         table_prs.setRowSelectionAllowed(false);
+        
         panel_register.add(table_w);
         panel_register.add(table_prs);
         table_register.setRowSelectionAllowed(false);
@@ -204,10 +219,13 @@ public class GUI extends JFrame {
         panel_register.add(table_register);
 
         JPanel labelPanel = new JPanel(new BorderLayout());
+        labelPanel.setForeground(new Color(254, 252, 253));
         labelPanel.setBounds(350, 30, 100, 150);
 
         JLabel Stacklabel = new JLabel("Stack");
-        labelPanel.setBackground(new Color(17, 135, 185));
+        Stacklabel.setBackground(new Color(47, 47, 47));
+        Stacklabel.setForeground(new Color(254, 252, 253));
+        labelPanel.setBackground(new Color(47, 47, 47));
         Stacklabel.setHorizontalAlignment(SwingConstants.CENTER);
         labelPanel.add(Stacklabel,BorderLayout.NORTH); 
 
@@ -225,43 +243,52 @@ public class GUI extends JFrame {
                 return renderer;
             }        
         };
+        stack_table.setForeground(new Color(254, 252, 253));
         stack_table.setBounds(100, 0, 281, 183);
         labelPanel.add(stack_table,BorderLayout.CENTER);
         panel_register.add(labelPanel);
         stack_table.setShowGrid(false);
-        stack_table.setBackground(new Color(17, 135, 185));
+        stack_table.setBackground(new Color(47, 47, 47));
         stack_table.setBorder(BorderFactory.createLineBorder(Color.black, 2));
 
+        
         JPanel panel_pins = new JPanel();
-        panel_pins.setBounds(0, 296, 481, 215);
-        panel_pins.setBackground(Color.WHITE);
+        panel_pins.setPreferredSize(new Dimension(570, 350));
+        panel_pins.setForeground(new Color(254, 252, 253));
+        panel_pins.setBackground(new Color(25, 25, 25));
         panel_collection.add(panel_pins);
 
         ImageIcon icon = new ImageIcon("Pic.png");
         Image image = icon.getImage().getScaledInstance(470, 215, Image.SCALE_SMOOTH);
 
         JLabel Pic_Image = new JLabel(new ImageIcon(image));
+        Pic_Image.setPreferredSize(new Dimension(550, 300));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.CENTER;
+        panel_pins.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         panel_pins.add(Pic_Image);
         PinSelector.Pin_Table();
 
         JPanel panel_programmtimer = new JPanel();
-        panel_programmtimer.setBackground(new Color(166, 222, 247));
-        panel_programmtimer.setBounds(0, 558, 481, 222);
+        panel_programmtimer.setPreferredSize(new Dimension(570, 250));
+        panel_programmtimer.setForeground(new Color(254, 252, 253));
+        panel_programmtimer.setBackground(new Color(25, 25, 25));
         panel_programmtimer.setLayout(null);
         programmtime = new JLabel("0 µs");
-        programmtime.setBounds(201, 5, 80, 19);
+        programmtime.setBackground(new Color(47, 47, 47));
+        programmtime.setForeground(new Color(254, 252, 253));
+        programmtime.setBounds(219, 31, 80, 19);
         programmtime.setFont(new Font("Arial",Font.PLAIN,16));
         programmtime.setHorizontalAlignment(SwingConstants.CENTER);
+        
         JButton btn_resetRuntimeCounter = new JButton();
-        btn_resetRuntimeCounter.setBorderPainted(false);
-        btn_resetRuntimeCounter.setBackground(new Color(0, 255, 0));
-        btn_resetRuntimeCounter.setText("Reset Runtime Counter");
-        btn_resetRuntimeCounter.setBounds(71, 4, 144, 24);
+        btn_resetRuntimeCounter.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
         btn_resetRuntimeCounter.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -269,7 +296,16 @@ public class GUI extends JFrame {
                 programmtime.setText("0 µs");
             }
         });
-       
+        btn_resetRuntimeCounter.setText("Reset Counter");
+        btn_resetRuntimeCounter.setForeground(new Color(254, 252, 253));
+        btn_resetRuntimeCounter.setBackground(new Color(52, 61, 103));
+        btn_resetRuntimeCounter.setBorder(null);
+        
+        btn_resetRuntimeCounter.setBounds(50, 28, 145, 42);
+        btn_resetRuntimeCounter.setHorizontalTextPosition(SwingConstants.CENTER);
+        btn_resetRuntimeCounter.setFont(new Font("Yu Gothic UI Light", Font.BOLD, 16));
+        btn_resetRuntimeCounter.setBorderPainted(false);
+        
         panel_programmtimer.add(btn_resetRuntimeCounter);
         
         
@@ -277,7 +313,7 @@ public class GUI extends JFrame {
         panel_collection.add(panel_programmtimer);
         
         JToggleButton btn_toggleWDog = new JToggleButton("WatchDog");
-        btn_toggleWDog.setBounds(201, 62, 115, 21);
+        btn_toggleWDog.setBounds(184, 117, 115, 21);
         panel_programmtimer.add(btn_toggleWDog);
         panel_register.setLayout(null);
 
@@ -289,13 +325,16 @@ public class GUI extends JFrame {
 
         JPanel panel_controller = new JPanel();
         panel_controller.setPreferredSize(new Dimension(10, 125));
-        panel_controller.setBackground(new Color(218, 112, 214));
+        panel_controller.setBackground(new Color(25, 25, 25));
         contentPane.add(panel_controller, BorderLayout.SOUTH);
         panel_controller.setLayout(null);
+        
+        
 
         btn_restart = new JButton("Restart");
+        btn_restart.setForeground(new Color(254, 252, 253));
         btn_restart.setBorderPainted(false);
-        btn_restart.setBackground(new Color(0, 255, 0));
+        btn_restart.setBackground(new Color(52, 61, 103));
         btn_restart.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -303,15 +342,20 @@ public class GUI extends JFrame {
                     ButtonInteraction.button_restart();
                 }
             }
-        });
-        btn_restart.setBounds(386, 71, 148, 27);
-        btn_restart.setFont(new Font("Arial", Font.PLAIN, 16));
+        });        
+        btn_restart.setBounds(50, 28, 145, 42);
+        btn_restart.setHorizontalTextPosition(SwingConstants.CENTER);
+        btn_restart.setFont(new Font("Yu Gothic UI Light", Font.BOLD, 16));
+        btn_restart.setBorderPainted(false);
         panel_controller.add(btn_restart);
 
+        
+        
+        
         btn_next = new JButton("Next");
-        btn_next.setBorderPainted(false);
-        btn_next.setBorder(null);
-        btn_next.setBackground(new Color(0, 255, 0));
+        btn_next.setForeground(new Color(254, 252, 253));
+        btn_next.setBackground(new Color(52, 61, 103));
+        btn_next.setBorder(null);        
         btn_next.setEnabled(true);
         btn_next.addMouseListener(new MouseAdapter() {
             @Override
@@ -321,12 +365,18 @@ public class GUI extends JFrame {
                 }
             }
         });
-        btn_next.setBounds(911, 52, 114, 27);
-        btn_next.setFont(new Font("Arial", Font.BOLD, 16));
+        btn_next.setBounds(200, 28, 145, 42);
+        btn_next.setHorizontalTextPosition(SwingConstants.CENTER);
+        btn_next.setFont(new Font("Yu Gothic UI Light", Font.BOLD, 16));
+        btn_next.setBorderPainted(false);
         panel_controller.add(btn_next);
 
+        
+        
+        
         btn_stop = new JButton("Stop");
-        btn_stop.setBorderPainted(false);
+        btn_stop.setForeground(new Color(254, 252, 253));
+        btn_stop.setBackground(new Color(52, 61, 103));
         btn_stop.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -334,15 +384,20 @@ public class GUI extends JFrame {
                     ButtonInteraction.button_stop();
                 }
             }
-        });
-        btn_stop.setBounds(558, 54, 108, 23);
-        btn_stop.setBackground(new Color(0, 255, 0));
-        btn_stop.setFont(new Font("Arial", Font.PLAIN, 16));
+        });        
+        btn_stop.setBounds(360, 28, 145, 42);
+        btn_stop.setHorizontalTextPosition(SwingConstants.CENTER);
+        btn_stop.setFont(new Font("Yu Gothic UI Light", Font.BOLD, 16));
+        btn_stop.setBorderPainted(false);
         panel_controller.add(btn_stop);
 
+                
+        
+        
         btn_run = new JButton("RUN");
+        btn_run.setForeground(new Color(254, 252, 253));
+        btn_run.setBackground(new Color(42, 157, 143));
         btn_run.setBorder(null);
-        btn_run.setBackground(new Color(0, 255, 0));
         btn_run.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -354,14 +409,19 @@ public class GUI extends JFrame {
                     }
                 }
             }
-        });
-        btn_run.setBounds(702, 36, 156, 27);
-        btn_run.setFont(new Font("Arial", Font.PLAIN, 16));
+        });        
+        btn_run.setBounds(700, 28, 145, 42);
+        btn_run.setHorizontalTextPosition(SwingConstants.CENTER);
+        btn_run.setFont(new Font("Yu Gothic UI Light", Font.BOLD, 16));
+        btn_run.setBorderPainted(false);                
         panel_controller.add(btn_run);
 
+        
+        
+        
         btn_ignore = new JButton("Ignore");
-        btn_ignore.setBorderPainted(false);
-        btn_ignore.setBackground(new Color(0, 255, 0));
+        btn_ignore.setForeground(new Color(254, 252, 253));
+        btn_ignore.setBackground(new Color(52, 61, 103));
         btn_ignore.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -373,11 +433,15 @@ public class GUI extends JFrame {
         btn_ignore.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             }
-        });
-        btn_ignore.setBounds(1050, 76, 85, 21);
+        });        
+        btn_ignore.setBounds(525, 28, 145, 42);
+        btn_ignore.setHorizontalTextPosition(SwingConstants.CENTER);
+        btn_ignore.setFont(new Font("Yu Gothic UI Light", Font.BOLD, 16));
+        btn_ignore.setBorderPainted(false);
         panel_controller.add(btn_ignore);
 
 
+        
 
         /*
          * >>>>>>>>>>>>>> panel_ram
@@ -385,25 +449,30 @@ public class GUI extends JFrame {
         JPanel panel_ram = new JPanel();
         panel_ram.setBorder(new EmptyBorder(8, 0, 13, 0));
         panel_ram.setPreferredSize(new Dimension(520, 10));
-        panel_ram.setBackground(new Color(244, 164, 96));
+        panel_ram.setBackground(new Color(25, 25, 25));
         contentPane.add(panel_ram, BorderLayout.WEST);
         panel_ram.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 7));
 
         JPanel panel_fsr = new JPanel();
+        panel_fsr.setBackground(new Color(47, 47, 47));
         panel_fsr.setPreferredSize(new Dimension(470, 300));
         panel_ram.add(panel_fsr);
         panel_fsr.setLayout(null);
 
         JScrollPane scrollPane_fsr = new JScrollPane();
+        scrollPane_fsr.setBackground(new Color(47, 47, 47));
         scrollPane_fsr.setEnabled(false);
         scrollPane_fsr.setBounds(0, 20, 469, 280);
         scrollPane_fsr.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane_fsr.setViewportBorder(null);
         scrollPane_fsr.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane_fsr.setForeground(Color.WHITE);
+        scrollPane_fsr.setForeground(new Color(161, 161, 161));
         panel_fsr.add(scrollPane_fsr);
 
         table_fsr = new JTable();
+        table_fsr.setForeground(new Color(192, 192, 192));
+        table_fsr.setGridColor(new Color(25, 25, 25));
+        table_fsr.setBackground(new Color(47, 47, 47));
         table_fsr.setEnabled(false);
         table_fsr.setFont(new Font("Tahoma", Font.PLAIN, 9));        
         table_fsr.setModel(new DefaultTableModel(
@@ -442,6 +511,7 @@ public class GUI extends JFrame {
         scrollPane_fsr.setViewportView(table_fsr);
 
         JPanel panel_gpr = new JPanel();
+        panel_gpr.setBackground(new Color(47, 47, 47));
         panel_gpr.setPreferredSize(new Dimension(470, 340));
         panel_ram.add(panel_gpr);
         panel_gpr.setLayout(null);
@@ -451,6 +521,7 @@ public class GUI extends JFrame {
         panel_gpr.add(lblNewLabel);
 
         JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBackground(new Color(47, 47, 47));
         scrollPane.setBounds(1, 23, 469, 307);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setForeground(new Color(255, 255, 255));
@@ -458,6 +529,9 @@ public class GUI extends JFrame {
         panel_gpr.add(scrollPane);
 
         table_grp = new JTable();
+        table_grp.setForeground(new Color(254, 252, 253));
+        table_grp.setGridColor(new Color(25, 25, 25));
+        table_grp.setBackground(new Color(47, 47, 47));
         table_grp.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         table_grp.setName("");
         table_grp.setEnabled(false);
@@ -487,20 +561,22 @@ public class GUI extends JFrame {
         /*
          * >>>>>>>>>>>>>>>> panel_pm
          */
-        JPanel panel_pm = new JPanel(new BorderLayout());
-        panel_pm.setPreferredSize(new Dimension(520, 0));
+        JPanel panel_pm = new JPanel();
+        panel_pm.setBackground(new Color(25, 25, 25));
+        panel_pm.setPreferredSize(new Dimension(550, 1000));
+        panel_pm.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-        JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        centerPanel.setBackground(new Color(255, 215, 0));
+        JPanel panelLabel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panelLabel.setPreferredSize(new Dimension(90, 90));
+        panelLabel.setBackground(new Color(25, 25, 25));
         JLabel label = new JLabel("Testprogramm");
-        centerPanel.add(label);
-
-        panel_pm.add(centerPanel, BorderLayout.NORTH);
-
-
-
+        label.setForeground(new Color(254, 252, 253));
+        panelLabel.add(label);
+        panel_pm.add(panelLabel);
+        
+        testprogrammPanel.setPreferredSize(new Dimension(470, 100));
         testprogrammPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding von 10 Pixeln
-        testprogrammPanel.setBackground(new Color(255, 215, 0));
+        testprogrammPanel.setBackground(new Color(25, 25, 25));
 
         //Dummy File for first Initializiation
         String[] head = new String[] {"", ""};
@@ -509,7 +585,8 @@ public class GUI extends JFrame {
         line[0][1] = "                                                                                                                                                            ";
         TestprogrammViewer.testprogramm_view = TestprogrammViewer.Table(head,line);
         testprogrammPanel.add(TestprogrammViewer.testprogramm_view, BorderLayout.CENTER);
-        panel_pm.add(testprogrammPanel, BorderLayout.CENTER);
+        panel_pm.add(testprogrammPanel);
+        testprogrammPanel.setLayout(null);
 
         contentPane.add(panel_pm, BorderLayout.EAST);
 
