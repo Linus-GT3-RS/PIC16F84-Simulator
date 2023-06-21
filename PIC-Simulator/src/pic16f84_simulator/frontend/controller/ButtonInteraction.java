@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import javax.swing.table.DefaultTableModel;
 
+import junit.framework.Test;
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.tools.Utils;
 import pic16f84_simulator.frontend.GUI;
@@ -68,7 +69,7 @@ public class ButtonInteraction {
                     
                     while(runnable && greater && smaller && isStopped == false) {
                         button_next();
-                        try { Thread.sleep(300); } catch (InterruptedException e) { e.printStackTrace(); }
+                        try { Thread.sleep(10); } catch (InterruptedException e) { e.printStackTrace(); }
                         runnable();
                         greater = MC.control.pc() > - 1;
                         smaller = MC.control.pc() < TestprogrammViewer.pcLines.get(TestprogrammViewer.pcLines.size() -1);
@@ -84,17 +85,13 @@ public class ButtonInteraction {
     }
     
     private static void runnable() {
-        if(TestprogrammViewer.BreakPoints.size() > counter) {
-            breakpoint = TestprogrammViewer.BreakPoints.get(counter);
-            counter++;
-        }        
-        if(MC.control.pc() == breakpoint) {
-            runnable = false;
+        runnable = true;
+        for(int i = 0; i < TestprogrammViewer.BreakPoints.size(); i++) {
+            if(TestprogrammViewer.BreakPoints.get(i) == MC.control.pc()) {
+                runnable = false;
+                break;
+            }
         }
-        else {
-            runnable =  true;
-        }
-        
     }
 
 }

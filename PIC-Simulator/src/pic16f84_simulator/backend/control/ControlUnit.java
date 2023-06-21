@@ -34,8 +34,11 @@ public class ControlUnit {
 
         if(instruct instanceof ByteOps instr) {            
             int dBit = instrReg.readBit(instr.indexDbit)  ;
-            int indexFile = Utils.binaryToDec(Arrays.copyOfRange(instrReg.read(), instr.fileStart, instrReg.read().length));    
-            if(indexFile == 0)
+            int indexFile = Utils.binaryToDec(Arrays.copyOfRange(instrReg.read(), instr.fileStart, instrReg.read().length)); 
+            if(SFR.getRPOflag() == 1) {
+                indexFile = indexFile + 128;
+            }
+            if(indexFile == 0 || indexFile == 128)
             {
                 indexFile = Utils.binaryToDec(MC.ram.readDataCell(SFR.FSR.asIndex()));
             }
@@ -46,7 +49,10 @@ public class ControlUnit {
             int indexBit = Utils.binaryToDec(Arrays.copyOfRange(instrReg.read(), instr.dBitStart, instr.dBitEnd+1));
             indexBit = 7 - indexBit;
             int indexFile = Utils.binaryToDec(Arrays.copyOfRange(instrReg.read(), instr.fileStart, instrReg.read().length));
-            if(indexFile == 0)
+            if(SFR.getRPOflag() == 1) {
+                indexFile = indexFile + 128;
+            }
+            if(indexFile == 0 || indexFile == 128)
             {
                 indexFile = Utils.binaryToDec(MC.ram.readDataCell(SFR.FSR.asIndex()));
             }

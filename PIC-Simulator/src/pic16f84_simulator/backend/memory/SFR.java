@@ -46,6 +46,10 @@ public enum SFR {
      * 
      * 
      */
+    
+    public static int getRPOflag() {
+        return MC.ram.readSpecificBit(SFR.STATUS.asIndex(), 2);
+    }
 
     public static void setDCflag(int bit) {
         MC.ram.writeSpecificBit(SFR.STATUS.asIndex(),6,bit);

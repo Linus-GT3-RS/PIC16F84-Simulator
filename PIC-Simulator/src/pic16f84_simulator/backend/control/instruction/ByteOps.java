@@ -1,4 +1,6 @@
 package pic16f84_simulator.backend.control.instruction;
+import java.util.Arrays;
+
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.Utils;
@@ -78,6 +80,7 @@ public enum ByteOps implements Instruction { // Linus
                 ByteOps.NOP.exe(0, 0);
                 MC.control.pcpp();
                 ButtonInteraction.timer++;
+                MC.timer.tryIncrInternalTimer();
             }
         }
     },
@@ -101,6 +104,8 @@ public enum ByteOps implements Instruction { // Linus
             if (result == 0) {
                 ByteOps.NOP.exe(0, 0);
                 MC.control.pcpp();
+                ButtonInteraction.timer++;
+                MC.timer.tryIncrInternalTimer();
             }
         }
     },
@@ -131,7 +136,6 @@ public enum ByteOps implements Instruction { // Linus
     NOP { // Eduard
         @Override
         public void exe(int d, int indexFile) {
-            MC.timer.tryIncrInternalTimer();
         }
     },
     RLF { // Linus

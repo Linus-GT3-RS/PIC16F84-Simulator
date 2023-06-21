@@ -11,42 +11,6 @@ public class ALU {
     }
 
     public Register wReg = new Register(8);
-    
-
-    public int[] AdditionWF(int[] Arr) {
-        int[] result = new int[8];
-        int sum = 0;
-        for (int i = wReg.length - 1; i >= 0; i--) {
-            sum = sum + wReg.readBit(i) + Arr[i];
-            if (sum == 2) { // Fall des Überlaufs/Übertrags
-                if (i == 4) {
-                    SFR.setDCflag(1);
-                } 
-                else if (i == 0) {
-                    SFR.setCflag(1);
-                }
-                result[i] = 0;
-                sum = 1;
-            } 
-            else {
-                if (i == 4) {
-                    SFR.setDCflag(0);
-                } 
-                else if (i == 0) {
-                    SFR.setCflag(0);
-                }
-                if (sum == 0) {
-                    result[i] = 0;
-                } 
-                else { // sum == 1
-                    result[i] = 1;
-                    sum = 0;
-                }
-            }
-
-        }
-        return result;
-    }
 
 
     // returns: a + b (while handling overflow issues) --> result is between [0, 255]

@@ -1,9 +1,16 @@
 package pic16f84_simulator.backend.control.twv;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+
 import pic16f84_simulator.MC;
 import pic16f84_simulator.backend.memory.SFR;
 import pic16f84_simulator.backend.tools.Utils;
+import pic16f84_simulator.frontend.GUI;
+import pic16f84_simulator.frontend.controller.ButtonInteraction;
 
 public class WatchDog {
 
@@ -12,54 +19,65 @@ public class WatchDog {
         allow = Utils.allow(allow, this);
     }
 
-    private java.util.Timer timer;
+    private Thread t;
+    //private java.util.Timer timer;
 
-    private int std = 18; // standardVal in ms
-    private int wdogTimerVal; // timer val to be counted to
-    private boolean isRunning = false; // ensures that only one WDog is running 
+    private int std = 18000; // standardVal in µs
+    private boolean noThread = true; // ensures that only one WDog is running 
+    private boolean runnable = false;
+    private boolean notimeout = true;
+    
 
-    private static long debug_start;
-    private static long debug_lastRuntime; // in ns
-    
-    
-    public void start() {
-        if(this.isRunning == true) {
-            throw new IllegalArgumentException("WDog is already running.. cannot start a second one");
+    public void start() { // this.on = true;
+        if(noThread) {
+            noThread = false;
+            runnable = true;
+            notimeout = true;
+            startWDThread();
         }
-        setIsRunning(true);
-        this.wdogTimerVal = this.std;
-        if(SFR.getPSA() == 1){
-            this.wdogTimerVal *= MC.prescaler.getPRS(1);
-        }  
-        debug_start = System.nanoTime();
-        startTimerThread();
+        
     }
 
     /*
      * creates a new Timer in background
      *  - after set time(= getTimer()) the run() is executed --> entering means WDog overflowed
      */
-    private void startTimerThread() {
-        timer = new java.util.Timer();        
-        timer.schedule(new TimerTask() {    
-
-            @Override         
-            public void run() { //System.out.println("WDog overflow"); 
-            debug_lastRuntime = System.nanoTime() - debug_start;
-            timer.cancel(); // so thread can terminate after following code is run
-            watchDogTimeOut();
-            MC.wdog.setIsRunning(false); // now WDog is allowed to run again
-            }        
-
-        }, this.wdogTimerVal); 
+    private void startWDThread() {
+        
+        t = new Thread() {
+            @Override
+            public void run() {
+                while(runnable && notimeout) {
+                    if(ButtonInteraction.timer >= getWDogTimerVal()) {
+                        notimeout = false;
+                    }
+                }
+                if(notimeout == false) {
+                    ButtonInteraction.button_stop();
+                    System.out.println("WatchDog Timeout!");
+                    JFrame wdogFrame = new JFrame();
+                    wdogFrame.setVisible(true);
+                    wdogFrame.setTitle("WatchDog");
+                    wdogFrame.setBounds(600, 350, 300, 200);
+                    JLabel text = new JLabel("WatchDog Timeout!");
+                    text.setHorizontalAlignment(SwingConstants.CENTER);
+                    wdogFrame.add(text);
+                    watchDogTimeOut();
+                    GUI.updateGUI();
+                    
+                }
+            }
+        };
+        t.start();
     }
 
 
-    public void stop() {
-        if(isRunning()) {
-            timer.cancel();
-            setIsRunning(false);   
-        } 
+
+    public void stop() { // this.on = false;
+        if(noThread == false) {
+            runnable = false;
+            noThread = true;
+        }
     }
     
     public static void watchDogTimeOut(){
@@ -76,7 +94,7 @@ public class WatchDog {
      * ------------------------------ Getter & Setter -------------------------------------
      */
     public int getWDogTimerVal() {
-        return this.wdogTimerVal;
+        return this.std * MC.prescaler.getPRS(1);
     }
     
     // When SLEEP or CLRWDT
@@ -87,16 +105,6 @@ public class WatchDog {
          
     }
 
-    void setIsRunning(boolean val) {
-        this.isRunning = val;
-    }
-
-    public boolean isRunning() {
-        return this.isRunning;
-    }
-
-    public long debug_lastRuntime() {
-        return debug_lastRuntime;
-    }    
+    
 
 }
