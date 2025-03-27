@@ -1,4 +1,4 @@
-# PIC16F84 Simulator in Java
+# PIC16F84-Simulator in Java
 
 Group project in AI2 Computer Architectures (SS 2023 HS-Offenburg)
 Group: Eduard Wegele and Linus Brüstle
